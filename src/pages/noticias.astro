@@ -1,0 +1,100 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import PageCta from '../components/PageCta.astro';
+import Noticias from '../components/Noticias.astro';
+import { SITE_NAME } from '../data/site';
+
+const title = `Conteúdo & Notícias — ${SITE_NAME}`;
+const description =
+  'Seleção diária de notícias sobre direito imobiliário, notarial e registral e planejamento patrimonial, com a curadoria da Dra. Érika Saquetti Martins.';
+---
+
+<BaseLayout title={title} description={description}>
+  <main>
+    <PageHero
+      tag="Conteúdo"
+      title="Conteúdo & Notícias"
+      lead="Uma seleção diária de notícias e movimentos relevantes em direito imobiliário, notarial e registral e planejamento patrimonial — com o filtro de quem pesquisa e atua na área."
+      crumbs={[{ label: 'Início', href: '/' }, { label: 'Conteúdo' }]}
+    />
+
+    <!-- curadoria -->
+    <section class="section curadoria grid-ivory">
+      <div class="container">
+        <div class="sec-head">
+          <span class="sec-tag">Curadoria</span>
+          <h2>O que você encontra aqui.</h2>
+          <div class="rule-double"></div>
+        </div>
+
+        <div class="cur-copy">
+          <p>
+            Todos os dias, o noticiário jurídico e econômico produz decisões, normas e tendências
+            que afetam diretamente quem possui, negocia ou transmite patrimônio. Esta página reúne
+            uma seleção do que importa — teses dos tribunais superiores, mudanças em regularização
+            fundiária e REURB, atos notariais e registrais, e movimentos do planejamento
+            patrimonial e sucessório.
+          </p>
+          <p>
+            A curadoria é informativa e não substitui a análise do seu caso concreto: cada situação
+            pede leitura própria, com documentos e contexto.
+          </p>
+        </div>
+
+        <p class="embreve">
+          <span class="embreve-tag">Em breve</span>
+          Atualização diária automática. Os cards abaixo são exemplos do formato editorial.
+        </p>
+      </div>
+    </section>
+
+    <Noticias />
+
+    <PageCta
+      title="Uma notícia tocou o seu caso?"
+      text="Envie uma mensagem e converse diretamente sobre a sua situação — sem juridiquês, com leitura técnica e objetiva."
+    />
+  </main>
+</BaseLayout>
+
+<style>
+  .curadoria {
+    padding: var(--pad-sec) 0;
+    background: var(--color-ivory);
+  }
+  .cur-copy {
+    max-width: 46rem;
+  }
+  .cur-copy p {
+    font-size: 1.02rem;
+    font-weight: 300;
+    color: var(--ink-soft);
+  }
+  .cur-copy p + p {
+    margin-top: 1.3rem;
+  }
+
+  .embreve {
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.9rem;
+    margin-top: 2.4rem;
+    padding: 1rem 1.4rem;
+    clip-path: var(--ch-s);
+    background: rgba(134, 109, 75, 0.08);
+    border: none;
+    font-size: 0.86rem;
+    font-weight: 300;
+    color: var(--ink-soft);
+  }
+  .embreve-tag {
+    font-size: 0.64rem;
+    font-weight: 600;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--color-gold);
+    white-space: nowrap;
+  }
+</style>

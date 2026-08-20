@@ -1,0 +1,405 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import PageCta from '../components/PageCta.astro';
+import { SITE_NAME } from '../data/site';
+
+const title = `Dra. Érika Silvana Saquetti Martins — ${SITE_NAME}`;
+const description =
+  'Advogada desde 2009 (OAB/PR), Doutora em Direito com pesquisa em REURB, Mestre pela UFPR e pela UNINTER, professora de pós-graduação e palestrante. Atendimento no Brasil, EUA, Canadá e Portugal.';
+
+const marcos = [
+  {
+    periodo: 'Início da carreira',
+    titulo: 'Tribunal Regional do Trabalho do Paraná',
+    texto:
+      'Servidora do TRT-PR, onde formou a disciplina técnica e o respeito pelo rito que marcam sua prática até hoje.',
+  },
+  {
+    periodo: '2009',
+    titulo: 'Ingresso na advocacia',
+    texto:
+      'Início da atuação como advogada (OAB/PR), com vocação clara desde cedo: prevenir conflitos antes que eles existam.',
+  },
+  {
+    periodo: 'Pesquisa acadêmica',
+    titulo: 'Mestrados e doutorado',
+    texto:
+      'Da prática nasceu a pesquisa: mestrado em Políticas Públicas (UFPR) e em Direito (UNINTER), e doutorado em Direito com pesquisa em REURB.',
+  },
+  {
+    periodo: 'Hoje',
+    titulo: 'Advocacia, docência e atuação internacional',
+    texto:
+      'Advocacia consultiva, docência em pós-graduação, palestras e publicações — com clientes no Brasil, nos EUA, no Canadá e em Portugal.',
+  },
+];
+
+const formacao = [
+  {
+    titulo: 'Doutora em Direito',
+    texto: 'Pesquisa dedicada à Regularização Fundiária Urbana (REURB).',
+  },
+  {
+    titulo: 'Mestre em Políticas Públicas — UFPR',
+    texto: 'Universidade Federal do Paraná, com foco em regularização fundiária.',
+  },
+  {
+    titulo: 'Mestre em Direito — UNINTER',
+    texto: 'Pesquisa sobre o sistema multiportas nas serventias extrajudiciais.',
+  },
+];
+
+const especializacoes = [
+  'Direito Público',
+  'Direito Notarial e Registral',
+  'Direito do Trabalho e Processo do Trabalho',
+  'Direito Imobiliário',
+  'Direito de Família e Sucessão Extrajudicial',
+];
+
+const comissoes = [
+  'Comissão de Direito à Cidade — OAB/PR',
+  'Comissão de Direito Notarial e das Serventias Extrajudicial e Judicial — OAB/PR',
+  'Comissão de Gestão e Empreendedorismo — OAB/PR',
+];
+
+const associacoes = [
+  'Membro do Time Holding Brasil',
+  'Associada ao CONPEDI — Conselho Nacional de Pesquisa e Pós-Graduação em Direito',
+  'Associada ao IBRADIM — Instituto Brasileiro de Direito Imobiliário',
+];
+---
+
+<BaseLayout title={title} description={description}>
+  <main>
+    <PageHero
+      tag="A Advogada"
+      title="Dra. Érika Silvana Saquetti Martins"
+      lead="Advogada desde 2009 (OAB/PR), professora e pesquisadora — dedicada a simplificar questões jurídicas complexas, prevenir conflitos e proporcionar tranquilidade a famílias e investidores."
+      crumbs={[{ label: 'Início', href: '/' }, { label: 'A Advogada' }]}
+    />
+
+    <!-- 01 / Trajetória -->
+    <section class="section trajetoria grid-ivory">
+      <div class="container">
+        <div class="sec-head">
+          <span class="sec-tag"><span class="num">01</span><span class="bar">/</span>Trajetória</span>
+          <h2>Do serviço público à advocacia consultiva.</h2>
+          <div class="rule-double"></div>
+        </div>
+
+        <div class="traj-grid">
+          <div class="traj-copy">
+            <p>
+              A trajetória da Dra. Érika começa no serviço público, como servidora do Tribunal
+              Regional do Trabalho do Paraná. Em 2009, ingressou na advocacia — e ali encontrou a
+              sua forma de exercer o direito: a atuação preventiva e consultiva, que resolve o
+              problema antes que ele se torne litígio.
+            </p>
+            <p>
+              Da prática nasceu a pesquisa. A convivência diária com imóveis irregulares e
+              sucessões mal resolvidas levou-a à academia: mestrado em Políticas Públicas na UFPR,
+              com foco em regularização fundiária; mestrado em Direito na UNINTER, dedicado ao
+              sistema multiportas nas serventias extrajudiciais; e doutorado em Direito, com
+              pesquisa em REURB.
+            </p>
+            <p>
+              Hoje, soma à advocacia a docência em cursos de pós-graduação, a formação de
+              profissionais do mercado imobiliário e a atuação como palestrante e escritora —
+              atendendo clientes no Brasil, nos Estados Unidos, no Canadá e em Portugal.
+            </p>
+          </div>
+
+          <ol class="timeline">
+            {
+              marcos.map((marco) => (
+                <li>
+                  <span class="tl-periodo">{marco.periodo}</span>
+                  <h3>{marco.titulo}</h3>
+                  <p>{marco.texto}</p>
+                </li>
+              ))
+            }
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- 02 / Formação -->
+    <section class="section formacao grid-navy">
+      <div class="container">
+        <div class="sec-head on-navy">
+          <span class="sec-tag"><span class="num">02</span><span class="bar">/</span>Formação</span>
+          <h2>Formação acadêmica.</h2>
+          <div class="rule-double"></div>
+        </div>
+
+        <div class="form-grid">
+          <div class="form-col">
+            <h3 class="form-label">Pós-graduação stricto sensu</h3>
+            <ul class="form-list stricto">
+              {
+                formacao.map((item) => (
+                  <li>
+                    <strong>{item.titulo}</strong>
+                    <span>{item.texto}</span>
+                  </li>
+                ))
+              }
+            </ul>
+          </div>
+
+          <div class="form-col">
+            <h3 class="form-label">Especializações</h3>
+            <ul class="form-list">
+              {especializacoes.map((item) => <li>{item}</li>)}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 03 / Docência -->
+    <section class="section docencia grid-ivory">
+      <div class="container">
+        <div class="sec-head">
+          <span class="sec-tag"><span class="num">03</span><span class="bar">/</span>Docência</span>
+          <h2>Quem pesquisa, ensina.</h2>
+          <div class="rule-double"></div>
+        </div>
+
+        <div class="doc-grid">
+          <div class="doc-item">
+            <h3>Pós-graduação</h3>
+            <p>
+              Professora de cursos de pós-graduação na UNINTER e na PUC, nas disciplinas de Direito
+              Imobiliário, Direito Constitucional, Processo Civil, Gestão de Cartórios e
+              Regularização Fundiária.
+            </p>
+          </div>
+          <div class="doc-item">
+            <h3>Formação profissional</h3>
+            <p>
+              Professora de corretores, arquitetos, engenheiros e advogados pela Escola Democrata e
+              pelo Instituto dos Corretores de Santa Catarina e Oeste.
+            </p>
+          </div>
+          <div class="doc-item">
+            <h3>Palestras e publicações</h3>
+            <p>
+              Palestrante e escritora nas áreas de direito imobiliário, notarial e registral e
+              planejamento patrimonial. Conheça os
+              <a class="doc-link" href="/educacao">cursos e treinamentos</a>.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 04 / Instituições -->
+    <section class="section instituicoes grid-navy">
+      <div class="container">
+        <div class="sec-head on-navy">
+          <span class="sec-tag"><span class="num">04</span><span class="bar">/</span>Instituições</span>
+          <h2>Comissões e associações.</h2>
+          <div class="rule-double"></div>
+        </div>
+
+        <div class="form-grid">
+          <div class="form-col">
+            <h3 class="form-label">Comissões — OAB/PR</h3>
+            <ul class="form-list">
+              {comissoes.map((item) => <li>{item}</li>)}
+            </ul>
+          </div>
+          <div class="form-col">
+            <h3 class="form-label">Associações e redes</h3>
+            <ul class="form-list">
+              {associacoes.map((item) => <li>{item}</li>)}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <PageCta
+      num="05"
+      title="Uma conversa esclarece mais que mil páginas."
+      text="Agende uma consulta — online ou presencial — e receba uma leitura técnica e humana da sua situação patrimonial."
+      label="Agendar uma conversa"
+    />
+  </main>
+</BaseLayout>
+
+<style>
+  /* ---------- 01 / trajetória ---------- */
+  .trajetoria {
+    padding: var(--pad-sec) 0;
+    background: var(--color-ivory);
+  }
+  .traj-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: clamp(2.5rem, 6vw, 5rem);
+    align-items: start;
+  }
+  .traj-copy p {
+    font-size: 1.02rem;
+    font-weight: 300;
+    color: var(--ink-soft);
+  }
+  .traj-copy p + p {
+    margin-top: 1.3rem;
+  }
+
+  .timeline {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    border-left: 1px solid var(--gold-soft);
+  }
+  .timeline li {
+    position: relative;
+    padding: 0 0 1.9rem 1.8rem;
+  }
+  .timeline li:last-child {
+    padding-bottom: 0;
+  }
+  .timeline li::before {
+    content: "";
+    position: absolute;
+    left: -5px;
+    top: 0.45em;
+    width: 9px;
+    height: 9px;
+    background: var(--color-ivory);
+    border: 1px solid var(--color-gold);
+    transform: rotate(45deg);
+  }
+  .tl-periodo {
+    display: block;
+    font-size: 0.64rem;
+    font-weight: 600;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--color-gold);
+    margin-bottom: 0.4rem;
+  }
+  .timeline h3 {
+    font-size: 1.3rem;
+    color: var(--color-navy);
+    margin-bottom: 0.35rem;
+  }
+  .timeline p {
+    font-size: 0.88rem;
+    font-weight: 300;
+    color: var(--ink-soft);
+  }
+
+  /* ---------- 02 e 04 / listas em navy ---------- */
+  .formacao,
+  .instituicoes {
+    padding: var(--pad-sec) 0;
+    background: var(--color-navy);
+    color: var(--color-ivory);
+  }
+  .instituicoes {
+    background: var(--color-navy-deep);
+  }
+  .form-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: clamp(2.5rem, 6vw, 5rem);
+    align-items: start;
+  }
+  .form-label {
+    font-family: var(--font-sans);
+    font-size: 0.68rem;
+    font-weight: 600;
+    letter-spacing: 0.32em;
+    text-transform: uppercase;
+    color: var(--color-gold);
+    margin-bottom: 1.4rem;
+  }
+  .form-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 0.95rem;
+  }
+  .form-list li {
+    position: relative;
+    padding-left: 1.4rem;
+    font-size: 0.92rem;
+    font-weight: 300;
+    color: var(--ivory-soft);
+    line-height: 1.55;
+  }
+  .form-list li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.52em;
+    width: 9px;
+    height: 9px;
+    border: 1px solid var(--color-gold);
+    transform: rotate(45deg);
+  }
+  .form-list.stricto li {
+    display: grid;
+    gap: 0.15rem;
+  }
+  .form-list strong {
+    font-weight: 500;
+    color: var(--color-ivory);
+  }
+  .form-list span {
+    font-size: 0.85rem;
+  }
+
+  /* ---------- 03 / docência ---------- */
+  .docencia {
+    padding: var(--pad-sec) 0;
+    background: var(--color-ivory);
+  }
+  .doc-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: clamp(1.8rem, 4vw, 3rem);
+  }
+  .doc-item h3 {
+    font-size: 1.4rem;
+    color: var(--color-navy);
+    margin-bottom: 0.7rem;
+    padding-top: 1.1rem;
+    border-top: 1px solid var(--gold-soft);
+  }
+  .doc-item p {
+    font-size: 0.92rem;
+    font-weight: 300;
+    color: var(--ink-soft);
+  }
+  .doc-link {
+    color: var(--color-gold);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    transition: color 0.3s ease;
+  }
+  .doc-link:hover {
+    color: var(--color-navy);
+  }
+
+  @media (max-width: 1024px) {
+    .doc-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  @media (max-width: 860px) {
+    .traj-grid,
+    .form-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

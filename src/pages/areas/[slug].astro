@@ -1,0 +1,238 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+import PageCta from '../../components/PageCta.astro';
+import { areas, type Area } from '../../data/areas';
+import { SITE_NAME } from '../../data/site';
+
+export function getStaticPaths() {
+  return areas.map((area) => ({
+    params: { slug: area.slug },
+    props: { area },
+  }));
+}
+
+interface Props {
+  area: Area;
+}
+
+const { area } = Astro.props;
+const title = `${area.titulo} — ${SITE_NAME}`;
+---
+
+<BaseLayout title={title} description={area.descricao}>
+  <main>
+    <PageHero
+      tag="Área de Atuação"
+      title={area.titulo}
+      lead={area.descricao}
+      crumbs={[
+        { label: 'Início', href: '/' },
+        { label: 'Áreas de Atuação', href: '/#areas' },
+        { label: area.titulo },
+      ]}
+    />
+
+    <!-- 01 / Visão geral -->
+    <section class="section area-intro grid-ivory">
+      <div class="container">
+        <div class="sec-head">
+          <span class="sec-tag"><span class="num">01</span><span class="bar">/</span>Visão Geral</span>
+          <h2>{area.introTitulo}</h2>
+          <div class="rule-double"></div>
+        </div>
+        <div class="intro-copy">
+          {area.intro.map((paragrafo) => <p>{paragrafo}</p>)}
+          <a class="intro-link" href="/a-advogada">Conheça a trajetória da Dra. Érika</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 02 / Como posso ajudar -->
+    <section class="section area-topics grid-navy">
+      <div class="container">
+        <div class="sec-head on-navy">
+          <span class="sec-tag"><span class="num">02</span><span class="bar">/</span>Atuação</span>
+          <h2>Como posso ajudar</h2>
+          <p class="lead">
+            Frentes concretas de trabalho nesta área — sempre precedidas de um diagnóstico do seu
+            caso.
+          </p>
+          <div class="rule-double"></div>
+        </div>
+
+        <div class="topics-grid">
+          {
+            area.topicos.map((topico, i) => (
+              <article class="topic">
+                <div class="topic-in">
+                  <span class="topic-idx">T · {String(i + 1).padStart(2, '0')}</span>
+                  <h3>{topico.titulo}</h3>
+                  <p>{topico.texto}</p>
+                </div>
+              </article>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    <!-- 03 / Para quem é -->
+    <section class="section area-quem grid-ivory">
+      <div class="container">
+        <div class="sec-head">
+          <span class="sec-tag"><span class="num">03</span><span class="bar">/</span>Para Quem É</span>
+          <h2>Esta atuação é para você?</h2>
+          <p class="lead">{area.paraQuem.texto}</p>
+          <div class="rule-double"></div>
+        </div>
+
+        <ul class="perfis">
+          {area.paraQuem.perfis.map((perfil) => <li>{perfil}</li>)}
+        </ul>
+      </div>
+    </section>
+
+    <PageCta
+      num="04"
+      title="Vamos conversar sobre o seu caso?"
+      text="Envie uma mensagem descrevendo a sua situação e receba uma leitura técnica e humana — o primeiro passo de qualquer estrutura bem construída."
+      label="Falar no WhatsApp"
+    />
+  </main>
+</BaseLayout>
+
+<style>
+  /* ---------- 01 / visão geral ---------- */
+  .area-intro {
+    padding: var(--pad-sec) 0;
+    background: var(--color-ivory);
+  }
+  .intro-copy {
+    max-width: 46rem;
+  }
+  .intro-copy p {
+    font-size: 1.02rem;
+    font-weight: 300;
+    color: var(--ink-soft);
+  }
+  .intro-copy p + p {
+    margin-top: 1.3rem;
+  }
+  .intro-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1.8rem;
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    transition:
+      color 0.3s ease,
+      gap 0.3s ease;
+  }
+  .intro-link::after {
+    content: "→";
+    color: var(--color-gold);
+  }
+  .intro-link:hover {
+    color: var(--color-navy);
+    gap: 0.8rem;
+  }
+
+  /* ---------- 02 / tópicos ---------- */
+  .area-topics {
+    padding: var(--pad-sec) 0;
+    background: var(--color-navy);
+    color: var(--color-ivory);
+  }
+  .topics-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.4rem;
+  }
+  .topic {
+    display: flex;
+    clip-path: var(--ch);
+    padding: 1px;
+    background: var(--ivory-faint);
+    transition:
+      transform 0.4s cubic-bezier(0.22, 0.68, 0.35, 1),
+      background 0.4s ease;
+  }
+  .topic:hover {
+    transform: translateY(-6px);
+    background: var(--color-gold);
+  }
+  .topic-in {
+    flex: 1;
+    clip-path: var(--ch);
+    background: var(--color-navy-soft);
+    padding: 1.9rem 1.8rem 1.7rem;
+    display: flex;
+    flex-direction: column;
+  }
+  .topic-idx {
+    font-size: 0.66rem;
+    font-weight: 600;
+    letter-spacing: 0.3em;
+    color: var(--color-gold);
+    margin-bottom: 1.3rem;
+  }
+  .topic-in h3 {
+    font-size: 1.35rem;
+    color: var(--color-ivory);
+    margin-bottom: 0.7rem;
+  }
+  .topic-in p {
+    font-size: 0.88rem;
+    font-weight: 300;
+    color: var(--ivory-soft);
+  }
+
+  /* ---------- 03 / para quem é ---------- */
+  .area-quem {
+    padding: var(--pad-sec) 0;
+    background: var(--color-ivory);
+  }
+  .perfis {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.95rem 2.5rem;
+    max-width: 52rem;
+  }
+  .perfis li {
+    position: relative;
+    padding-left: 1.4rem;
+    font-size: 0.94rem;
+    font-weight: 300;
+    color: var(--ink-soft);
+    line-height: 1.55;
+  }
+  .perfis li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.52em;
+    width: 9px;
+    height: 9px;
+    border: 1px solid var(--color-gold);
+    transform: rotate(45deg);
+  }
+
+  @media (max-width: 1024px) {
+    .topics-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (max-width: 600px) {
+    .topics-grid {
+      grid-template-columns: 1fr;
+    }
+    .perfis {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

@@ -1,0 +1,75 @@
+---
+/**
+ * CTA de encerramento das páginas internas — mesmo desenho do CtaFinal
+ * da homepage, com numeração e textos parametrizáveis por página.
+ */
+import IconWhatsApp from './IconWhatsApp.astro';
+import { WHATSAPP_URL } from '../data/site';
+
+interface Props {
+  num?: string;
+  title: string;
+  text: string;
+  label?: string;
+}
+
+const { num, title, text, label = 'Falar no WhatsApp' } = Astro.props;
+---
+
+<section class="section page-cta grid-navy">
+  <div class="container">
+    <span class="sec-tag">
+      {num && <span class="num">{num}</span>}
+      {num && <span class="bar">/</span>}
+      Contato
+    </span>
+    <h2>{title}</h2>
+    <div class="rule-double"></div>
+    <p>{text}</p>
+    <a class="btn btn-gold" href={WHATSAPP_URL} target="_blank" rel="noopener">
+      <IconWhatsApp />
+      {label}
+    </a>
+    <p class="after">Atendimento · Brasil — EUA — Canadá — Portugal</p>
+  </div>
+</section>
+
+<style>
+  .page-cta {
+    padding: var(--pad-sec) 0;
+    background: linear-gradient(170deg, var(--color-navy) 0%, var(--color-navy-deep) 90%);
+    border-top: 1px solid var(--gold-faint);
+    color: var(--color-ivory);
+    text-align: center;
+  }
+  .page-cta :global(.sec-tag) {
+    justify-content: center;
+  }
+  .page-cta :global(.sec-tag)::before {
+    display: none;
+  }
+  .page-cta h2 {
+    font-size: clamp(2.2rem, 5vw, 3.6rem);
+    color: var(--color-ivory);
+    max-width: 22ch;
+    margin: 0 auto 1.4rem;
+  }
+  .page-cta p {
+    font-weight: 300;
+    color: var(--ivory-soft);
+    max-width: 36rem;
+    margin: 0 auto 2.6rem;
+  }
+  .page-cta :global(.rule-double) {
+    margin: 0 auto 2.6rem;
+  }
+  .page-cta .after {
+    margin-top: 1.8rem;
+    margin-bottom: 0;
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--color-gold);
+  }
+</style>

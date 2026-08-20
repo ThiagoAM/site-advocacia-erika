@@ -1,0 +1,102 @@
+---
+/**
+ * Hero compacto (navy) das páginas internas — breadcrumb, overline,
+ * h1 único da página e lead opcional. Ecoa o tema "Estrutura Arquitetônica".
+ */
+export interface Crumb {
+  label: string;
+  href?: string;
+}
+
+interface Props {
+  tag: string;
+  title: string;
+  lead?: string;
+  crumbs?: Crumb[];
+}
+
+const { tag, title, lead, crumbs = [] } = Astro.props;
+---
+
+<section class="section page-hero grid-navy">
+  <div class="container">
+    {
+      crumbs.length > 0 && (
+        <nav class="crumbs" aria-label="Trilha de navegação">
+          <ol>
+            {crumbs.map((crumb) => (
+              <li>
+                {crumb.href ? (
+                  <a href={crumb.href}>{crumb.label}</a>
+                ) : (
+                  <span aria-current="page">{crumb.label}</span>
+                )}
+              </li>
+            ))}
+          </ol>
+        </nav>
+      )
+    }
+
+    <span class="sec-tag">{tag}</span>
+    <h1>{title}</h1>
+    {lead && <p class="lead">{lead}</p>}
+    <div class="rule-double"></div>
+  </div>
+</section>
+
+<style>
+  .page-hero {
+    padding: calc(var(--header-h) + clamp(3rem, 6.5vw, 5rem)) 0 clamp(3rem, 6vw, 4.5rem);
+    background: linear-gradient(165deg, var(--color-navy) 0%, var(--color-navy-deep) 92%);
+    color: var(--color-ivory);
+  }
+
+  .crumbs {
+    margin-bottom: clamp(1.8rem, 3.5vw, 2.6rem);
+  }
+  .crumbs ol {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.4rem 0.75rem;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .crumbs li {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+  .crumbs li + li::before {
+    content: "/";
+    color: var(--gold-soft);
+  }
+  .crumbs a {
+    color: var(--ivory-soft);
+    transition: color 0.3s ease;
+  }
+  .crumbs a:hover {
+    color: var(--color-gold);
+  }
+  .crumbs span[aria-current] {
+    color: var(--color-gold);
+  }
+
+  .page-hero h1 {
+    font-size: clamp(2.3rem, 5.4vw, 3.9rem);
+    color: var(--color-ivory);
+    max-width: 24ch;
+  }
+  .page-hero .lead {
+    margin-top: 1.3rem;
+    font-weight: 300;
+    color: var(--ivory-soft);
+    max-width: 40rem;
+  }
+</style>

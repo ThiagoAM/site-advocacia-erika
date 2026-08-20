@@ -1,0 +1,184 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import { EMAIL, SITE_NAME } from '../data/site';
+
+const title = `Política de Privacidade — ${SITE_NAME}`;
+const description =
+  'Como este site trata os seus dados pessoais, em conformidade com a LGPD (Lei nº 13.709/2018): coleta mínima, sem cookies próprios de rastreamento, e os seus direitos como titular.';
+---
+
+<BaseLayout title={title} description={description}>
+  <main>
+    <PageHero
+      tag="Transparência"
+      title="Política de Privacidade"
+      lead="Como este site trata — e, sobretudo, como não trata — os seus dados pessoais, em conformidade com a Lei Geral de Proteção de Dados (Lei nº 13.709/2018 — LGPD)."
+      crumbs={[{ label: 'Início', href: '/' }, { label: 'Política de Privacidade' }]}
+    />
+
+    <section class="section policy grid-ivory">
+      <div class="container">
+        <article class="policy-body">
+          <h2>1. Quem é a controladora dos dados</h2>
+          <p>
+            A controladora dos dados pessoais tratados a partir deste site é a Dra. Érika Silvana
+            Saquetti Martins (Saquetti Martins Advocacia), advogada inscrita na OAB/PR. Para
+            qualquer assunto relacionado a dados pessoais, o canal de contato é o e-mail
+            <a href={`mailto:${EMAIL}`}>{EMAIL}</a>.
+          </p>
+
+          <h2>2. Quais dados coletamos</h2>
+          <p>
+            Este é um site estático e informativo, sem formulários, cadastros ou área de login. Ele
+            não coleta dados pessoais de forma ativa durante a navegação.
+          </p>
+          <p>
+            Dados pessoais só chegam até nós quando você decide iniciar um contato pelos
+            <a href="/contato">canais indicados no site</a> — WhatsApp, e-mail ou Instagram. Nesse caso, tratamos apenas o que
+            você mesmo fornece: nome, dado de contato e o conteúdo da sua mensagem, com a
+            finalidade exclusiva de responder e prestar o atendimento solicitado.
+          </p>
+
+          <h2>3. Cookies e rastreamento</h2>
+          <p>
+            Este site não utiliza cookies próprios de rastreamento nem ferramentas próprias de
+            monitoramento de comportamento.
+          </p>
+          <p>
+            Por transparência: como qualquer site, a infraestrutura de hospedagem e o serviço de
+            fontes tipográficas (Google Fonts) podem registrar dados técnicos da requisição — como
+            endereço IP e tipo de navegador — para fins de funcionamento e segurança. Além disso,
+            ao iniciar contato por WhatsApp, e-mail ou Instagram, os seus dados passam a ser
+            tratados também por essas plataformas, conforme as políticas de privacidade de cada
+            uma.
+          </p>
+
+          <h2>4. Finalidade e base legal</h2>
+          <p>
+            O tratamento das mensagens recebidas tem como bases legais o consentimento manifestado
+            pelo próprio contato e a execução de procedimentos preliminares de contrato, nos termos
+            do art. 7º da LGPD. As comunicações limitam-se ao atendimento solicitado — não
+            enviamos marketing não solicitado.
+          </p>
+
+          <h2>5. Compartilhamento</h2>
+          <p>
+            Não vendemos nem compartilhamos os seus dados com terceiros para fins comerciais. O
+            compartilhamento ocorre apenas quando necessário à prestação do serviço solicitado ou
+            em cumprimento de obrigação legal ou regulatória.
+          </p>
+
+          <h2>6. Retenção e sigilo</h2>
+          <p>
+            As mensagens são mantidas pelo tempo necessário ao atendimento e ao cumprimento de
+            obrigações legais e deontológicas da advocacia — que incluem o sigilo profissional
+            sobre tudo o que for confiado à advogada.
+          </p>
+
+          <h2>7. Seus direitos como titular</h2>
+          <p>Nos termos do art. 18 da LGPD, você pode solicitar, a qualquer momento:</p>
+          <ul>
+            <li>confirmação da existência de tratamento dos seus dados;</li>
+            <li>acesso aos dados que mantemos sobre você;</li>
+            <li>correção de dados incompletos, inexatos ou desatualizados;</li>
+            <li>
+              anonimização, bloqueio ou eliminação de dados desnecessários, excessivos ou tratados
+              em desconformidade com a lei;
+            </li>
+            <li>portabilidade dos dados, observadas as normas aplicáveis;</li>
+            <li>informação sobre eventuais compartilhamentos realizados;</li>
+            <li>revogação do consentimento e eliminação dos dados tratados com base nele.</li>
+          </ul>
+          <p>
+            Para exercer qualquer desses direitos, basta escrever para
+            <a href={`mailto:${EMAIL}`}>{EMAIL}</a>. Você também pode apresentar reclamação à
+            Autoridade Nacional de Proteção de Dados (ANPD).
+          </p>
+
+          <h2>8. Atualizações e vigência</h2>
+          <p>
+            Esta política pode ser atualizada para refletir mudanças no site — por exemplo, a
+            futura inclusão de um formulário de contato, que será acompanhada da revisão deste
+            documento.
+          </p>
+          <p class="vigencia">Vigente a partir de 19 de agosto de 2026.</p>
+        </article>
+      </div>
+    </section>
+  </main>
+</BaseLayout>
+
+<style>
+  .policy {
+    padding: var(--pad-sec) 0;
+    background: var(--color-ivory);
+  }
+  .policy-body {
+    max-width: 46rem;
+  }
+  .policy-body h2 {
+    font-size: clamp(1.5rem, 2.6vw, 1.9rem);
+    color: var(--color-navy);
+    margin-top: 2.6rem;
+    margin-bottom: 0.9rem;
+    padding-top: 1.2rem;
+    border-top: 1px solid var(--gold-faint);
+  }
+  .policy-body h2:first-child {
+    margin-top: 0;
+    padding-top: 0;
+    border-top: none;
+  }
+  .policy-body p {
+    font-size: 0.98rem;
+    font-weight: 300;
+    color: var(--ink-soft);
+  }
+  .policy-body p + p {
+    margin-top: 0.9rem;
+  }
+  .policy-body ul {
+    list-style: none;
+    padding: 0;
+    margin: 0.9rem 0;
+    display: grid;
+    gap: 0.55rem;
+  }
+  .policy-body li {
+    position: relative;
+    padding-left: 1.4rem;
+    font-size: 0.94rem;
+    font-weight: 300;
+    color: var(--ink-soft);
+    line-height: 1.55;
+  }
+  .policy-body li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.52em;
+    width: 8px;
+    height: 8px;
+    border: 1px solid var(--color-gold);
+    transform: rotate(45deg);
+  }
+  .policy-body a {
+    color: var(--color-gold);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    transition: color 0.3s ease;
+    overflow-wrap: anywhere;
+  }
+  .policy-body a:hover {
+    color: var(--color-navy);
+  }
+  .vigencia {
+    margin-top: 1.4rem;
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--color-gold);
+  }
+</style>

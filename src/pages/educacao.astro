@@ -1,0 +1,282 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import PageCta from '../components/PageCta.astro';
+import { SITE_NAME } from '../data/site';
+
+const title = `Educação & Treinamentos — ${SITE_NAME}`;
+const description =
+  'Cursos, palestras, mentorias e treinamentos in-company com a Dra. Érika Saquetti Martins: regularização de imóveis e REURB, negócios imobiliários, responsabilidade profissional e holding familiar.';
+
+const publicos = [
+  {
+    titulo: 'Advogados',
+    texto:
+      'Aprofundamento técnico em regularização de imóveis, REURB, atuação extrajudicial e planejamento patrimonial — com ênfase na prática e nos procedimentos.',
+  },
+  {
+    titulo: 'Corretores, arquitetos e engenheiros',
+    texto:
+      'Formação jurídica aplicada para quem atua na ponta do negócio imobiliário: responsabilidade profissional, documentação e segurança nas transações.',
+  },
+  {
+    titulo: 'Investidores e famílias',
+    texto:
+      'Conteúdo claro, sem juridiquês, para decidir melhor: aquisição segura de imóveis, estruturas patrimoniais e sucessão planejada.',
+  },
+];
+
+const temas = [
+  {
+    titulo: 'Regularização de imóveis e REURB',
+    texto: 'Usucapião, REURB-S e REURB-E, retificações e destravamento de matrículas.',
+  },
+  {
+    titulo: 'Responsabilidade dos profissionais do mercado imobiliário',
+    texto: 'Deveres, limites e riscos na intermediação e na assessoria de negócios.',
+  },
+  {
+    titulo: 'Negócios imobiliários',
+    texto: 'Contratos, documentação, due diligence e estruturação de operações.',
+  },
+  {
+    titulo: 'Holding familiar e planejamento sucessório',
+    texto: 'Quando faz sentido, como se estrutura e quais os limites do instrumento.',
+  },
+  {
+    titulo: 'Direito notarial e registral e gestão de cartórios',
+    texto: 'A via extrajudicial como caminho de eficiência e desjudicialização.',
+  },
+];
+
+const formatos = [
+  {
+    titulo: 'Cursos e workshops',
+    texto: 'Programas estruturados, presenciais ou online, com foco na aplicação prática.',
+  },
+  {
+    titulo: 'Palestras e eventos',
+    texto: 'Temas jurídicos traduzidos para plateias técnicas ou leigas, em eventos e convenções.',
+  },
+  {
+    titulo: 'Mentorias',
+    texto: 'Acompanhamento individual ou em pequenos grupos para profissionais da área.',
+  },
+  {
+    titulo: 'Treinamentos in-company',
+    texto: 'Conteúdo sob medida para imobiliárias, incorporadoras, escritórios e equipes.',
+  },
+];
+---
+
+<BaseLayout title={title} description={description}>
+  <main>
+    <PageHero
+      tag="Educação & Treinamentos"
+      title="Educação & Treinamentos"
+      lead="Cursos, palestras e mentorias que traduzem o direito imobiliário, registral e patrimonial para a prática de quem negocia, constrói e investe — com a experiência docente da pós-graduação (UNINTER e PUC) e da formação de corretores."
+      crumbs={[{ label: 'Início', href: '/' }, { label: 'Educação & Treinamentos' }]}
+    />
+
+    <!-- 01 / Para quem -->
+    <section class="section publicos grid-ivory">
+      <div class="container">
+        <div class="sec-head">
+          <span class="sec-tag"><span class="num">01</span><span class="bar">/</span>Para Quem</span>
+          <h2>Conhecimento aplicado, para cada público.</h2>
+          <div class="rule-double"></div>
+        </div>
+
+        <div class="pub-grid">
+          {
+            publicos.map((publico, i) => (
+              <article class="pub-card">
+                <div class="pub-card-in">
+                  <span class="pub-idx">P · {String(i + 1).padStart(2, '0')}</span>
+                  <h3>{publico.titulo}</h3>
+                  <p>{publico.texto}</p>
+                </div>
+              </article>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    <!-- 02 / Temas -->
+    <section class="section temas grid-navy">
+      <div class="container">
+        <div class="sec-head on-navy">
+          <span class="sec-tag"><span class="num">02</span><span class="bar">/</span>Temas</span>
+          <h2>Do registro do imóvel à sucessão da família.</h2>
+          <p class="lead">
+            Os conteúdos partem da pesquisa acadêmica e da prática consultiva — e são adaptados ao
+            repertório de cada turma.
+          </p>
+          <div class="rule-double"></div>
+        </div>
+
+        <ul class="temas-list">
+          {
+            temas.map((tema) => (
+              <li>
+                <h3>{tema.titulo}</h3>
+                <p>{tema.texto}</p>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+    </section>
+
+    <!-- 03 / Formatos -->
+    <section class="section formatos grid-ivory">
+      <div class="container">
+        <div class="sec-head">
+          <span class="sec-tag"><span class="num">03</span><span class="bar">/</span>Formatos</span>
+          <h2>No formato que a sua agenda pede.</h2>
+          <div class="rule-double"></div>
+        </div>
+
+        <div class="fmt-grid">
+          {
+            formatos.map((formato) => (
+              <article class="fmt-item">
+                <h3>{formato.titulo}</h3>
+                <p>{formato.texto}</p>
+              </article>
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    <PageCta
+      num="04"
+      title="Vamos montar uma agenda?"
+      text="Entre em contato para conversar sobre datas, formatos e conteúdos — presenciais ou online, no Brasil e no exterior."
+      label="Consultar agenda no WhatsApp"
+    />
+  </main>
+</BaseLayout>
+
+<style>
+  /* ---------- 01 / públicos ---------- */
+  .publicos {
+    padding: var(--pad-sec) 0;
+    background: var(--color-ivory);
+  }
+  .pub-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.4rem;
+  }
+  .pub-card {
+    display: flex;
+    clip-path: var(--ch);
+    padding: 1px;
+    background: rgba(4, 30, 66, 0.13);
+    transition:
+      transform 0.4s cubic-bezier(0.22, 0.68, 0.35, 1),
+      background 0.4s ease;
+  }
+  .pub-card:hover {
+    transform: translateY(-6px);
+    background: var(--color-gold);
+  }
+  .pub-card-in {
+    flex: 1;
+    clip-path: var(--ch);
+    background: var(--color-paper);
+    padding: 2.1rem 1.9rem 1.9rem;
+    display: flex;
+    flex-direction: column;
+  }
+  .pub-idx {
+    font-size: 0.66rem;
+    font-weight: 600;
+    letter-spacing: 0.3em;
+    color: var(--color-gold);
+    margin-bottom: 1.5rem;
+  }
+  .pub-card-in h3 {
+    font-size: 1.45rem;
+    color: var(--color-navy);
+    margin-bottom: 0.75rem;
+  }
+  .pub-card-in p {
+    font-size: 0.9rem;
+    font-weight: 300;
+    color: var(--ink-soft);
+  }
+
+  /* ---------- 02 / temas ---------- */
+  .temas {
+    padding: var(--pad-sec) 0;
+    background: var(--color-navy);
+    color: var(--color-ivory);
+  }
+  .temas-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.8rem 3rem;
+    max-width: 62rem;
+  }
+  .temas-list li {
+    padding-top: 1.1rem;
+    border-top: 1px solid var(--gold-faint);
+  }
+  .temas-list h3 {
+    font-size: 1.3rem;
+    color: var(--color-ivory);
+    margin-bottom: 0.4rem;
+  }
+  .temas-list p {
+    font-size: 0.88rem;
+    font-weight: 300;
+    color: var(--ivory-soft);
+  }
+
+  /* ---------- 03 / formatos ---------- */
+  .formatos {
+    padding: var(--pad-sec) 0;
+    background: var(--color-ivory);
+  }
+  .fmt-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: clamp(1.6rem, 3.5vw, 2.5rem);
+  }
+  .fmt-item h3 {
+    font-size: 1.35rem;
+    color: var(--color-navy);
+    margin-bottom: 0.6rem;
+    padding-top: 1.1rem;
+    border-top: 1px solid var(--gold-soft);
+  }
+  .fmt-item p {
+    font-size: 0.88rem;
+    font-weight: 300;
+    color: var(--ink-soft);
+  }
+
+  @media (max-width: 1024px) {
+    .pub-grid {
+      grid-template-columns: 1fr;
+    }
+    .fmt-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  @media (max-width: 600px) {
+    .temas-list {
+      grid-template-columns: 1fr;
+    }
+    .fmt-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

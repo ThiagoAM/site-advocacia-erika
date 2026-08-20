@@ -1,0 +1,118 @@
+---
+import type { Area } from '../data/areas';
+
+interface Props {
+  areas: Area[];
+}
+const { areas } = Astro.props;
+---
+
+<section class="section areas grid-ivory" id="areas">
+  <div class="container">
+    <div class="sec-head">
+      <span class="sec-tag"><span class="num">01</span><span class="bar">/</span>Áreas de Atuação</span>
+      <h2>Cada patrimônio exige uma estrutura própria.</h2>
+      <p class="lead">
+        Atuação técnica e consultiva, do diagnóstico ao registro — para que cada decisão jurídica
+        sustente o que você construiu.
+      </p>
+      <div class="rule-double"></div>
+    </div>
+
+    <div class="cards-grid">
+      {
+        areas.map((area, i) => (
+          <a class="card" href={`/areas/${area.slug}`}>
+            <article class="card-in">
+              <span class="card-idx">A · {String(i + 1).padStart(2, '0')}</span>
+              <h3>{area.titulo}</h3>
+              <p>{area.descricao}</p>
+              <span class="card-line" />
+            </article>
+          </a>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .areas {
+    padding: var(--pad-sec) 0;
+    background: var(--color-ivory);
+  }
+
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.4rem;
+  }
+  .card {
+    display: flex;
+    clip-path: var(--ch);
+    padding: 1px;
+    background: rgba(4, 30, 66, 0.13);
+    transition:
+      transform 0.4s cubic-bezier(0.22, 0.68, 0.35, 1),
+      background 0.4s ease;
+  }
+  .card:hover {
+    transform: translateY(-7px);
+    background: var(--color-gold);
+  }
+  /* o clip-path cortaria o outline — o foco acende a moldura chanfrada */
+  .card:focus-visible {
+    outline: none;
+    background: var(--color-gold);
+    transform: translateY(-7px);
+  }
+  .card-in {
+    flex: 1;
+    clip-path: var(--ch);
+    background: var(--color-paper);
+    padding: 2.1rem 1.9rem 1.9rem;
+    display: flex;
+    flex-direction: column;
+  }
+  .card-idx {
+    font-size: 0.66rem;
+    font-weight: 600;
+    letter-spacing: 0.3em;
+    color: var(--color-gold);
+    margin-bottom: 1.5rem;
+  }
+  .card-in h3 {
+    font-size: 1.5rem;
+    color: var(--color-navy);
+    margin-bottom: 0.75rem;
+  }
+  .card-in p {
+    font-size: 0.9rem;
+    font-weight: 300;
+    color: var(--ink-soft);
+    flex: 1;
+  }
+  .card-line {
+    margin-top: 1.7rem;
+    width: 34px;
+    height: 5px;
+    border-top: 1px solid var(--color-gold);
+    border-bottom: 1px solid var(--color-gold);
+    transition: width 0.4s ease;
+  }
+  .card:hover .card-line,
+  .card:focus-visible .card-line {
+    width: 64px;
+  }
+
+  @media (max-width: 1024px) {
+    .cards-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (max-width: 600px) {
+    .cards-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

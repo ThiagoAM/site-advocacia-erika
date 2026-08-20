@@ -1,0 +1,205 @@
+---
+import Brand from './Brand.astro';
+import IconWhatsApp from './IconWhatsApp.astro';
+import { WHATSAPP_URL } from '../data/site';
+
+const navLinks = [
+  { href: '/#inicio', label: 'Início' },
+  { href: '/a-advogada', label: 'A Advogada' },
+  { href: '/#areas', label: 'Áreas de Atuação' },
+  { href: '/noticias', label: 'Conteúdo' },
+  { href: '/contato', label: 'Contato' },
+];
+---
+
+<header class="site-header">
+  <div class="container header-in">
+    <Brand />
+
+    <nav class="main-nav" aria-label="Navegação principal">
+      {navLinks.map((link) => <a href={link.href}>{link.label}</a>)}
+    </nav>
+
+    <span class="btn-o header-cta">
+      <a class="btn" href={WHATSAPP_URL} target="_blank" rel="noopener">
+        <IconWhatsApp />
+        Falar no WhatsApp
+      </a>
+    </span>
+
+    <button
+      type="button"
+      class="menu-btn"
+      aria-expanded="false"
+      aria-controls="mobile-nav"
+      aria-label="Abrir menu"
+    >
+      <span></span><span></span>
+    </button>
+  </div>
+
+  <nav id="mobile-nav" class="mobile-nav" aria-label="Navegação móvel" hidden>
+    {navLinks.map((link) => <a href={link.href}>{link.label}</a>)}
+    <a class="btn btn-gold" href={WHATSAPP_URL} target="_blank" rel="noopener">Falar no WhatsApp</a>
+  </nav>
+</header>
+
+<script>
+  const btn = document.querySelector<HTMLButtonElement>('.menu-btn');
+  const nav = document.getElementById('mobile-nav');
+
+  if (btn && nav) {
+    const setOpen = (open: boolean) => {
+      btn.setAttribute('aria-expanded', String(open));
+      btn.setAttribute('aria-label', open ? 'Fechar menu' : 'Abrir menu');
+      nav.hidden = !open;
+    };
+
+    btn.addEventListener('click', () => {
+      setOpen(btn.getAttribute('aria-expanded') !== 'true');
+    });
+
+    // fecha o menu ao navegar para uma âncora
+    nav.querySelectorAll('a').forEach((link) => {
+      link.addEventListener('click', () => setOpen(false));
+    });
+  }
+</script>
+
+<style>
+  .site-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    background: rgba(251, 251, 248, 0.94);
+    -webkit-backdrop-filter: blur(14px);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--ink-faint);
+  }
+  .header-in {
+    height: var(--header-h);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 2rem;
+  }
+
+  .main-nav {
+    display: flex;
+    align-items: center;
+    gap: 2.1rem;
+  }
+  .main-nav a {
+    position: relative;
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    padding: 0.35rem 0;
+    transition: color 0.3s ease;
+  }
+  .main-nav a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 0;
+    height: 1px;
+    background: var(--color-gold);
+    transition: width 0.35s ease;
+  }
+  .main-nav a:hover {
+    color: var(--color-navy);
+  }
+  .main-nav a:hover::after {
+    width: 100%;
+  }
+
+  .header-cta {
+    flex: none;
+  }
+  .header-cta .btn {
+    padding: 0.85rem 1.4rem;
+    font-size: 0.72rem;
+  }
+
+  /* ---------- menu mobile ---------- */
+  .menu-btn {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 6px;
+    width: 44px;
+    height: 44px;
+    padding: 10px;
+    cursor: pointer;
+    flex: none;
+    background: none;
+    border: none;
+  }
+  .menu-btn span {
+    display: block;
+    height: 1.5px;
+    background: var(--color-navy);
+    transition:
+      transform 0.35s ease,
+      opacity 0.3s ease;
+  }
+  .menu-btn[aria-expanded="true"] span:nth-child(1) {
+    transform: translateY(3.75px) rotate(45deg);
+  }
+  .menu-btn[aria-expanded="true"] span:nth-child(2) {
+    transform: translateY(-3.75px) rotate(-45deg);
+  }
+
+  .mobile-nav {
+    display: none;
+  }
+  .mobile-nav a {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    color: var(--color-ivory);
+    padding: 1rem 0;
+    border-bottom: 1px solid rgba(251, 251, 248, 0.09);
+    transition:
+      color 0.3s ease,
+      padding-left 0.3s ease;
+  }
+  .mobile-nav a:hover {
+    color: var(--color-gold);
+    padding-left: 0.5rem;
+  }
+  .mobile-nav a.btn-gold {
+    font-family: var(--font-sans);
+    font-size: 0.78rem;
+    color: #fffdf8;
+    margin-top: 1.6rem;
+    align-self: flex-start;
+    border-bottom: none;
+    padding: 1.05rem 1.8rem;
+  }
+  .mobile-nav a.btn-gold:hover {
+    color: var(--color-navy);
+    padding-left: 1.8rem;
+  }
+
+  @media (max-width: 860px) {
+    .main-nav,
+    .header-cta {
+      display: none;
+    }
+    .menu-btn {
+      display: flex;
+    }
+    .mobile-nav:not([hidden]) {
+      display: flex;
+      flex-direction: column;
+      background: var(--color-navy);
+      border-top: 1px solid var(--gold-faint);
+      padding: 1rem 4% 2rem;
+    }
+  }
+</style>

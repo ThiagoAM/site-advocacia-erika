@@ -1,0 +1,191 @@
+---
+/**
+ * Cards de exemplo — serão substituídos pelo pipeline de notícias
+ * (ver docs/noticias-pipeline.md) em etapa posterior.
+ */
+const noticias = [
+  {
+    fonte: 'Migalhas',
+    data: '18 ago 2026',
+    titulo: 'STJ consolida tese sobre usucapião extrajudicial e amplia a segurança dos registros',
+    href: '#conteudo',
+  },
+  {
+    fonte: 'Agência Brasil',
+    data: '17 ago 2026',
+    titulo: 'REURB-S: novo decreto simplifica a regularização fundiária em núcleos urbanos consolidados',
+    href: '#conteudo',
+  },
+  {
+    fonte: 'Valor Econômico',
+    data: '16 ago 2026',
+    titulo: 'Holdings familiares avançam como estratégia de sucessão patrimonial no Brasil',
+    href: '#conteudo',
+  },
+];
+---
+
+<section class="section news grid-ivory" id="conteudo">
+  <div class="container">
+    <div class="news-head-row">
+      <div class="sec-head">
+        <span class="sec-tag"
+          ><span class="num">04</span><span class="bar">/</span>Notícias &amp; Conteúdo</span
+        >
+        <h2>O direito em movimento, lido com precisão.</h2>
+      </div>
+      <span class="live-note"><span class="live-dot"></span>Atualizado diariamente</span>
+    </div>
+
+    <div class="news-grid">
+      {
+        noticias.map((noticia) => (
+          <article class="news-card">
+            <div class="news-card-in">
+              <div class="news-meta">
+                <span>{noticia.fonte}</span>
+                <span class="sep" />
+                <span>{noticia.data}</span>
+              </div>
+              <h3>{noticia.titulo}</h3>
+              <a class="news-link" href={noticia.href} aria-label={`Ler análise: ${noticia.titulo}`}>
+                Ler análise
+              </a>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .news {
+    padding: var(--pad-sec) 0;
+    background: var(--color-ivory);
+    padding-top: 0;
+  }
+  .news-head-row {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 2rem;
+    flex-wrap: wrap;
+    margin-bottom: clamp(2.4rem, 4vw, 3.4rem);
+  }
+  .news-head-row .sec-head {
+    margin-bottom: 0;
+  }
+  .live-note {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--color-gold);
+    padding-bottom: 0.6rem;
+  }
+  .live-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--color-gold);
+    animation: pulse 2.4s ease-out infinite;
+  }
+  @keyframes pulse {
+    0% {
+      box-shadow: 0 0 0 0 rgba(134, 109, 75, 0.45);
+    }
+    70% {
+      box-shadow: 0 0 0 9px rgba(134, 109, 75, 0);
+    }
+    100% {
+      box-shadow: 0 0 0 0 rgba(134, 109, 75, 0);
+    }
+  }
+
+  .news-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.4rem;
+  }
+  .news-card {
+    display: flex;
+    clip-path: var(--ch);
+    padding: 1px;
+    background: rgba(4, 30, 66, 0.13);
+    transition:
+      transform 0.4s cubic-bezier(0.22, 0.68, 0.35, 1),
+      background 0.4s ease;
+  }
+  .news-card:hover,
+  .news-card:focus-within {
+    transform: translateY(-6px);
+    background: var(--color-gold);
+  }
+  .news-card-in {
+    flex: 1;
+    clip-path: var(--ch);
+    background: var(--color-paper);
+    padding: 1.9rem 1.8rem 1.7rem;
+    display: flex;
+    flex-direction: column;
+  }
+  .news-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    font-size: 0.64rem;
+    font-weight: 500;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--color-gold);
+    margin-bottom: 1.2rem;
+  }
+  .news-meta .sep {
+    width: 16px;
+    height: 1px;
+    background: var(--gold-soft);
+  }
+  .news-card-in h3 {
+    font-size: 1.32rem;
+    color: var(--color-navy);
+    margin-bottom: 1rem;
+    flex: 1;
+  }
+  .news-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    transition:
+      color 0.3s ease,
+      gap 0.3s ease;
+  }
+  .news-link::after {
+    content: "→";
+    color: var(--color-gold);
+    transition: transform 0.3s ease;
+  }
+  .news-card:hover .news-link {
+    color: var(--color-navy);
+    gap: 0.8rem;
+  }
+
+  @media (max-width: 1024px) {
+    .news-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (max-width: 600px) {
+    .news-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

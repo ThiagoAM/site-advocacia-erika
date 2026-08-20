@@ -1,0 +1,251 @@
+@import "tailwindcss";
+
+/* ============================================================
+   Design system — Saquetti Martins Advocacia
+   Tema "Estrutura Arquitetônica"
+   Paleta: Azul Legado #041E42 · Ouro Patrimônio #866D4B · Marfim #FBFBF8
+   ============================================================ */
+
+@theme {
+  --color-navy: #041e42;
+  --color-navy-deep: #031733;
+  --color-navy-soft: #0a2b57;
+  --color-gold: #866d4b;
+  --color-ivory: #fbfbf8;
+  --color-paper: #ffffff;
+
+  --font-display: "Italiana", Georgia, "Times New Roman", serif;
+  --font-sans: "Space Grotesk", "Helvetica Neue", Arial, sans-serif;
+}
+
+/* Tokens derivados e primitivas do tema */
+:root {
+  --gold-soft: rgba(134, 109, 75, 0.55);
+  --gold-faint: rgba(134, 109, 75, 0.22);
+  --ink-soft: rgba(4, 30, 66, 0.72);
+  --ink-faint: rgba(4, 30, 66, 0.1);
+  --ivory-soft: rgba(251, 251, 248, 0.78);
+  --ivory-faint: rgba(251, 251, 248, 0.14);
+
+  /* cantos chanfrados — eco do hexágono da marca */
+  --ch: polygon(0 0, calc(100% - 22px) 0, 100% 22px, 100% 100%, 22px 100%, 0 calc(100% - 22px));
+  --ch-s: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
+
+  --header-h: 78px;
+  --pad-sec: clamp(4.5rem, 9vw, 7.5rem);
+}
+
+@media (max-width: 600px) {
+  :root {
+    --header-h: 68px;
+  }
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: calc(var(--header-h) + 12px);
+  }
+
+  body {
+    font-family: var(--font-sans);
+    font-weight: 400;
+    font-size: 1rem;
+    line-height: 1.7;
+    color: var(--color-navy);
+    background: var(--color-ivory);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    overflow-x: hidden;
+  }
+
+  ::selection {
+    background: var(--color-gold);
+    color: var(--color-ivory);
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    line-height: 1.12;
+    letter-spacing: 0.01em;
+  }
+
+  a:focus-visible,
+  button:focus-visible {
+    outline: 2px solid var(--color-gold);
+    outline-offset: 3px;
+  }
+}
+
+/* Fora de @layer de propósito: o Tailwind 4 emite um utilitário `.container`
+   (camada utilities) que venceria esta regra se ela ficasse em @layer components.
+   CSS sem camada tem precedência sobre qualquer camada. */
+.container {
+  width: min(1180px, 92%);
+  margin-inline: auto;
+  position: relative;
+  z-index: 2;
+}
+
+@layer components {
+  /* ---------- grid arquitetônico de fundo ---------- */
+  .section {
+    position: relative;
+  }
+  .grid-ivory::before,
+  .grid-navy::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background-image: linear-gradient(90deg, var(--gridline) 1px, transparent 1px);
+    background-size: calc(100% / 6) 100%;
+    pointer-events: none;
+    z-index: 1;
+  }
+  .grid-ivory::before {
+    --gridline: rgba(4, 30, 66, 0.05);
+  }
+  .grid-navy::before {
+    --gridline: rgba(251, 251, 248, 0.045);
+  }
+
+  /* ---------- microtipografia recorrente ---------- */
+  .sec-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.9rem;
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.34em;
+    text-transform: uppercase;
+    color: var(--color-gold);
+    margin-bottom: 1.4rem;
+  }
+  .sec-tag::before {
+    content: "";
+    width: 34px;
+    height: 1px;
+    background: var(--color-gold);
+    flex: none;
+  }
+  .sec-tag .num {
+    font-weight: 600;
+  }
+  .sec-tag .bar {
+    color: var(--gold-soft);
+  }
+
+  .rule-double {
+    width: 76px;
+    height: 7px;
+    border-top: 1px solid var(--color-gold);
+    border-bottom: 1px solid var(--color-gold);
+    margin-top: 1.8rem;
+  }
+
+  .sec-head {
+    max-width: 44rem;
+    margin-bottom: clamp(2.8rem, 5vw, 4rem);
+  }
+  .sec-head h2 {
+    font-size: clamp(2rem, 4.2vw, 3.1rem);
+    color: var(--color-navy);
+  }
+  .sec-head.on-navy h2 {
+    color: var(--color-ivory);
+  }
+  .sec-head .lead {
+    margin-top: 1.2rem;
+    font-weight: 300;
+    color: var(--ink-soft);
+    max-width: 36rem;
+  }
+  .sec-head.on-navy .lead {
+    color: var(--ivory-soft);
+  }
+
+  /* ---------- botões ---------- */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.65rem;
+    font-family: var(--font-sans);
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    padding: 1.05rem 1.8rem;
+    clip-path: var(--ch-s);
+    transition:
+      background 0.35s ease,
+      color 0.35s ease,
+      transform 0.35s ease;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .btn svg {
+    width: 15px;
+    height: 15px;
+    flex: none;
+  }
+  .btn:hover {
+    transform: translateY(-2px);
+  }
+  /* o clip-path cortaria um outline externo — desenha o foco por dentro */
+  .btn:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: -5px;
+  }
+
+  .btn-solid {
+    background: var(--color-navy);
+    color: var(--color-ivory);
+  }
+  .btn-solid:hover {
+    background: var(--color-gold);
+    color: #fff;
+  }
+
+  .btn-gold {
+    background: var(--color-gold);
+    color: #fffdf8;
+  }
+  .btn-gold:hover {
+    background: var(--color-ivory);
+    color: var(--color-navy);
+  }
+
+  /* contorno chanfrado: wrapper de 1px */
+  .btn-o {
+    display: inline-flex;
+    clip-path: var(--ch-s);
+    padding: 1px;
+    background: var(--color-gold);
+    transition: transform 0.35s ease;
+  }
+  .btn-o:hover {
+    transform: translateY(-2px);
+  }
+  .btn-o .btn {
+    clip-path: var(--ch-s);
+    background: var(--color-ivory);
+    color: var(--color-navy);
+  }
+  .btn-o .btn:hover {
+    transform: none;
+    background: var(--color-gold);
+    color: #fffdf8;
+  }
+  .btn-o.on-navy .btn {
+    background: var(--color-navy);
+    color: var(--color-ivory);
+  }
+  .btn-o.on-navy .btn:hover {
+    background: var(--color-gold);
+    color: #fffdf8;
+  }
+}

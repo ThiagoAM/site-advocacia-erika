@@ -1,0 +1,117 @@
+---
+import { WHATSAPP_URL } from '../data/site';
+
+const publicos = ['Advogados', 'Corretores', 'Investidores'];
+---
+
+<section class="section edu grid-ivory" id="educacao">
+  <div class="container">
+    <div class="edu-panel">
+      <div class="edu-panel-in">
+        <div class="edu-copy">
+          <span class="sec-tag"
+            ><span class="num">03</span><span class="bar">/</span>Educação &amp; Treinamentos</span
+          >
+          <h2>Conhecimento que estrutura decisões.</h2>
+          <p>
+            Cursos, mentorias e treinamentos práticos para advogados que desejam dominar o Direito
+            Imobiliário e a REURB, corretores que querem negociar com segurança jurídica e
+            investidores que exigem previsibilidade em cada aquisição.
+          </p>
+          <div class="edu-chips" aria-label="Públicos atendidos">
+            {publicos.map((publico) => <span class="chip">{publico}</span>)}
+          </div>
+          <a class="btn btn-solid" href={WHATSAPP_URL} target="_blank" rel="noopener"
+            >Consultar próximas turmas</a
+          >
+        </div>
+        <figure class="edu-fig" aria-hidden="true">
+          <svg viewBox="0 0 220 240" fill="none">
+            <polygon points="110,8 205,63 205,177 110,232 15,177 15,63" stroke="#866D4B" stroke-width="1" opacity=".8"></polygon>
+            <polygon points="110,52 168,85 168,155 110,188 52,155 52,85" stroke="#041E42" stroke-width="1" opacity=".35"></polygon>
+            <line x1="110" y1="120" x2="15" y2="63" stroke="#866D4B" stroke-width="1" opacity=".5"></line>
+            <line x1="110" y1="120" x2="205" y2="63" stroke="#866D4B" stroke-width="1" opacity=".5"></line>
+            <line x1="110" y1="120" x2="110" y2="232" stroke="#866D4B" stroke-width="1" opacity=".5"></line>
+            <circle cx="110" cy="120" r="2.5" fill="#866D4B"></circle>
+          </svg>
+        </figure>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .edu {
+    padding: var(--pad-sec) 0;
+    background: var(--color-ivory);
+  }
+  .edu-panel {
+    clip-path: var(--ch);
+    padding: 1px;
+    background: var(--gold-faint);
+  }
+  .edu-panel-in {
+    clip-path: var(--ch);
+    background: var(--color-paper);
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
+    gap: 2.5rem;
+    padding: clamp(2.2rem, 5vw, 3.8rem);
+    align-items: center;
+  }
+  .edu-copy h2 {
+    font-size: clamp(1.8rem, 3.4vw, 2.6rem);
+    color: var(--color-navy);
+    margin-bottom: 1.1rem;
+  }
+  .edu-copy p {
+    font-weight: 300;
+    color: var(--ink-soft);
+    max-width: 34rem;
+    margin-bottom: 1.8rem;
+  }
+  .edu-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.7rem;
+    margin-bottom: 2.2rem;
+  }
+  .chip {
+    font-size: 0.66rem;
+    font-weight: 500;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    color: var(--color-gold);
+    border: 1px solid var(--gold-soft);
+    padding: 0.55rem 0.95rem;
+    clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
+    transition:
+      background 0.3s ease,
+      color 0.3s ease;
+  }
+  .chip:hover {
+    background: var(--color-gold);
+    color: #fffdf8;
+  }
+
+  .edu-fig {
+    display: flex;
+    justify-content: center;
+  }
+  .edu-fig svg {
+    width: min(100%, 260px);
+    height: auto;
+  }
+
+  @media (max-width: 860px) {
+    .edu-panel-in {
+      grid-template-columns: 1fr;
+    }
+    .edu-fig {
+      order: -1;
+    }
+    .edu-fig svg {
+      width: 180px;
+    }
+  }
+</style>

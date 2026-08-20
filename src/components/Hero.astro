@@ -1,0 +1,145 @@
+---
+import IconWhatsApp from './IconWhatsApp.astro';
+import { WHATSAPP_URL } from '../data/site';
+---
+
+<section class="section hero grid-ivory">
+  <div class="container">
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <span class="hero-overline">Advocacia Consultiva · Imobiliário &amp; Patrimonial</span>
+        <h1>Protegendo patrimônios.<span class="l2">Construindo legados.</span></h1>
+        <p class="hero-sub">
+          Advocacia consultiva premium em Direito Imobiliário, Notarial e Registral e Planejamento
+          Patrimonial e Sucessório — estruturas jurídicas sólidas para famílias e investidores, no
+          Brasil e no exterior.
+        </p>
+        <div class="hero-ctas">
+          <a class="btn btn-solid" href={WHATSAPP_URL} target="_blank" rel="noopener">
+            <IconWhatsApp />
+            Falar no WhatsApp
+          </a>
+          <span class="btn-o">
+            <a class="btn" href="#areas">Conheça as áreas</a>
+          </span>
+        </div>
+      </div>
+
+      <figure class="hero-fig" aria-hidden="true">
+        <svg viewBox="0 0 400 440" fill="none">
+          <!-- hexágonos concêntricos -->
+          <polygon points="200,20 373,120 373,320 200,420 27,320 27,120" stroke="#866D4B" stroke-width="1" opacity=".85"></polygon>
+          <polygon points="200,70 330,145 330,295 200,370 70,295 70,145" stroke="#866D4B" stroke-width="1" opacity=".45"></polygon>
+          <polygon points="200,120 287,170 287,270 200,320 113,270 113,170" stroke="#866D4B" stroke-width="1" opacity=".28"></polygon>
+          <!-- estrutura isométrica (cubo) -->
+          <line x1="200" y1="220" x2="27" y2="120" stroke="#866D4B" stroke-width="1" opacity=".55"></line>
+          <line x1="200" y1="220" x2="373" y2="120" stroke="#866D4B" stroke-width="1" opacity=".55"></line>
+          <line x1="200" y1="220" x2="200" y2="420" stroke="#866D4B" stroke-width="1" opacity=".55"></line>
+          <!-- cotas de blueprint -->
+          <line x1="27" y1="435" x2="373" y2="435" stroke="#041E42" stroke-width="1" opacity=".25"></line>
+          <line x1="27" y1="430" x2="27" y2="440" stroke="#041E42" stroke-width="1" opacity=".25"></line>
+          <line x1="373" y1="430" x2="373" y2="440" stroke="#041E42" stroke-width="1" opacity=".25"></line>
+          <!-- vértices -->
+          <circle cx="200" cy="20" r="2.5" fill="#866D4B"></circle>
+          <circle cx="200" cy="420" r="2.5" fill="#866D4B"></circle>
+          <circle cx="200" cy="220" r="2.5" fill="#866D4B"></circle>
+        </svg>
+        <figcaption>Fig. 01 — Estrutura Patrimonial</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    padding-top: calc(var(--header-h) + clamp(3.5rem, 8vw, 6.5rem));
+    padding-bottom: clamp(4rem, 8vw, 6.5rem);
+    background: var(--color-ivory);
+    overflow: hidden;
+  }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+    gap: 3rem;
+    align-items: center;
+  }
+  .hero-overline {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.9rem;
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.34em;
+    text-transform: uppercase;
+    color: var(--color-gold);
+    margin-bottom: 2rem;
+  }
+  .hero-overline::before {
+    content: "";
+    width: 34px;
+    height: 5px;
+    border-top: 1px solid var(--color-gold);
+    border-bottom: 1px solid var(--color-gold);
+  }
+
+  .hero h1 {
+    font-size: clamp(2.7rem, 6.4vw, 4.9rem);
+    color: var(--color-navy);
+    margin-bottom: 1.8rem;
+  }
+  .hero h1 .l2 {
+    color: var(--color-gold);
+    display: block;
+  }
+
+  .hero-sub {
+    max-width: 34rem;
+    font-size: 1.06rem;
+    font-weight: 300;
+    color: var(--ink-soft);
+    margin-bottom: 2.6rem;
+  }
+
+  .hero-ctas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: center;
+  }
+
+  .hero-fig {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.4rem;
+  }
+  .hero-fig svg {
+    width: min(100%, 380px);
+    height: auto;
+    display: block;
+  }
+  .hero-fig figcaption {
+    font-size: 0.64rem;
+    font-weight: 500;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--gold-soft);
+  }
+
+  @media (max-width: 1024px) {
+    .hero-grid {
+      grid-template-columns: 1fr;
+    }
+    .hero-fig {
+      display: none;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .hero-ctas :global(.btn),
+    .hero-ctas .btn-o {
+      width: 100%;
+    }
+  }
+</style>

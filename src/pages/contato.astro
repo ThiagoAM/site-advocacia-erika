@@ -1,0 +1,248 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import IconWhatsApp from '../components/IconWhatsApp.astro';
+import {
+  EMAIL,
+  INSTAGRAM_HANDLE,
+  INSTAGRAM_URL,
+  SITE_NAME,
+  WHATSAPP_DISPLAY,
+  WHATSAPP_URL,
+} from '../data/site';
+
+const title = `Contato — ${SITE_NAME}`;
+const description =
+  'Fale com a Dra. Érika Saquetti Martins por WhatsApp, e-mail ou Instagram. Atendimento em Curitiba e online para todo o Brasil, EUA, Canadá e Portugal.';
+---
+
+<BaseLayout title={title} description={description}>
+  <main>
+    <PageHero
+      tag="Contato"
+      title="Vamos conversar?"
+      lead="Atendimento consultivo, humano e direto — presencial em Curitiba e online para todo o Brasil e para o exterior."
+      crumbs={[{ label: 'Início', href: '/' }, { label: 'Contato' }]}
+    />
+
+    <!-- 01 / Canais diretos -->
+    <section class="section canais grid-ivory">
+      <div class="container">
+        <div class="sec-head">
+          <span class="sec-tag"><span class="num">01</span><span class="bar">/</span>Canais Diretos</span>
+          <h2>Escolha o caminho mais simples para você.</h2>
+          <div class="rule-double"></div>
+        </div>
+
+        <div class="canais-grid">
+          <a class="canal" href={WHATSAPP_URL} target="_blank" rel="noopener">
+            <span class="canal-in">
+              <span class="canal-icon"><IconWhatsApp /></span>
+              <span class="canal-nome">WhatsApp</span>
+              <span class="canal-valor">{WHATSAPP_DISPLAY}</span>
+              <span class="canal-desc">O canal mais rápido para primeiras conversas e agendamento de consultas.</span>
+              <span class="canal-go">Iniciar conversa</span>
+            </span>
+          </a>
+
+          <a class="canal" href={`mailto:${EMAIL}`}>
+            <span class="canal-in">
+              <span class="canal-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"
+                  ><rect x="2.5" y="5" width="19" height="14" rx="2"></rect><path
+                    d="m3.5 6.5 8.5 6.5 8.5-6.5"></path></svg
+                >
+              </span>
+              <span class="canal-nome">E-mail</span>
+              <span class="canal-valor">{EMAIL}</span>
+              <span class="canal-desc">Para mensagens mais detalhadas e envio de documentos com organização.</span>
+              <span class="canal-go">Escrever e-mail</span>
+            </span>
+          </a>
+
+          <a class="canal" href={INSTAGRAM_URL} target="_blank" rel="noopener">
+            <span class="canal-in">
+              <span class="canal-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"
+                  ><rect x="3" y="3" width="18" height="18" rx="5"></rect><circle cx="12" cy="12" r="4"
+                  ></circle><circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"
+                  ></circle></svg
+                >
+              </span>
+              <span class="canal-nome">Instagram</span>
+              <span class="canal-valor">{INSTAGRAM_HANDLE}</span>
+              <span class="canal-desc">Conteúdo sobre direito imobiliário e patrimonial — e mensagens diretas.</span>
+              <span class="canal-go">Seguir e conversar</span>
+            </span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 02 / Como funciona -->
+    <section class="section atendimento grid-navy">
+      <div class="container">
+        <div class="sec-head on-navy">
+          <span class="sec-tag"><span class="num">02</span><span class="bar">/</span>Atendimento</span>
+          <h2>Como funciona o atendimento.</h2>
+          <div class="rule-double"></div>
+        </div>
+
+        <div class="atd-grid">
+          <div class="atd-item">
+            <h3>Horário</h3>
+            <p>
+              De segunda a sexta-feira, das 9h às 18h (horário de Brasília). Mensagens recebidas
+              fora desse horário são respondidas no próximo dia útil.
+            </p>
+          </div>
+          <div class="atd-item">
+            <h3>No Brasil</h3>
+            <p>
+              Base em Curitiba — PR, com atendimento online para todo o país. Consultas presenciais
+              mediante agendamento.
+            </p>
+          </div>
+          <div class="atd-item">
+            <h3>No exterior</h3>
+            <p>
+              Atendimento por videoconferência para clientes nos Estados Unidos, no Canadá e em
+              Portugal, com horários compatíveis com cada fuso.
+            </p>
+          </div>
+        </div>
+
+        <div class="atd-cta">
+          <a class="btn btn-gold" href={WHATSAPP_URL} target="_blank" rel="noopener">
+            <IconWhatsApp />
+            Agendar pelo WhatsApp
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+</BaseLayout>
+
+<style>
+  /* ---------- 01 / canais ---------- */
+  .canais {
+    padding: var(--pad-sec) 0;
+    background: var(--color-ivory);
+  }
+  .canais-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.4rem;
+  }
+  .canal {
+    display: flex;
+    clip-path: var(--ch);
+    padding: 1px;
+    background: rgba(4, 30, 66, 0.13);
+    transition:
+      transform 0.4s cubic-bezier(0.22, 0.68, 0.35, 1),
+      background 0.4s ease;
+  }
+  .canal:hover,
+  .canal:focus-visible {
+    outline: none;
+    transform: translateY(-6px);
+    background: var(--color-gold);
+  }
+  .canal-in {
+    flex: 1;
+    clip-path: var(--ch);
+    background: var(--color-paper);
+    padding: 2rem 1.9rem 1.8rem;
+    display: flex;
+    flex-direction: column;
+  }
+  .canal-icon {
+    display: inline-flex;
+    color: var(--color-gold);
+    margin-bottom: 1.4rem;
+  }
+  .canal-icon :global(svg) {
+    width: 26px;
+    height: 26px;
+  }
+  .canal-nome {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    color: var(--color-navy);
+    line-height: 1.15;
+  }
+  .canal-valor {
+    margin-top: 0.35rem;
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    color: var(--color-gold);
+    overflow-wrap: anywhere;
+  }
+  .canal-desc {
+    margin-top: 0.9rem;
+    font-size: 0.88rem;
+    font-weight: 300;
+    color: var(--ink-soft);
+    flex: 1;
+  }
+  .canal-go {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1.5rem;
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    transition:
+      color 0.3s ease,
+      gap 0.3s ease;
+  }
+  .canal-go::after {
+    content: "→";
+    color: var(--color-gold);
+  }
+  .canal:hover .canal-go {
+    color: var(--color-navy);
+    gap: 0.8rem;
+  }
+
+  /* ---------- 02 / atendimento ---------- */
+  .atendimento {
+    padding: var(--pad-sec) 0;
+    background: var(--color-navy);
+    color: var(--color-ivory);
+  }
+  .atd-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: clamp(1.8rem, 4vw, 3rem);
+  }
+  .atd-item h3 {
+    font-size: 1.4rem;
+    color: var(--color-ivory);
+    margin-bottom: 0.7rem;
+    padding-top: 1.1rem;
+    border-top: 1px solid var(--gold-faint);
+  }
+  .atd-item p {
+    font-size: 0.9rem;
+    font-weight: 300;
+    color: var(--ivory-soft);
+  }
+  .atd-cta {
+    margin-top: clamp(2.4rem, 5vw, 3.5rem);
+  }
+
+  @media (max-width: 1024px) {
+    .canais-grid {
+      grid-template-columns: 1fr;
+    }
+    .atd-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

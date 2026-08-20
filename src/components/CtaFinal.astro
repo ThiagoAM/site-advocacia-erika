@@ -1,0 +1,60 @@
+---
+import IconWhatsApp from './IconWhatsApp.astro';
+import { WHATSAPP_URL } from '../data/site';
+---
+
+<section class="section cta-final grid-navy" id="contato">
+  <div class="container">
+    <span class="sec-tag"><span class="num">05</span><span class="bar">/</span>Contato</span>
+    <h2>Vamos desenhar a estrutura do seu legado?</h2>
+    <div class="rule-double"></div>
+    <p>
+      Agende uma consulta e receba uma leitura técnica e humana do seu caso — em Direito
+      Imobiliário, regularização de imóveis ou planejamento patrimonial e sucessório.
+    </p>
+    <a class="btn btn-gold" href={WHATSAPP_URL} target="_blank" rel="noopener">
+      <IconWhatsApp />
+      Agendar consulta no WhatsApp
+    </a>
+    <p class="after">Atendimento · Brasil — EUA — Canadá — Portugal</p>
+  </div>
+</section>
+
+<style>
+  .cta-final {
+    padding: var(--pad-sec) 0;
+    background: linear-gradient(170deg, var(--color-navy) 0%, var(--color-navy-deep) 90%);
+    color: var(--color-ivory);
+    text-align: center;
+  }
+  .cta-final :global(.sec-tag) {
+    justify-content: center;
+  }
+  .cta-final :global(.sec-tag)::before {
+    display: none;
+  }
+  .cta-final h2 {
+    font-size: clamp(2.2rem, 5vw, 3.6rem);
+    color: var(--color-ivory);
+    max-width: 22ch;
+    margin: 0 auto 1.4rem;
+  }
+  .cta-final p {
+    font-weight: 300;
+    color: var(--ivory-soft);
+    max-width: 36rem;
+    margin: 0 auto 2.6rem;
+  }
+  .cta-final :global(.rule-double) {
+    margin: 0 auto 2.6rem;
+  }
+  .cta-final .after {
+    margin-top: 1.8rem;
+    margin-bottom: 0;
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--color-gold);
+  }
+</style>

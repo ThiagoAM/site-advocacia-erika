@@ -1,0 +1,52 @@
+---
+import LogoSM from './LogoSM.astro';
+
+interface Props {
+  /** Fundo sobre o qual a marca é exibida. */
+  on?: 'ivory' | 'navy';
+}
+const { on = 'ivory' } = Astro.props;
+---
+
+<a
+  href="/#inicio"
+  class:list={['brand', { 'on-navy': on === 'navy' }]}
+  aria-label="Saquetti Martins Advocacia — início"
+>
+  <LogoSM textColor={on === 'navy' ? '#FBFBF8' : '#041E42'} />
+  <span class="brand-name">
+    <span class="name">Saquetti Martins</span>
+    <span class="sub">Advocacia</span>
+  </span>
+</a>
+
+<style>
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    flex: none;
+  }
+  .brand-name {
+    display: flex;
+    flex-direction: column;
+    line-height: 1;
+  }
+  .brand-name .name {
+    font-family: var(--font-display);
+    font-size: 1.22rem;
+    letter-spacing: 0.04em;
+    color: var(--color-navy);
+  }
+  .on-navy .brand-name .name {
+    color: var(--color-ivory);
+  }
+  .brand-name .sub {
+    margin-top: 0.34rem;
+    font-size: 0.56rem;
+    font-weight: 500;
+    letter-spacing: 0.46em;
+    text-transform: uppercase;
+    color: var(--color-gold);
+  }
+</style>
