@@ -40,6 +40,8 @@ import { WHATSAPP_URL } from '../data/site';
           <line class="draw dim" pathLength="1" x1="27" y1="430" x2="27" y2="440" stroke="#041E42" stroke-width="1" opacity=".25"></line>
           <line class="draw dim" pathLength="1" x1="373" y1="430" x2="373" y2="440" stroke="#041E42" stroke-width="1" opacity=".25"></line>
           <!-- vértices -->
+          <polygon class="trace trace-1" pathLength="1" points="200,20 373,120 373,320 200,420 27,320 27,120" stroke="#B89D72" stroke-width="1.4" stroke-linecap="round"></polygon>
+          <polygon class="trace trace-2" pathLength="1" points="200,70 330,145 330,295 200,370 70,295 70,145" stroke="#B89D72" stroke-width="1.2" stroke-linecap="round"></polygon>
           <circle class="vertex" cx="200" cy="20" r="2.5" fill="#866D4B"></circle>
           <circle class="vertex" cx="200" cy="420" r="2.5" fill="#866D4B"></circle>
           <circle class="vertex vertex-core" cx="200" cy="220" r="2.5" fill="#866D4B"></circle>
@@ -121,7 +123,21 @@ import { WHATSAPP_URL } from '../data/site';
   /* ---- Animação: estado inicial só é definido quando a animação está ativa ---- */
   @media (prefers-reduced-motion: no-preference) {
     .hero-art {
-      animation: hero-float 8s ease-in-out 2.2s infinite;
+      animation: hero-float  9s ease-in-out 2.2s infinite;
+    }
+    .hero-art .trace {
+      opacity: 0;
+      stroke-dasharray: 0.14 0.86;
+      stroke-dashoffset: 0;
+      animation:
+        hero-trace-in 1.2s ease-out 2.4s forwards,
+        hero-trace 9s linear 2.4s infinite;
+    }
+    .hero-art .trace-2 {
+      stroke-dasharray: 0.1 0.9;
+      animation-duration: 1.2s, 12s;
+      animation-delay: 3s, 3s;
+      animation-direction: normal, reverse;
     }
     .hero-art .draw {
       stroke-dasharray: 1;
@@ -159,6 +175,16 @@ import { WHATSAPP_URL } from '../data/site';
   @keyframes hero-draw {
     from { stroke-dashoffset: 1; }
     to   { stroke-dashoffset: 0; }
+  }
+  .hero-art .trace {
+    opacity: 0;
+  }
+  @keyframes hero-trace {
+    from { stroke-dashoffset: 1; }
+    to { stroke-dashoffset: 0; }
+  }
+  @keyframes hero-trace-in {
+    to { opacity: 0.9; }
   }
   @keyframes hero-float {
     0%, 100% { transform: translateY(0); }
