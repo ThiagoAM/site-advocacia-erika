@@ -31,3 +31,10 @@ DNS de todos: **Cloudflare**.
 1. Manter `public/CNAME` no repositório com `saquettimartins.adv.br` (o Astro copia para a saída do build).
 2. Em Settings → Pages: definir o custom domain e habilitar **Enforce HTTPS** após a emissão do certificado.
 3. Deploy contínuo via GitHub Actions (`withastro/action`).
+
+## Status (22/08/2026)
+
+- `saquettimartins.adv.br` registrado no Registro.br (único domínio por enquanto).
+- DNS no próprio Registro.br (modo avançado): 4 registros `A` → 185.199.108/109/110/111.153 e `CNAME www` → `thiagoam.github.io`. Nameservers finais: `d.sec.dns.br` / `e.sec.dns.br` (DNSSEC ativo).
+- GitHub Pages: domínio customizado verificado, certificado Let's Encrypt emitido (válido até 20/11/2026, renovação automática) e **Enforce HTTPS ativado**.
+- Site no ar em https://saquettimartins.adv.br (www redireciona).
