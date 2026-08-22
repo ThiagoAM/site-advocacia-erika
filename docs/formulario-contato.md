@@ -25,7 +25,7 @@ Campos ocultos enviados ao Web3Forms: `access_key`, `subject` ("Novo contato pel
 
 Envio: JavaScript intercepta o `submit`, valida com a API nativa do navegador, faz `fetch` com `Accept: application/json` e exibe o resultado inline (sucesso substitui o formulário por confirmação + botão de WhatsApp; erro mostra aviso com `role="alert"` sugerindo WhatsApp/e-mail). Sem JS, o `POST` tradicional continua funcionando (o Web3Forms mostra uma página de confirmação própria).
 
-**Sem a chave no build**, o formulário não aparece: em `astro dev` é exibido um aviso no lugar; em `astro build` de produção a seção inteira é omitida e a seção "Atendimento" passa a ser a 02.
+**Sem a chave no build**, o formulário continua visível em modo degradado: o botão "Enviar" abre o aplicativo de e-mail do visitante com nome, contato, assunto e mensagem já preenchidos (`mailto:`). Com a chave, o envio passa a ser pela API do Web3Forms, sem sair da página.
 
 ## Como gerar a access key
 

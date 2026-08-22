@@ -7,9 +7,9 @@
  * Progressive enhancement: sem JS o <form> faz o POST normal; com JS
  * o envio é via fetch e o resultado aparece inline.
  *
- * Se PUBLIC_WEB3FORMS_KEY não estiver definida no build:
- *  - em dev, mostra um aviso discreto no lugar do formulário;
- *  - em produção, a seção inteira é omitida (ver hasContactForm()).
+ * Sem PUBLIC_WEB3FORMS_KEY no build, o formulário continua visível em modo
+ * degradado: o envio abre o aplicativo de e-mail do visitante com a mensagem
+ * preenchida (mailto). Com a chave, envia pela API do Web3Forms.
  */
 import IconWhatsApp from './IconWhatsApp.astro';
 import { areas } from '../data/areas';
@@ -23,14 +23,11 @@ const { num = '02' } = Astro.props;
 
 const accessKey = import.meta.env.PUBLIC_WEB3FORMS_KEY ?? '';
 const hasKey = accessKey.trim().length > 0;
-const isDev = import.meta.env.DEV;
 
 const assuntos = [...areas.map((a) => a.titulo), 'Educação & Treinamentos', 'Outro'];
 ---
 
-{
-  (hasKey || isDev) && (
-    <section class="section mensagem grid-ivory" id="mensagem">
+<section class="section mensagem grid-ivory" id="mensagem" data-mode={hasKey ? 'api' : 'mailto'} data-email={EMAIL}>
       <div class="container">
         <div class="sec-head">
           <span class="sec-tag">
@@ -45,16 +42,16 @@ const assuntos = [...areas.map((a) => a.titulo), 'Educação & Treinamentos', 'O
           </p>
         </div>
 
-        {hasKey ? (
-          <div class="form-wrap">
+        <div class="form-wrap">
             <div class="form-card">
               <form
                 id="contact-form"
                 class="contact-form"
                 method="POST"
-                action="https://api.web3forms.com/submit"
+                action={hasKey ? 'https://api.web3forms.com/submit' : `mailto:${EMAIL}`}
+                enctype={hasKey ? undefined : 'text/plain'}
               >
-                <input type="hidden" name="access_key" value={accessKey} />
+                {hasKey && <input type="hidden" name="access_key" value={accessKey} />}
                 <input type="hidden" name="subject" value={`Novo contato pelo site — ${SITE_NAME}`} />
                 <input type="hidden" name="from_name" value={`Site ${SITE_NAME}`} />
                 {/* honeypot anti-spam (Web3Forms) — invisível para pessoas */}
@@ -143,18 +140,9 @@ const assuntos = [...areas.map((a) => a.titulo), 'Educação & Treinamentos', 'O
                 <a href={`mailto:${EMAIL}`}>{EMAIL}</a>
               </p>
             </aside>
-          </div>
-        ) : (
-          <p class="dev-notice">
-            <strong>Formulário desativado (apenas em dev):</strong> defina <code>PUBLIC_WEB3FORMS_KEY</code> no
-            arquivo <code>.env</code> para renderizar o formulário. Em produção esta seção é omitida.
-            Veja <code>docs/formulario-contato.md</code>.
-          </p>
-        )}
+        </div>
       </div>
     </section>
-  )
-}
 
 <script>
   const form = document.getElementById('contact-form') as HTMLFormElement | null;
@@ -165,6 +153,9 @@ const assuntos = [...areas.map((a) => a.titulo), 'Educação & Treinamentos', 'O
     const status = form.querySelector<HTMLElement>('[data-status]')!;
     const success = form.parentElement!.querySelector<HTMLElement>('[data-success]')!;
     const idleLabel = label.textContent;
+    const section = form.closest<HTMLElement>('[data-mode]')!;
+    const useMailto = section.dataset.mode === 'mailto';
+    const email = section.dataset.email ?? '';
 
     const ERRO =
       'Não foi possível enviar a mensagem agora. Tente novamente em instantes ou fale conosco pelo WhatsApp ou e-mail acima.';
@@ -190,6 +181,25 @@ const assuntos = [...areas.map((a) => a.titulo), 'Educação & Treinamentos', 'O
       }
       e.preventDefault();
       clearStatus();
+
+      if (useMailto) {
+        // Sem chave do Web3Forms: abre o app de e-mail com tudo preenchido.
+        const d = new FormData(form);
+        const linhas = [
+          `Nome: ${d.get('name') ?? ''}`,
+          `E-mail: ${d.get('email') ?? ''}`,
+          `Telefone: ${d.get('phone') || '—'}`,
+          `Assunto: ${d.get('assunto') ?? ''}`,
+          '',
+          String(d.get('message') ?? ''),
+        ];
+        const subject = encodeURIComponent(`Contato pelo site — ${d.get('assunto') ?? ''}`);
+        const body = encodeURIComponent(linhas.join('\n'));
+        window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
+        status.textContent =
+          'Abrindo o seu aplicativo de e-mail com a mensagem preenchida. Se nada acontecer, escreva para ' + email + '.';
+        return;
+      }
 
       btn.disabled = true;
       label.textContent = 'Enviando…';
@@ -475,16 +485,6 @@ const assuntos = [...areas.map((a) => a.titulo), 'Educação & Treinamentos', 'O
     text-underline-offset: 3px;
   }
 
-  .dev-notice {
-    font-size: 0.9rem;
-    padding: 1rem 1.2rem;
-    border-left: 2px solid var(--color-gold);
-    background: var(--color-ivory);
-    color: var(--ink-soft);
-  }
-  .dev-notice code {
-    font-size: 0.82em;
-  }
 
   @media (max-width: 900px) {
     .form-wrap {

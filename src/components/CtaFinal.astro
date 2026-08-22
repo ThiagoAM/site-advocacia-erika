@@ -1,9 +1,6 @@
 ---
 import IconWhatsApp from './IconWhatsApp.astro';
 import { EMAIL, INSTAGRAM_HANDLE, INSTAGRAM_URL, WHATSAPP_URL } from '../data/site';
-
-// O card "Formulário" só existe se o formulário (Web3Forms) estiver ativo — mesma regra do ContactForm.
-const hasContactForm = Boolean(import.meta.env.PUBLIC_WEB3FORMS_KEY?.trim()) || import.meta.env.DEV;
 ---
 
 <section class="section cta-final grid-navy" id="contato">
@@ -49,7 +46,6 @@ const hasContactForm = Boolean(import.meta.env.PUBLIC_WEB3FORMS_KEY?.trim()) || 
           </span>
         </a>
       </li>
-      {hasContactForm && (
       <li>
         <a class="canal" href="/contato#mensagem">
           <span class="canal-icon">
@@ -63,7 +59,6 @@ const hasContactForm = Boolean(import.meta.env.PUBLIC_WEB3FORMS_KEY?.trim()) || 
           </span>
         </a>
       </li>
-      )}
     </ul>
   </div>
 </section>
@@ -170,15 +165,6 @@ const hasContactForm = Boolean(import.meta.env.PUBLIC_WEB3FORMS_KEY?.trim()) || 
     overflow-wrap: anywhere;
   }
 
-  .canais:has(> li:nth-child(2):last-child) {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    max-width: 40rem;
-  }
   @media (max-width: 760px) {
     .canais,
-    .canais:has(> li:nth-child(2):last-child) {
-      grid-template-columns: 1fr;
-      max-width: 26rem;
-    }
-  }
-</style>
+  </style>
