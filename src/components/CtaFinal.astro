@@ -1,6 +1,9 @@
 ---
 import IconWhatsApp from './IconWhatsApp.astro';
-import { WHATSAPP_URL } from '../data/site';
+import { EMAIL, INSTAGRAM_HANDLE, INSTAGRAM_URL, WHATSAPP_URL } from '../data/site';
+
+// O card "Formulário" só existe se o formulário (Web3Forms) estiver ativo — mesma regra do ContactForm.
+const hasContactForm = Boolean(import.meta.env.PUBLIC_WEB3FORMS_KEY?.trim()) || import.meta.env.DEV;
 ---
 
 <section class="section cta-final grid-navy" id="contato">
@@ -17,6 +20,51 @@ import { WHATSAPP_URL } from '../data/site';
       Agendar consulta no WhatsApp
     </a>
     <p class="after">Atendimento · Brasil — EUA — Canadá — Portugal</p>
+
+    <ul class="canais" aria-label="Outros canais de contato">
+      <li>
+        <a class="canal" href={`mailto:${EMAIL}`}>
+          <span class="canal-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"
+              ><rect x="2.5" y="5" width="19" height="14" rx="2"></rect><path d="m3.5 6.5 8.5 6.5 8.5-6.5"></path></svg
+            >
+          </span>
+          <span class="canal-txt">
+            <span class="canal-nome">E-mail</span>
+            <span class="canal-valor">{EMAIL}</span>
+          </span>
+        </a>
+      </li>
+      <li>
+        <a class="canal" href={INSTAGRAM_URL} target="_blank" rel="noopener">
+          <span class="canal-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"
+              ><rect x="3" y="3" width="18" height="18" rx="5"></rect><circle cx="12" cy="12" r="4"></circle><circle
+                cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"></circle></svg
+            >
+          </span>
+          <span class="canal-txt">
+            <span class="canal-nome">Instagram</span>
+            <span class="canal-valor">{INSTAGRAM_HANDLE}</span>
+          </span>
+        </a>
+      </li>
+      {hasContactForm && (
+      <li>
+        <a class="canal" href="/contato#mensagem">
+          <span class="canal-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"
+              ><path d="M4 4h16v12H8l-4 4z"></path><path d="M8 9h8M8 12.5h5"></path></svg
+            >
+          </span>
+          <span class="canal-txt">
+            <span class="canal-nome">Formulário</span>
+            <span class="canal-valor">Escreva pelo site</span>
+          </span>
+        </a>
+      </li>
+      )}
+    </ul>
   </div>
 </section>
 
@@ -56,5 +104,81 @@ import { WHATSAPP_URL } from '../data/site';
     letter-spacing: 0.28em;
     text-transform: uppercase;
     color: var(--gold-text);
+  }
+
+  /* ---- outros canais ---- */
+  .canais {
+    list-style: none;
+    padding: 0;
+    margin: 3rem auto 0;
+    max-width: 56rem;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1px;
+    background: var(--ivory-faint);
+    clip-path: var(--ch-s);
+  }
+  .canal {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.25rem 1.4rem;
+    height: 100%;
+    background: var(--color-navy-deep);
+    text-align: left;
+    text-decoration: none;
+    color: var(--color-ivory);
+    transition: background 0.3s ease;
+  }
+  .canal:hover {
+    background: var(--color-navy-soft);
+  }
+  .canal-icon {
+    flex: none;
+    width: 40px;
+    height: 40px;
+    display: grid;
+    place-items: center;
+    border: 1px solid var(--gold-faint);
+    color: var(--gold-text);
+    clip-path: var(--ch-s);
+    transition: border-color 0.3s ease;
+  }
+  .canal:hover .canal-icon {
+    border-color: var(--gold-text);
+  }
+  .canal-icon svg {
+    width: 18px;
+    height: 18px;
+  }
+  .canal-txt {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    min-width: 0;
+  }
+  .canal-nome {
+    font-size: 0.64rem;
+    font-weight: 500;
+    letter-spacing: 0.26em;
+    text-transform: uppercase;
+    color: var(--gold-text);
+  }
+  .canal-valor {
+    font-size: 0.9rem;
+    font-weight: 500;
+    overflow-wrap: anywhere;
+  }
+
+  .canais:has(> li:nth-child(2):last-child) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    max-width: 40rem;
+  }
+  @media (max-width: 760px) {
+    .canais,
+    .canais:has(> li:nth-child(2):last-child) {
+      grid-template-columns: 1fr;
+      max-width: 26rem;
+    }
   }
 </style>
