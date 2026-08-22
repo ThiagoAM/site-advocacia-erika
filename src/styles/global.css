@@ -64,7 +64,14 @@
     background: var(--color-ivory);
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
-    overflow-x: hidden;
+  }
+
+  /* cinto de segurança contra scroll lateral: no iOS Safari `overflow-x: hidden`
+     só no body não impede o arrasto; `clip` em html+body não cria contexto
+     de rolagem nem quebra `position: sticky`. */
+  html,
+  body {
+    overflow-x: clip;
   }
 
   ::selection {
@@ -195,6 +202,17 @@
       transform 0.35s ease;
     cursor: pointer;
     white-space: nowrap;
+  }
+  /* em telas estreitas o rótulo pode quebrar em 2 linhas: sem isso o
+     nowrap + letter-spacing estoura o container e cria scroll lateral no iOS */
+  @media (max-width: 600px) {
+    .btn {
+      white-space: normal;
+      text-align: center;
+      max-width: 100%;
+      padding-inline: 1.3rem;
+      line-height: 1.5;
+    }
   }
   .btn svg {
     width: 15px;

@@ -166,5 +166,21 @@ import { EMAIL, INSTAGRAM_HANDLE, INSTAGRAM_URL, WHATSAPP_URL } from '../data/si
   }
 
   @media (max-width: 760px) {
-    .canais,
-  </style>
+    .canais {
+      grid-template-columns: minmax(0, 1fr);
+      max-width: 100%;
+    }
+    .canal {
+      height: auto;
+      width: 100%;
+      min-width: 0;
+      padding: 1.1rem 1.2rem;
+    }
+    .canal-txt {
+      flex: 1 1 0;
+    }
+    .canal-valor {
+      word-break: break-word;
+    }
+  }
+</style>
