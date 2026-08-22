@@ -60,3 +60,16 @@ Temas considerados e descartados: "Quiet Luxury Editorial" e "Institucional Prof
 |---|---|
 | SVGs finais do logo (todas as versões) | Designer / Spasso |
 | Licenças web das fontes Selina e Marlin | Designer / Spasso |
+
+## Fotografia (22/08/2026)
+
+Enquanto não há fotos reais, o site usa **11 imagens geradas por IA** (Codex `image_gen`, arquivos em `src/assets/img/`), todas sem pessoas, sem texto e na paleta navy/marfim/ouro:
+
+| Arquivo | Uso | Tamanho |
+|---|---|---|
+| `portrait-ambiente.png` | Home › "A Advogada" (slot do retrato, exibido em 4:5) — **provisório até a foto real da Dra. Érika**; não gerar rosto sintético (ética/OAB) | 1024×1536 |
+| `edu-fig.png` | Home › Educação (figura 1:1 chanfrada) | 1024×1024 |
+| `hero-*.png` (3) | `PageHero` de A Advogada, Educação e Contato | 1536×1024 |
+| `area-<slug>.png` (6) | `PageHero` de cada área (mapeado por slug em `areas/[slug].astro`) | 1536×1024 |
+
+O `PageHero` aceita `image?: ImageMetadata`; o Astro gera WebP responsivo (720/1080/1536) no build. O véu navy (`.hero-img::after`) mantém o texto à esquerda legível.
