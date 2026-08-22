@@ -15,7 +15,7 @@ Site institucional estático para a Saquetti Martins Advocacia, com foco em SEO,
 | CI/CD | GitHub Actions (`withastro/action`) |
 | Domínio customizado | `public/CNAME` |
 | DNS | Cloudflare |
-| Fontes web | Google Fonts (Italiana + Space Grotesk) — ver [identidade-visual.md](./identidade-visual.md) |
+| Fontes web | Google Fonts (Inter) — ver [identidade-visual.md](./identidade-visual.md) |
 | Notícias | Agente OpenClaw diário — ver [noticias-pipeline.md](./noticias-pipeline.md) |
 
 ## Fases
@@ -41,7 +41,7 @@ Status em **19/08/2026**.
 - Pendência externa: SVGs finais do logo e licenças de fonte (designer / agência Spasso).
 
 ### Fase 1 — Design system
-- Tokens: paleta Azul Legado / Ouro Patrimônio / Marfim; tipografia Italiana + Space Grotesk.
+- Tokens: paleta Azul Legado / Ouro Patrimônio / Marfim; tipografia Inter.
 - Componentes do Tema 3: cards com cantos chanfrados (clip-path), numeração blueprint de seções, labels uppercase com tracking largo, linhas duplas douradas, grid vertical de fundo, seções alternando marfim e navy.
 
 ### Fase 2 — Páginas

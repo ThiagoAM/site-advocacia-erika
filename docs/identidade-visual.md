@@ -25,7 +25,7 @@ Fonte: proposta de identidade da agência **Spasso** (ago/2026).
 | Contexto | Display | Corpo |
 |---|---|---|
 | Marca (fontes comerciais) | **Selina** (serif display de alto contraste) | **Marlin** (sans geométrica) |
-| Site (substitutas enquanto não há licença web) | **Italiana** | **Space Grotesk** |
+| Site (substitutas enquanto não há licença web) | **Inter** (neutra, estilo SF/Apple — decisão de 22/08/2026) | **Inter** |
 
 As substitutas do site são servidas via Google Fonts.
 
@@ -50,7 +50,7 @@ Características:
 - Labels uppercase com tracking largo
 - Linhas duplas douradas como divisores/ornamentos
 - Seções alternando fundo marfim e navy profundo
-- Tipografia Italiana (display) + Space Grotesk (corpo)
+- Tipografia Inter (display em peso 500, tracking -0.02em; corpo em 400). Ouro claro `#B89D72` (`--gold-text`) para texto dourado sobre navy — o ouro oficial `#866D4B` só atinge 3,4:1 sobre navy
 
 Temas considerados e descartados: "Quiet Luxury Editorial" e "Institucional Profundo".
 
