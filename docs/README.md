@@ -12,6 +12,7 @@ Site institucional da Dra. Érika Silvana Saquetti Martins (Saquetti Martins Adv
 | [identidade-visual.md](./identidade-visual.md) | Paleta, tipografia, logo, tom de voz, tema visual escolhido e pendências |
 | [dominios.md](./dominios.md) | Domínios, status de registro, onde comprar e configuração DNS/Pages |
 | [noticias-pipeline.md](./noticias-pipeline.md) | Pipeline de notícias diárias por IA: contrato JSON, fluxo do agente, prompt e validação |
+| [formulario-contato.md](./formulario-contato.md) | Formulário de contato com Web3Forms: geração da chave, secrets, limites e troca de destinatário |
 
 ## Dados da cliente
 

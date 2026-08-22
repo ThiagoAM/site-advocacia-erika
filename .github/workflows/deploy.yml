@@ -23,6 +23,9 @@ jobs:
         uses: withastro/action@v3
         with:
           node-version: 22
+        env:
+          # Chave pública do Web3Forms (formulário de contato) — ver docs/formulario-contato.md
+          PUBLIC_WEB3FORMS_KEY: ${{ secrets.PUBLIC_WEB3FORMS_KEY }}
 
   deploy:
     needs: build
