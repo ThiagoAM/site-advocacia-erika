@@ -63,11 +63,11 @@ Temas considerados e descartados: "Quiet Luxury Editorial" e "Institucional Prof
 
 ## Fotografia (22/08/2026)
 
-Enquanto não há fotos reais, o site usa **11 imagens geradas por IA** (Codex `image_gen`, arquivos em `src/assets/img/`), todas sem pessoas, sem texto e na paleta navy/marfim/ouro:
+Enquanto não há fotos reais, o site usa **10 imagens geradas por IA** (mais a foto real da advogada) (Codex `image_gen`, arquivos em `src/assets/img/`), todas sem pessoas, sem texto e na paleta navy/marfim/ouro:
 
 | Arquivo | Uso | Tamanho |
 |---|---|---|
-| `portrait-ambiente.png` | Home › "A Advogada" (slot do retrato, exibido em 4:5) — **provisório até a foto real da Dra. Érika**; não gerar rosto sintético (ética/OAB) | 1024×1536 |
+| `erika.jpg` | **Foto real** da Dra. Érika (recebida em 22/08/2026, 853×1280 — pedir o original em maior resolução quando possível). Home › "A Advogada" (4:5, `object-position: 50% 18%`) e página A Advogada (3:4). Regra: nunca gerar rosto sintético dela (ética/OAB) | 853×1280 |
 | `edu-fig.png` | Home › Educação (figura 1:1 chanfrada) | 1024×1024 |
 | `hero-*.png` (3) | `PageHero` de A Advogada, Educação e Contato | 1536×1024 |
 | `area-<slug>.png` (6) | `PageHero` de cada área (mapeado por slug em `areas/[slug].astro`) | 1536×1024 |

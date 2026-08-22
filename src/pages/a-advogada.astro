@@ -1,9 +1,11 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PageHero from '../components/PageHero.astro';
+import { Image } from 'astro:assets';
+import fotoErika from '../assets/img/erika.jpg';
 import heroImg from '../assets/img/hero-a-advogada.png';
 import PageCta from '../components/PageCta.astro';
-import { SITE_NAME } from '../data/site';
+import { SITE_NAME, OAB } from '../data/site';
 
 const title = `Dra. Érika Silvana Saquetti Martins — ${SITE_NAME}`;
 const description =
@@ -92,6 +94,17 @@ const associacoes = [
         </div>
 
         <div class="traj-grid">
+          <figure class="traj-photo">
+            <Image
+              src={fotoErika}
+              alt="Dra. Érika Silvana Saquetti Martins"
+              widths={[420, 640, 853]}
+              sizes="(max-width: 860px) 80vw, 28vw"
+              format="webp"
+              quality={82}
+            />
+            <figcaption>Dra. Érika Silvana Saquetti Martins · {OAB}</figcaption>
+          </figure>
           <div class="traj-copy">
             <p>
               A trajetória da Dra. Érika começa no serviço público, como servidora do Tribunal
@@ -242,9 +255,31 @@ const associacoes = [
   }
   .traj-grid {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    gap: clamp(2.5rem, 6vw, 5rem);
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.1fr) minmax(0, 1.1fr);
+    gap: clamp(2rem, 4.5vw, 4rem);
     align-items: start;
+  }
+  .traj-photo {
+    margin: 0;
+    position: sticky;
+    top: calc(var(--header-h) + 1.5rem);
+  }
+  .traj-photo img {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 3 / 4;
+    object-fit: cover;
+    object-position: 50% 15%;
+    clip-path: var(--ch);
+  }
+  .traj-photo figcaption {
+    margin-top: 0.9rem;
+    font-size: 0.66rem;
+    font-weight: 500;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--color-gold);
   }
   .traj-copy p {
     font-size: 1.02rem;
@@ -398,10 +433,22 @@ const associacoes = [
       grid-template-columns: 1fr;
     }
   }
+  @media (max-width: 1100px) {
+    .traj-grid {
+      grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.4fr);
+    }
+    .traj-grid .timeline {
+      grid-column: 1 / -1;
+    }
+  }
   @media (max-width: 860px) {
     .traj-grid,
     .form-grid {
       grid-template-columns: 1fr;
+    }
+    .traj-photo {
+      position: static;
+      max-width: 22rem;
     }
   }
 </style>
