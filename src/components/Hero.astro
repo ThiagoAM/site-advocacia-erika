@@ -126,7 +126,11 @@ import { WHATSAPP_URL } from '../data/site';
   @media (prefers-reduced-motion: no-preference) {
     .hero-art {
       transform-origin: center;
-      animation: hero-turn 14s ease-in-out 2.4s infinite;
+      /* camada 3D já existe desde o início: evita re-rasterização quando o giro começa */
+      transform: perspective(1100px) rotateY(0deg);
+      will-change: transform;
+      backface-visibility: hidden;
+      animation: hero-turn 16s ease-in-out 2.6s infinite;
     }
     .hero-art .ripple {
       transform-box: fill-box;
@@ -142,7 +146,7 @@ import { WHATSAPP_URL } from '../data/site';
       stroke-dasharray: 0.22 0.78;
       stroke-dashoffset: 0;
       animation:
-        hero-trace-in 1.2s ease-out 2.4s forwards,
+        hero-trace-in 2s ease-in-out 2.6s forwards,
         hero-trace 9s linear 2.4s infinite;
     }
     .hero-art .trace-2 {
@@ -194,13 +198,15 @@ import { WHATSAPP_URL } from '../data/site';
   .hero-art .ripple {
     opacity: 0;
   }
+  /* parte e volta da posição neutra: sem salto ao iniciar o loop */
   @keyframes hero-turn {
-    0%, 100% { transform: perspective(1100px) rotateY(-16deg) rotateX(4deg) translateY(0); }
-    50% { transform: perspective(1100px) rotateY(16deg) rotateX(-4deg) translateY(-10px); }
+    0%, 100% { transform: perspective(1100px) rotateY(0deg) rotateX(0deg) translateY(0); }
+    25% { transform: perspective(1100px) rotateY(16deg) rotateX(-4deg) translateY(-8px); }
+    75% { transform: perspective(1100px) rotateY(-16deg) rotateX(4deg) translateY(-4px); }
   }
   @keyframes hero-ripple {
     0% { transform: scale(1); opacity: 0; }
-    8% { opacity: 0.7; }
+    18% { opacity: 0.55; }
     100% { transform: scale(2.0); opacity: 0; }
   }
   @keyframes hero-trace {
