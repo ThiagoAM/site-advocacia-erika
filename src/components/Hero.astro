@@ -40,8 +40,10 @@ import { WHATSAPP_URL } from '../data/site';
           <line class="draw dim" pathLength="1" x1="27" y1="430" x2="27" y2="440" stroke="#041E42" stroke-width="1" opacity=".25"></line>
           <line class="draw dim" pathLength="1" x1="373" y1="430" x2="373" y2="440" stroke="#041E42" stroke-width="1" opacity=".25"></line>
           <!-- vértices -->
-          <polygon class="trace trace-1" pathLength="1" points="200,20 373,120 373,320 200,420 27,320 27,120" stroke="#B89D72" stroke-width="1.4" stroke-linecap="round"></polygon>
-          <polygon class="trace trace-2" pathLength="1" points="200,70 330,145 330,295 200,370 70,295 70,145" stroke="#B89D72" stroke-width="1.2" stroke-linecap="round"></polygon>
+          <polygon class="ripple ripple-1" points="200,120 287,170 287,270 200,320 113,270 113,170" stroke="#866D4B" stroke-width="1"></polygon>
+          <polygon class="ripple ripple-2" points="200,120 287,170 287,270 200,320 113,270 113,170" stroke="#866D4B" stroke-width="1"></polygon>
+          <polygon class="trace trace-1" pathLength="1" points="200,20 373,120 373,320 200,420 27,320 27,120" stroke="#C9B48C" stroke-width="2.2" stroke-linecap="round"></polygon>
+          <polygon class="trace trace-2" pathLength="1" points="200,70 330,145 330,295 200,370 70,295 70,145" stroke="#C9B48C" stroke-width="1.8" stroke-linecap="round"></polygon>
           <circle class="vertex" cx="200" cy="20" r="2.5" fill="#866D4B"></circle>
           <circle class="vertex" cx="200" cy="420" r="2.5" fill="#866D4B"></circle>
           <circle class="vertex vertex-core" cx="200" cy="220" r="2.5" fill="#866D4B"></circle>
@@ -123,18 +125,28 @@ import { WHATSAPP_URL } from '../data/site';
   /* ---- Animação: estado inicial só é definido quando a animação está ativa ---- */
   @media (prefers-reduced-motion: no-preference) {
     .hero-art {
-      animation: hero-float  9s ease-in-out 2.2s infinite;
+      transform-origin: center;
+      animation: hero-turn 14s ease-in-out 2.4s infinite;
+    }
+    .hero-art .ripple {
+      transform-box: fill-box;
+      transform-origin: center;
+      opacity: 0;
+      animation: hero-ripple 7s cubic-bezier(0.16, 1, 0.3, 1) 3s infinite;
+    }
+    .hero-art .ripple-2 {
+      animation-delay: 6.5s;
     }
     .hero-art .trace {
       opacity: 0;
-      stroke-dasharray: 0.14 0.86;
+      stroke-dasharray: 0.22 0.78;
       stroke-dashoffset: 0;
       animation:
         hero-trace-in 1.2s ease-out 2.4s forwards,
         hero-trace 9s linear 2.4s infinite;
     }
     .hero-art .trace-2 {
-      stroke-dasharray: 0.1 0.9;
+      stroke-dasharray: 0.16 0.84;
       animation-duration: 1.2s, 12s;
       animation-delay: 3s, 3s;
       animation-direction: normal, reverse;
@@ -179,12 +191,24 @@ import { WHATSAPP_URL } from '../data/site';
   .hero-art .trace {
     opacity: 0;
   }
+  .hero-art .ripple {
+    opacity: 0;
+  }
+  @keyframes hero-turn {
+    0%, 100% { transform: perspective(1100px) rotateY(-16deg) rotateX(4deg) translateY(0); }
+    50% { transform: perspective(1100px) rotateY(16deg) rotateX(-4deg) translateY(-10px); }
+  }
+  @keyframes hero-ripple {
+    0% { transform: scale(1); opacity: 0; }
+    8% { opacity: 0.7; }
+    100% { transform: scale(2.0); opacity: 0; }
+  }
   @keyframes hero-trace {
     from { stroke-dashoffset: 1; }
     to { stroke-dashoffset: 0; }
   }
   @keyframes hero-trace-in {
-    to { opacity: 0.9; }
+    to { opacity: 1; }
   }
   @keyframes hero-float {
     0%, 100% { transform: translateY(0); }
