@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PageHero from '../components/PageHero.astro';
+import heroImg from '../assets/img/hero-contato.png';
 import IconWhatsApp from '../components/IconWhatsApp.astro';
 import {
   EMAIL,
@@ -23,6 +24,7 @@ const description =
       title="Vamos conversar?"
       lead="Atendimento consultivo, humano e direto — presencial em Curitiba e online para todo o Brasil e para o exterior."
       crumbs={[{ label: 'Início', href: '/' }, { label: 'Contato' }]}
+      image={heroImg}
     />
 
     <!-- 01 / Canais diretos -->

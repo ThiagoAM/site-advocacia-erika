@@ -1,5 +1,7 @@
 ---
 import { WHATSAPP_URL } from '../data/site';
+import { Image } from 'astro:assets';
+import eduImg from '../assets/img/edu-fig.png';
 
 const publicos = ['Advogados', 'Corretores', 'Investidores'];
 ---
@@ -26,14 +28,7 @@ const publicos = ['Advogados', 'Corretores', 'Investidores'];
           >
         </div>
         <figure class="edu-fig" aria-hidden="true">
-          <svg viewBox="0 0 220 240" fill="none">
-            <polygon points="110,8 205,63 205,177 110,232 15,177 15,63" stroke="#866D4B" stroke-width="1" opacity=".8"></polygon>
-            <polygon points="110,52 168,85 168,155 110,188 52,155 52,85" stroke="#041E42" stroke-width="1" opacity=".35"></polygon>
-            <line x1="110" y1="120" x2="15" y2="63" stroke="#866D4B" stroke-width="1" opacity=".5"></line>
-            <line x1="110" y1="120" x2="205" y2="63" stroke="#866D4B" stroke-width="1" opacity=".5"></line>
-            <line x1="110" y1="120" x2="110" y2="232" stroke="#866D4B" stroke-width="1" opacity=".5"></line>
-            <circle cx="110" cy="120" r="2.5" fill="#866D4B"></circle>
-          </svg>
+          <Image src={eduImg} alt="" widths={[360, 520, 760]} sizes="(max-width: 860px) 60vw, 300px" format="webp" quality={80} />
         </figure>
       </div>
     </div>
@@ -98,9 +93,12 @@ const publicos = ['Advogados', 'Corretores', 'Investidores'];
     display: flex;
     justify-content: center;
   }
-  .edu-fig svg {
-    width: min(100%, 260px);
+  .edu-fig img {
+    width: min(100%, 300px);
     height: auto;
+    aspect-ratio: 1;
+    object-fit: cover;
+    clip-path: var(--ch);
   }
 
   @media (max-width: 860px) {
@@ -110,8 +108,8 @@ const publicos = ['Advogados', 'Corretores', 'Investidores'];
     .edu-fig {
       order: -1;
     }
-    .edu-fig svg {
-      width: 180px;
+    .edu-fig img {
+      width: 200px;
     }
   }
 </style>

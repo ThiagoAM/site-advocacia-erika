@@ -1,5 +1,6 @@
 ---
-import LogoSM from './LogoSM.astro';
+import { Image } from 'astro:assets';
+import portraitImg from '../assets/img/portrait-ambiente.png';
 import { WHATSAPP_URL } from '../data/site';
 ---
 
@@ -11,7 +12,15 @@ import { WHATSAPP_URL } from '../data/site';
         role="img"
         aria-label="Retrato da Dra. Érika Silvana Saquetti Martins (imagem ilustrativa)"
       >
-        <LogoSM textColor="#FBFBF8" width={96} height={106} strokeWidth={0.8} />
+        <Image
+          class="portrait-img"
+          src={portraitImg}
+          alt=""
+          widths={[480, 720, 1024]}
+          sizes="(max-width: 860px) 92vw, 40vw"
+          format="webp"
+          quality={80}
+        />
         <div class="portrait-caption">
           <p class="name">Dra. Érika Silvana Saquetti Martins</p>
           <p class="role">Advogada · OAB/PR</p>
@@ -68,8 +77,28 @@ import { WHATSAPP_URL } from '../data/site';
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    gap: 1.6rem;
+    justify-content: flex-end;
+    overflow: hidden;
+  }
+  .portrait .portrait-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 0;
+  }
+  /* véu inferior para a legenda */
+  .portrait-caption {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    padding: 4rem 1.5rem 2rem;
+    background: linear-gradient(0deg, rgba(3, 23, 51, 0.92) 0%, rgba(3, 23, 51, 0.6) 60%, rgba(3, 23, 51, 0) 100%);
+  }
+  .portrait::before,
+  .portrait::after {
+    z-index: 2;
   }
   .portrait::before,
   .portrait::after {
@@ -92,7 +121,6 @@ import { WHATSAPP_URL } from '../data/site';
   }
   .portrait-caption {
     text-align: center;
-    padding: 0 1.5rem;
   }
   .portrait-caption .name {
     font-family: var(--font-display);

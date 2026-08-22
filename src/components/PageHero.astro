@@ -8,17 +8,37 @@ export interface Crumb {
   href?: string;
 }
 
+import { Image } from 'astro:assets';
+
 interface Props {
   tag: string;
   title: string;
   lead?: string;
   crumbs?: Crumb[];
+  /** Foto ambiente (3:2) exibida à direita, atrás de um degradê navy */
+  image?: ImageMetadata;
 }
 
-const { tag, title, lead, crumbs = [] } = Astro.props;
+const { tag, title, lead, crumbs = [], image } = Astro.props;
 ---
 
-<section class="section page-hero grid-navy">
+<section class:list={['section', 'page-hero', 'grid-navy', { 'has-image': !!image }]}>
+  {
+    image && (
+      <div class="hero-img" aria-hidden="true">
+        <Image
+          src={image}
+          alt=""
+          widths={[720, 1080, 1536]}
+          sizes="(max-width: 860px) 100vw, 70vw"
+          format="webp"
+          quality={78}
+          loading="eager"
+          fetchpriority="high"
+        />
+      </div>
+    )
+  }
   <div class="container">
     {
       crumbs.length > 0 && (
@@ -50,6 +70,40 @@ const { tag, title, lead, crumbs = [] } = Astro.props;
     padding: calc(var(--header-h) + clamp(3rem, 6.5vw, 5rem)) 0 clamp(3rem, 6vw, 4.5rem);
     background: linear-gradient(165deg, var(--color-navy) 0%, var(--color-navy-deep) 92%);
     color: var(--color-ivory);
+  }
+  .page-hero.has-image {
+    min-height: clamp(420px, 52vw, 560px);
+    display: flex;
+    align-items: flex-end;
+    overflow: hidden;
+  }
+  .page-hero.has-image .container {
+    width: min(1180px, 92%);
+  }
+  .hero-img {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+  .hero-img img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 70% center;
+  }
+  /* véu navy: sólido à esquerda (texto), translúcido à direita (foto) */
+  .hero-img::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(90deg, var(--color-navy) 0%, var(--color-navy) 28%, rgba(4, 30, 66, 0.82) 52%, rgba(4, 30, 66, 0.45) 100%),
+      linear-gradient(0deg, rgba(3, 23, 51, 0.75) 0%, rgba(3, 23, 51, 0) 45%);
+  }
+  @media (max-width: 860px) {
+    .hero-img::after {
+      background: linear-gradient(0deg, var(--color-navy) 0%, rgba(4, 30, 66, 0.78) 45%, rgba(4, 30, 66, 0.3) 100%);
+    }
   }
 
   .crumbs {

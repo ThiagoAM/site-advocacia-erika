@@ -5,6 +5,10 @@ import PageCta from '../../components/PageCta.astro';
 import { areas, type Area } from '../../data/areas';
 import { SITE_NAME } from '../../data/site';
 
+const areaImages = import.meta.glob<{ default: ImageMetadata }>('../../assets/img/area-*.png', {
+  eager: true,
+});
+
 export function getStaticPaths() {
   return areas.map((area) => ({
     params: { slug: area.slug },
@@ -17,6 +21,7 @@ interface Props {
 }
 
 const { area } = Astro.props;
+const heroImg = areaImages[`../../assets/img/area-${area.slug}.png`]?.default;
 const title = `${area.titulo} — ${SITE_NAME}`;
 ---
 
@@ -31,6 +36,7 @@ const title = `${area.titulo} — ${SITE_NAME}`;
         { label: 'Áreas de Atuação', href: '/#areas' },
         { label: area.titulo },
       ]}
+      image={heroImg}
     />
 
     <!-- 01 / Visão geral -->
