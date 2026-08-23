@@ -1,12 +1,24 @@
 ---
 /**
- * Seção 1 — Hero da home (v3).
- * Fundo: fotografia arquitetônica escura + halo dourado em CSS + grão.
- * O padrão em mosaico da v2 saiu: no lugar entram profundidade e luz.
+ * Seção 1 — Hero da home (v4).
+ *
+ * A referência (kbmarketingjuridico.com.br) não usa retrato em card: a pessoa
+ * é recortada e "nasce" do fundo escuro. O retrato aqui é gerado por IA
+ * (Codex/`gpt-5.6-luna`), com a foto real da Dra. Érika como referência de
+ * semelhança, e depois recortado pelo subject lifting do Vision — ver
+ * `docs/redesign-v4.md`. Uso autorizado por ela.
+ *
+ * `--fig-ar` PRECISA bater com a proporção do PNG importado: a caixa da figura
+ * é a própria pessoa, e é isso que mantém as tags no mesmo ponto do corpo dela
+ * em qualquer largura. Trocou o retrato, atualize as duas variáveis.
+ *
+ * A figura estica até a base da seção (`margin-bottom: -(--hero-pb)`), então
+ * `bottom: 0` dela é a aresta inferior do hero: é ali que o véu de dissolução
+ * (`.hero-figure::after`) encosta.
  */
 import { Image } from 'astro:assets';
-import heroBg from '../../assets/img/v3/hero-bg.png';
-import portrait from '../../assets/img/erika.jpg';
+import heroBackdrop from '../../assets/img/v3/hero-backdrop.png';
+import portrait from '../../assets/img/v3/erika-retrato-ia.png';
 import Eyebrow from '../ui/Eyebrow.astro';
 import Button from '../ui/Button.astro';
 import Chip from '../ui/Chip.astro';
@@ -18,12 +30,12 @@ import { OAB, WHATSAPP_URL } from '../../data/site';
   <div class="hero-bg-wrap" aria-hidden="true">
     <Image
       class="hero-bg"
-      src={heroBg}
+      src={heroBackdrop}
       alt=""
-      widths={[768, 1280, 1920]}
+      widths={[1280, 1920, 2560, 3200]}
       sizes="100vw"
       format="webp"
-      quality={72}
+      quality={70}
       loading="eager"
       fetchpriority="high"
     />
@@ -31,7 +43,7 @@ import { OAB, WHATSAPP_URL } from '../../data/site';
     <span class="hero-veil-b"></span>
   </div>
 
-  <div class="container hero-grid">
+  <div class="container hero-container">
     <div class="hero-copy">
       <Reveal>
         <Eyebrow>Advocacia consultiva · Imobiliário &amp; Patrimonial</Eyebrow>
@@ -48,8 +60,9 @@ import { OAB, WHATSAPP_URL } from '../../data/site';
       </Reveal>
       <Reveal delay={330}>
         <div class="hero-ctas">
-          <Button href={WHATSAPP_URL} variant="gold" external icon="whatsapp" pulse>Falar no WhatsApp</Button>
-          <Button href="#areas" variant="ghost">Conheça as áreas</Button>
+          <Button href={WHATSAPP_URL} variant="gold" size="lg" external icon="whatsapp" pulse>
+            Falar no WhatsApp
+          </Button>
         </div>
       </Reveal>
       <Reveal delay={430}>
@@ -61,33 +74,25 @@ import { OAB, WHATSAPP_URL } from '../../data/site';
       </Reveal>
     </div>
 
-    <Reveal delay={200} class="hero-photo-wrap">
-      <span class="hero-photo-halo" aria-hidden="true"></span>
-      <figure class="hero-photo">
-        <span class="hero-frame" aria-hidden="true"></span>
-        <Image
-          class="hero-portrait photo-grade"
-          src={portrait}
-          alt="Dra. Érika Silvana Saquetti Martins, advogada"
-          widths={[480, 720, 960]}
-          sizes="(max-width: 900px) 88vw, 44vw"
-          format="webp"
-          quality={82}
-          loading="eager"
-        />
-        <span class="photo-tint" aria-hidden="true"></span>
-        <span class="hero-photo-veil" aria-hidden="true"></span>
-        <figcaption class="hero-caption">
-          <span class="hero-caption-name">Dra. Érika Silvana Saquetti Martins</span>
-          <span class="hero-caption-role">Sócia fundadora · {OAB}</span>
-        </figcaption>
-        <Chip class="chip chip-float">
-          <svg slot="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"
-            ><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"></path></svg
-          >
-          Brasil · EUA · Canadá · Portugal
-        </Chip>
-      </figure>
+    <Reveal delay={180} class="hero-figure">
+      <span class="hero-glow" aria-hidden="true"></span>
+      <Image
+        class="hero-portrait"
+        src={portrait}
+        alt="Dra. Érika Silvana Saquetti Martins, advogada"
+        widths={[540, 780, 1080, 1308]}
+        sizes="(max-width: 900px) 92vw, 46vw"
+        format="webp"
+        quality={80}
+        loading="eager"
+      />
+      <Chip class="hero-tag hero-tag-nome">Dra. Érika Saquetti Martins</Chip>
+      <Chip class="hero-tag hero-tag-paises">
+        <svg slot="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"
+          ><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"></path></svg
+        >
+        Brasil · EUA · Canadá · Portugal
+      </Chip>
     </Reveal>
   </div>
 
@@ -102,11 +107,18 @@ import { OAB, WHATSAPP_URL } from '../../data/site';
 
 <style>
   .hero {
-    padding-top: calc(var(--header-h) + clamp(3rem, 6vw, 5.5rem));
-    padding-bottom: clamp(5rem, 8vw, 7rem);
+    --hero-pb: clamp(5rem, 8vw, 7rem);
+    --fig-ar: 1308 / 1645;
+    --fig-arw: 0.7951;
+    /* Escala da figura no desktop. Na referência a pessoa ocupa ~22% da
+       largura da tela e sobra fundo à direita dela — ela NÃO encosta na borda.
+       Sem este teto a figura acompanhava a coluna e ficava grande demais. */
+    --fig-max: clamp(320px, 33vw, 470px);
+    padding-top: calc(var(--header-h) + clamp(2rem, 4vw, 3.5rem));
+    padding-bottom: var(--hero-pb);
     min-height: min(100svh, 940px);
     display: flex;
-    align-items: center;
+    align-items: stretch;
     background: var(--bg-page);
   }
 
@@ -123,29 +135,28 @@ import { OAB, WHATSAPP_URL } from '../../data/site';
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: 72% center;
-    opacity: 0.85;
+    object-position: 100% center;
   }
-  /* véu à esquerda: garante contraste do texto sem escurecer a luz da direita */
+  /* véu à esquerda: garante contraste do texto sem apagar o feixe da direita */
   .hero-veil-l {
     position: absolute;
     inset: 0;
     background:
-      linear-gradient(96deg, var(--color-abyss) 0%, rgba(1, 6, 15, 0.94) 26%, rgba(2, 11, 24, 0.6) 52%, rgba(1, 6, 15, 0.1) 78%),
-      radial-gradient(120% 90% at 12% 40%, rgba(4, 30, 66, 0.5) 0%, rgba(1, 6, 15, 0) 60%);
+      linear-gradient(96deg, var(--color-abyss) 0%, rgba(1, 6, 15, 0.92) 24%, rgba(2, 11, 24, 0.55) 48%, rgba(1, 6, 15, 0.08) 76%),
+      radial-gradient(120% 90% at 10% 42%, rgba(4, 30, 66, 0.45) 0%, rgba(1, 6, 15, 0) 62%);
   }
   .hero-veil-b {
     position: absolute;
     inset: auto 0 0 0;
-    height: 42%;
-    background: linear-gradient(0deg, var(--bg-page) 0%, rgba(1, 6, 15, 0.55) 45%, rgba(1, 6, 15, 0) 100%);
+    height: 38%;
+    background: linear-gradient(0deg, var(--bg-page) 0%, rgba(1, 6, 15, 0.5) 48%, rgba(1, 6, 15, 0) 100%);
   }
 
   /* ---------- grade ---------- */
-  .hero-grid {
+  .hero-container {
     display: grid;
-    grid-template-columns: minmax(0, 55fr) minmax(0, 45fr);
-    gap: clamp(2rem, 5vw, 5rem);
+    grid-template-columns: minmax(0, 52fr) minmax(0, 48fr);
+    gap: clamp(1.5rem, 4vw, 3.5rem);
     align-items: center;
   }
   .hero-copy {
@@ -153,6 +164,7 @@ import { OAB, WHATSAPP_URL } from '../../data/site';
     flex-direction: column;
     align-items: flex-start;
     gap: 1.4rem;
+    padding-block: clamp(0.5rem, 2vw, 1.5rem);
   }
   .hero-copy h1 {
     text-wrap: balance;
@@ -164,7 +176,15 @@ import { OAB, WHATSAPP_URL } from '../../data/site';
     display: flex;
     flex-wrap: wrap;
     gap: 0.9rem;
-    margin-top: 0.4rem;
+    margin-top: 0.5rem;
+  }
+  /* Botão único e generoso, como na referência (lá ele ocupa ~86% da coluna
+     de texto). Em `min-width` NÃO dá para usar porcentagem: `.hero-copy` tem
+     `align-items: flex-start`, então o wrapper encolhe até o conteúdo e o
+     `100%` passaria a ser a largura do próprio botão. */
+  .hero-ctas :global(.btn) {
+    min-width: 25rem;
+    max-width: 100%;
   }
 
   .hero-meta {
@@ -194,87 +214,89 @@ import { OAB, WHATSAPP_URL } from '../../data/site';
     background: var(--color-gold);
   }
 
-  /* ---------- retrato ---------- */
-  .hero-photo-wrap {
+  /* ---------- retrato recortado ----------
+     A figura tem a PROPORÇÃO EXATA do PNG (ver `--fig-ar`), então a caixa é a
+     própria Érika: as tags podem ser posicionadas em % e continuam no mesmo
+     ponto do corpo dela em qualquer largura. A margem negativa desce a caixa
+     até a aresta inferior da seção, para sangrar como na referência. */
+  .hero-container :global(.hero-figure) {
     position: relative;
+    align-self: end;
+    justify-self: center;
+    aspect-ratio: var(--fig-ar);
     width: 100%;
+    max-width: var(--fig-max);
+    margin-bottom: calc(-1 * var(--hero-pb));
   }
-  .hero-photo {
-    position: relative;
-    margin: 0 0 0 auto;
-    width: 100%;
-    max-width: 480px;
-    aspect-ratio: 4 / 5;
-    border-radius: var(--radius-lg);
-    overflow: hidden;
-    border: 1px solid rgba(251, 251, 248, 0.12);
-    background: var(--color-ink-800);
-  }
-  /* halo dourado atrás do card — vive no wrapper para não ser cortado
-     pelo `overflow: hidden` nem coberto pelo fundo do próprio card */
-  .hero-photo-halo {
+  .hero-glow {
     position: absolute;
     z-index: 0;
-    inset: -16% -12% -10% -10%;
+    left: 52%;
+    top: 46%;
+    width: 122%;
+    aspect-ratio: 1 / 1;
+    transform: translate(-50%, -50%);
     background: var(--halo-gold);
-    filter: blur(12px);
-    opacity: 0.9;
-    pointer-events: none;
-  }
-  .hero-frame {
-    position: absolute;
-    inset: 0;
-    z-index: 3;
-    border-radius: inherit;
-    box-shadow: inset 0 0 0 1px rgba(217, 194, 154, 0.16);
+    filter: blur(14px);
+    opacity: 0.85;
     pointer-events: none;
   }
   .hero-portrait {
     position: absolute;
+    z-index: 1;
     inset: 0;
     width: 100%;
     height: 100%;
-    object-fit: cover;
-    object-position: 50% 14%;
+    object-fit: contain;
+    object-position: bottom right;
   }
-  .hero-photo-veil {
+  /* dissolução: a figura encosta na aresta inferior e some no fundo da página */
+  .hero-container :global(.hero-figure)::after {
+    content: "";
     position: absolute;
+    z-index: 2;
     inset: auto 0 0 0;
-    height: 62%;
-    background: linear-gradient(0deg, rgba(1, 6, 15, 0.96) 6%, rgba(1, 6, 15, 0.72) 34%, rgba(1, 6, 15, 0) 100%);
+    height: clamp(96px, 20%, 190px);
+    background: linear-gradient(0deg, var(--bg-page) 10%, rgba(1, 6, 15, 0.7) 48%, rgba(1, 6, 15, 0) 100%);
     pointer-events: none;
   }
-  .hero-caption {
+
+  .hero-container :global(.hero-tag) {
     position: absolute;
-    left: clamp(1.1rem, 3vw, 1.6rem);
-    right: clamp(1.1rem, 3vw, 1.6rem);
-    bottom: clamp(1.1rem, 3vw, 1.5rem);
-    z-index: 2;
-    display: flex;
-    flex-direction: column;
-    gap: 0.2rem;
+    z-index: 3;
+    max-width: calc(100% - 1rem);
   }
-  .hero-caption-name {
-    font-family: var(--font-display);
-    font-size: clamp(1.15rem, 1.7vw, 1.4rem);
-    font-weight: 400;
-    line-height: 1.25;
-    color: var(--color-ivory);
+  /* abaixo do queixo e do peito: as tags encostam nela sem cobrir o rosto */
+  .hero-container :global(.hero-tag-nome) {
+    top: 52%;
+    left: -16%;
   }
-  .hero-caption-role {
-    font-size: 0.6875rem;
-    font-weight: 500;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: var(--color-gold-light);
+  .hero-container :global(.hero-tag-paises) {
+    top: 68%;
+    left: -26%;
   }
-  .hero-photo :global(.chip-float) {
-    position: absolute;
-    z-index: 2;
-    top: 1rem;
-    left: 1rem;
-    max-width: calc(100% - 2rem);
-    background: rgba(1, 6, 15, 0.72);
+  /* entre 901 e 1150 px a coluna de texto encosta na figura: as tags recolhem
+     para cima dela em vez de invadirem o parágrafo */
+  @media (max-width: 1150px) {
+    .hero-container :global(.hero-tag-nome) {
+      top: 51%;
+      left: -3%;
+    }
+    .hero-container :global(.hero-tag-paises) {
+      top: 67%;
+      left: -9%;
+    }
+  }
+  /* a linha de credenciais tem de caber numa linha só */
+  @media (max-width: 1150px) {
+    .hero-meta {
+      font-size: 0.6875rem;
+      letter-spacing: 0.1em;
+      gap: 0.5rem 0.85rem;
+    }
+    .hero-meta li {
+      gap: 0.85rem;
+    }
   }
 
   /* ---------- indicador de rolagem ---------- */
@@ -282,7 +304,7 @@ import { OAB, WHATSAPP_URL } from '../../data/site';
     position: absolute;
     left: 50%;
     bottom: clamp(1rem, 2.5vw, 1.8rem);
-    z-index: 2;
+    z-index: 4;
     transform: translateX(-50%);
     display: grid;
     place-items: center;
@@ -327,35 +349,70 @@ import { OAB, WHATSAPP_URL } from '../../data/site';
     }
   }
 
+  /* ---------- empilhado ---------- */
   @media (max-width: 900px) {
     .hero {
+      --hero-pb: clamp(3rem, 8vw, 4.5rem);
       min-height: 0;
-      padding-top: calc(var(--header-h) + 2.25rem);
-      padding-bottom: clamp(3.5rem, 9vw, 5rem);
+      padding-top: calc(var(--header-h) + 1.25rem);
+      display: block;
     }
-    .hero-grid {
+    .hero-container {
       grid-template-columns: 1fr;
-      gap: 2.25rem;
+      gap: 0;
     }
+    /* empilhado o hero fica alto e o `cover` amplia muito o backdrop: sem um
+       véu mais forte o feixe dourado vira uma laje clara atrás dela. */
     .hero-bg {
-      object-position: 78% 30%;
+      object-position: 58% 26%;
     }
     .hero-veil-l {
       background:
-        linear-gradient(180deg, rgba(1, 6, 15, 0.82) 0%, rgba(1, 6, 15, 0.7) 40%, rgba(1, 6, 15, 0.92) 100%),
-        radial-gradient(100% 60% at 50% 20%, rgba(4, 30, 66, 0.5) 0%, rgba(1, 6, 15, 0) 70%);
+        linear-gradient(180deg, rgba(1, 6, 15, 0.82) 0%, rgba(1, 6, 15, 0.7) 30%, rgba(1, 6, 15, 0.95) 100%),
+        radial-gradient(90% 42% at 50% 14%, rgba(4, 30, 66, 0.4) 0%, rgba(1, 6, 15, 0) 74%);
     }
-    .hero-photo-wrap {
+    /* a figura vira um bloco no topo, sangrando de borda a borda */
+    /* bloco de foto no topo, de borda a borda — mas com a ALTURA amarrada a
+       ~54svh (a proporção da referência). Sem esse teto, em 768 px de largura
+       a figura passava de 890 px de altura e empurrava todo o texto do hero
+       para fora da tela. `justify-self: center` mantém o sangramento simétrico
+       mesmo quando a caixa é mais larga que o container. */
+    .hero-container :global(.hero-figure) {
       order: -1;
+      align-self: auto;
+      justify-self: center;
+      width: calc(100% + 2 * var(--container-pad));
+      max-width: calc(54svh * var(--fig-arw));
+      margin: 0 0 clamp(0.25rem, 2vw, 1rem);
     }
-    .hero-photo {
-      max-width: 420px;
-      margin-inline: auto;
-      aspect-ratio: 5 / 6;
+    .hero-portrait {
+      object-position: bottom center;
+    }
+    /* o véu tem de atravessar a seção inteira: limitado à largura da figura,
+       ele pintava o fundo sólido num painel mais estreito que o hero e a
+       emenda vertical aparecia nas laterais (visível sobretudo em 768 px).
+       A seção tem `overflow: clip`, então o excedente não gera rolagem. */
+    .hero-container :global(.hero-figure)::after {
+      inset: auto -50vw 0 -50vw;
+      height: 30%;
+      background: linear-gradient(0deg, var(--bg-page) 4%, rgba(1, 6, 15, 0.6) 52%, rgba(1, 6, 15, 0) 100%);
+    }
+    .hero-container :global(.hero-tag) {
+      font-size: 0.8125rem;
+      max-width: calc(100% - 2 * var(--container-pad));
+    }
+    .hero-container :global(.hero-tag-nome) {
+      top: 60%;
+      left: var(--container-pad);
+    }
+    .hero-container :global(.hero-tag-paises) {
+      top: 76%;
+      left: var(--container-pad);
     }
     .hero-copy {
       align-items: center;
       text-align: center;
+      padding-block: 0;
     }
     .hero-copy :global([data-reveal]) {
       width: 100%;
@@ -366,10 +423,10 @@ import { OAB, WHATSAPP_URL } from '../../data/site';
     .hero-ctas {
       width: 100%;
       max-width: 26rem;
-      flex-direction: column;
     }
     .hero-ctas :global(.btn) {
       width: 100%;
+      min-width: 0;
     }
     .hero-meta {
       justify-content: center;
@@ -378,10 +435,9 @@ import { OAB, WHATSAPP_URL } from '../../data/site';
       display: none;
     }
   }
-  @media (max-width: 420px) {
-    .hero-photo :global(.chip-float) {
+  @media (max-width: 480px) {
+    .hero-container :global(.hero-tag-paises) {
       white-space: normal;
-      font-size: 0.8125rem;
     }
   }
 </style>

@@ -1,6 +1,9 @@
 ---
 /**
  * Seção 5 — A Advogada: card com bio + credenciais e foto com selo circular girando.
+ * A foto entra SEM tratamento de escurecimento: aqui ela é retrato
+ * institucional dentro de um card, não um elemento que precise fundir com o
+ * fundo da página (esse papel é do recorte do hero).
  */
 import { Image } from 'astro:assets';
 import portrait from '../../assets/img/erika.jpg';
@@ -48,7 +51,7 @@ const creds = [
     <Reveal delay={150} class="adv-photo-wrap">
       <GlassCard radius="md" padding="none" class="adv-photo">
         <Image
-          class="adv-img photo-grade"
+          class="adv-img"
           src={portrait}
           alt="Dra. Érika Silvana Saquetti Martins em retrato, olhando para a câmera"
           widths={[480, 720, 960]}
@@ -57,7 +60,6 @@ const creds = [
           quality={82}
           loading="eager"
         />
-        <span class="photo-tint" aria-hidden="true"></span>
         <span class="selo spin-slow" aria-hidden="true">
           <Selo aria-hidden="true" role="presentation" aria-label={undefined} />
         </span>

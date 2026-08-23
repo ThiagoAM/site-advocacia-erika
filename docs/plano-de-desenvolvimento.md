@@ -42,7 +42,7 @@ Status em **22/08/2026**.
 
 ### Fase 1 — Design system
 - Tokens: paleta Azul Legado / Ouro Patrimônio / Marfim; tipografia Cormorant Garamond + Montserrat.
-- Componentes v2 (`src/components/ui/`): Eyebrow, SectionHead, GoldRule, Button, GlassCard, IconSquare, Stat, Reveal, Marquee, Accordion, Watermark, Chip.
+- Componentes v2 (`src/components/ui/`): Eyebrow, SectionHead, GoldRule, Button, GlassCard, IconSquare, Stat, Reveal, Marquee, Accordion, Chip.
 
 ### Fase 2 — Páginas
 - Uma página dedicada por área de atuação (SEO on-page: título, meta description, headings, conteúdo próprio).

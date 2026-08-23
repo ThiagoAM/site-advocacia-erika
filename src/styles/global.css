@@ -314,6 +314,30 @@
   .btn:not(:has(.btn-icon)) {
     padding-inline: 1.6rem;
   }
+
+  /* chamada principal: escala da referência (rótulo ~20 px, altura ~84 px) */
+  .btn-lg {
+    font-size: clamp(1rem, 0.9rem + 0.5vw, 1.25rem);
+    gap: 1.1rem;
+    padding: 1rem 1rem 1rem 2rem;
+    border-radius: 15px;
+  }
+  .btn-lg:not(:has(.btn-icon)) {
+    padding-inline: 2rem;
+  }
+  .btn-lg .btn-icon {
+    width: 52px;
+    height: 52px;
+  }
+  .btn-lg .btn-icon svg {
+    width: 22px;
+    height: 22px;
+  }
+  @media (max-width: 600px) {
+    .btn-lg {
+      padding-left: 1.5rem;
+    }
+  }
   @media (max-width: 600px) {
     .btn {
       white-space: normal;
@@ -374,41 +398,6 @@
     color: var(--color-navy);
   }
 
-  /* ---------- marca-d'água ---------- */
-  .watermark {
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: -0.12em;
-    z-index: 0;
-    font-family: var(--font-display);
-    font-weight: 300;
-    font-size: clamp(6rem, 18vw, 16rem);
-    line-height: 1;
-    text-align: center;
-    letter-spacing: 0.04em;
-    color: rgba(251, 251, 248, 0.035);
-    -webkit-text-stroke: 1px rgba(217, 194, 154, 0.16);
-    white-space: nowrap;
-    pointer-events: none;
-    user-select: none;
-  }
-
-  /* ---------- retratos ----------
-     A foto da advogada tem fundo claro (janela/cortina). Sobre a base
-     quase preta ela "salta" e quebra o tom; estas duas classes fazem a
-     ponte: `photo-grade` no <img> e `photo-tint` numa camada por cima. */
-  .photo-grade {
-    filter: saturate(0.78) contrast(1.06) brightness(0.86);
-  }
-  .photo-tint {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    background:
-      radial-gradient(72% 55% at 52% 34%, rgba(1, 6, 15, 0) 0%, rgba(1, 6, 15, 0.35) 62%, rgba(1, 6, 15, 0.72) 100%),
-      linear-gradient(180deg, rgba(4, 30, 66, 0.42) 0%, rgba(2, 11, 24, 0.26) 45%, rgba(1, 6, 15, 0.2) 100%);
-  }
 
   /* ---------- textura de grão (sem imagem: SVG inline) ---------- */
   .grain::after {

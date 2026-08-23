@@ -1,11 +1,13 @@
 ---
 /**
  * Botão/link de ação. `gold` = gradiente dourado com texto navy; `ghost` = contorno marfim.
- * Ícone circular marfim (40 px) à direita do rótulo.
+ * Ícone circular marfim à direita do rótulo (40 px em `md`, 52 px em `lg`).
  */
 interface Props {
   href: string;
   variant?: 'gold' | 'ghost';
+  /** `lg` = chamada principal (hero/CTA), na escala da referência. */
+  size?: 'md' | 'lg';
   /** Abre em nova aba (target=_blank + rel=noopener). */
   external?: boolean;
   /** Pulso sutil contínuo (desligado com prefers-reduced-motion). */
@@ -17,6 +19,7 @@ interface Props {
 const {
   href,
   variant = 'gold',
+  size = 'md',
   external = false,
   pulse = false,
   icon = 'arrow',
@@ -27,7 +30,7 @@ const {
 
 <a
   href={href}
-  class:list={['btn', `btn-${variant}`, { 'btn-pulse': pulse }, className]}
+  class:list={['btn', `btn-${variant}`, { 'btn-lg': size === 'lg', 'btn-pulse': pulse }, className]}
   target={external ? '_blank' : undefined}
   rel={external ? 'noopener' : undefined}
   {...rest}
