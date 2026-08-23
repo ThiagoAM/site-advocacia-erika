@@ -1,0 +1,45 @@
+---
+/**
+ * Valor em display dourado + rótulo (+ nota opcional).
+ */
+interface Props {
+  value: string;
+  label: string;
+  note?: string;
+  class?: string;
+}
+const { value, label, note, class: className } = Astro.props;
+---
+
+<div class:list={['stat', className]}>
+  <span class="stat-value em-gold">{value}</span>
+  <span class="stat-label">{label}</span>
+  {note && <span class="stat-note">{note}</span>}
+</div>
+
+<style>
+  .stat {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+  .stat-value {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-style: normal;
+    font-size: clamp(2.4rem, 4vw, 3.4rem);
+    line-height: 1;
+    letter-spacing: -0.01em;
+  }
+  .stat-label {
+    font-family: var(--font-sans);
+    font-size: 0.9375rem;
+    font-weight: 500;
+    color: var(--color-ivory);
+    margin-top: 0.5rem;
+  }
+  .stat-note {
+    font-size: 0.8125rem;
+    color: var(--ink-soft);
+  }
+</style>

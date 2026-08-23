@@ -1,75 +1,123 @@
 ---
 /**
- * CTA de encerramento das páginas internas — mesmo desenho do CtaFinal
- * da homepage, com numeração e textos parametrizáveis por página.
+ * CTA de encerramento das páginas internas (v2): centrado, halo dourado ao fundo,
+ * h2 com trecho em itálico dourado, botão WhatsApp com pulso e linha de canais
+ * secundários (e-mail e Instagram).
  */
-import IconWhatsApp from './IconWhatsApp.astro';
-import { WHATSAPP_URL } from '../data/site';
+import { Image } from 'astro:assets';
+import Button from './ui/Button.astro';
+import Eyebrow from './ui/Eyebrow.astro';
+import GoldRule from './ui/GoldRule.astro';
+import glow from '../assets/img/glow-gold.png';
+import { EMAIL, INSTAGRAM_HANDLE, INSTAGRAM_URL, WHATSAPP_URL } from '../data/site';
 
 interface Props {
+  /** Mantido por compatibilidade (numeração antiga); não é exibido. */
   num?: string;
   title: string;
+  /** Título com marcação (`<em class="em-gold">`); tem precedência sobre `title`. */
+  titleHtml?: string;
   text: string;
   label?: string;
 }
 
-const { num, title, text, label = 'Falar no WhatsApp' } = Astro.props;
+const { title, titleHtml, text, label = 'Falar no WhatsApp' } = Astro.props;
 ---
 
-<section class="section page-cta grid-navy">
+<section class="section page-cta">
+  <div class="cta-glow" aria-hidden="true">
+    <Image src={glow} alt="" width={1024} format="webp" quality={60} loading="lazy" />
+  </div>
   <div class="container">
-    <span class="sec-tag">
-      {num && <span class="num">{num}</span>}
-      {num && <span class="bar">/</span>}
-      Contato
-    </span>
-    <h2>{title}</h2>
-    <div class="rule-double"></div>
-    <p>{text}</p>
-    <a class="btn btn-gold" href={WHATSAPP_URL} target="_blank" rel="noopener">
-      <IconWhatsApp />
-      {label}
-    </a>
+    <Eyebrow>Contato</Eyebrow>
+    {titleHtml ? <h2 set:html={titleHtml} /> : <h2>{title}</h2>}
+    <p class="lead">{text}</p>
+    <GoldRule />
+    <div class="cta-btn">
+      <Button href={WHATSAPP_URL} variant="gold" external icon="whatsapp" pulse>{label}</Button>
+    </div>
+    <p class="channels">
+      <a href={`mailto:${EMAIL}`}>{EMAIL}</a>
+      <span class="sep" aria-hidden="true"></span>
+      <a href={INSTAGRAM_URL} target="_blank" rel="noopener">{INSTAGRAM_HANDLE}</a>
+    </p>
     <p class="after">Atendimento · Brasil — EUA — Canadá — Portugal</p>
   </div>
 </section>
 
 <style>
   .page-cta {
-    padding: var(--pad-sec) 0;
-    background: linear-gradient(170deg, var(--color-navy) 0%, var(--color-navy-deep) 90%);
-    border-top: 1px solid var(--gold-faint);
-    color: var(--color-ivory);
+    background: linear-gradient(180deg, var(--color-navy) 0%, var(--color-navy-deep) 100%);
+    border-top: 1px solid var(--ivory-line);
     text-align: center;
   }
-  .page-cta :global(.sec-tag) {
-    justify-content: center;
+  .page-cta .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.25rem;
   }
-  .page-cta :global(.sec-tag)::before {
-    display: none;
+  .cta-glow {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    width: min(110vw, 1100px);
+    aspect-ratio: 1;
+    transform: translate(-50%, -50%);
+    opacity: 0.38;
+    pointer-events: none;
+    mix-blend-mode: screen;
+    z-index: 0;
+  }
+  .cta-glow img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
   .page-cta h2 {
-    font-size: clamp(2.2rem, 5vw, 3.6rem);
-    color: var(--color-ivory);
+    font-size: clamp(2.2rem, 4.6vw, 3.6rem);
     max-width: 22ch;
-    margin: 0 auto 1.4rem;
+    text-wrap: balance;
   }
-  .page-cta p {
-    font-weight: 400;
-    color: var(--ivory-soft);
+  .page-cta .lead {
     max-width: 36rem;
-    margin: 0 auto 2.6rem;
   }
-  .page-cta :global(.rule-double) {
-    margin: 0 auto 2.6rem;
+  .cta-btn {
+    margin-top: 1rem;
   }
-  .page-cta .after {
-    margin-top: 1.8rem;
-    margin-bottom: 0;
-    font-size: 0.68rem;
+  .channels {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 0.6rem 1rem;
+    margin-top: 0.6rem;
+    font-size: 0.9375rem;
     font-weight: 500;
-    letter-spacing: 0.28em;
+  }
+  .channels a {
+    color: var(--color-ivory);
+    text-decoration: underline;
+    text-decoration-color: var(--color-gold);
+    text-underline-offset: 4px;
+    overflow-wrap: anywhere;
+    transition: color 0.3s ease;
+  }
+  .channels a:hover {
+    color: var(--color-gold-light);
+  }
+  .sep {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--color-gold-mid);
+  }
+  .after {
+    margin-top: 0.4rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.24em;
     text-transform: uppercase;
-    color: var(--gold-text);
+    color: var(--ink-faint);
   }
 </style>

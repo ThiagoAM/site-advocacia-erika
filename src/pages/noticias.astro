@@ -2,12 +2,39 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PageHero from '../components/PageHero.astro';
 import PageCta from '../components/PageCta.astro';
-import Noticias from '../components/Noticias.astro';
+import SectionHead from '../components/ui/SectionHead.astro';
+import GlassCard from '../components/ui/GlassCard.astro';
+import Reveal from '../components/ui/Reveal.astro';
 import { SITE_NAME } from '../data/site';
 
 const title = `Conteúdo & Notícias — ${SITE_NAME}`;
 const description =
   'Seleção diária de notícias sobre direito imobiliário, notarial e registral e planejamento patrimonial, com a curadoria da Dra. Érika Saquetti Martins.';
+
+/**
+ * Cards de exemplo — serão substituídos pelo pipeline de notícias
+ * (ver docs/noticias-pipeline.md) em etapa posterior.
+ */
+const noticias = [
+  {
+    fonte: 'Migalhas',
+    data: '18 ago 2026',
+    titulo: 'STJ consolida tese sobre usucapião extrajudicial e amplia a segurança dos registros',
+    href: '#conteudo',
+  },
+  {
+    fonte: 'Agência Brasil',
+    data: '17 ago 2026',
+    titulo: 'REURB-S: novo decreto simplifica a regularização fundiária em núcleos urbanos consolidados',
+    href: '#conteudo',
+  },
+  {
+    fonte: 'Valor Econômico',
+    data: '16 ago 2026',
+    titulo: 'Holdings familiares avançam como estratégia de sucessão patrimonial no Brasil',
+    href: '#conteudo',
+  },
+];
 ---
 
 <BaseLayout title={title} description={description}>
@@ -15,18 +42,17 @@ const description =
     <PageHero
       tag="Conteúdo"
       title="Conteúdo & Notícias"
+      titleHtml='Conteúdo &amp; <em class="em-gold">Notícias</em>'
       lead="Uma seleção diária de notícias e movimentos relevantes em direito imobiliário, notarial e registral e planejamento patrimonial — com o filtro de quem pesquisa e atua na área."
       crumbs={[{ label: 'Início', href: '/' }, { label: 'Conteúdo' }]}
     />
 
     <!-- curadoria -->
-    <section class="section curadoria grid-ivory">
+    <section class="section curadoria">
       <div class="container">
-        <div class="sec-head">
-          <span class="sec-tag">Curadoria</span>
-          <h2>O que você encontra aqui.</h2>
-          <div class="rule-double"></div>
-        </div>
+        <SectionHead eyebrow="Curadoria" align="left">
+          O que você <em class="em-gold">encontra aqui</em>.
+        </SectionHead>
 
         <div class="cur-copy">
           <p>
@@ -41,38 +67,147 @@ const description =
             pede leitura própria, com documentos e contexto.
           </p>
         </div>
+      </div>
+    </section>
+
+    <!-- notícias -->
+    <section class="section section-navy-deep news" id="conteudo">
+      <div class="container">
+        <div class="news-head-row">
+          <SectionHead eyebrow="Notícias & Conteúdo" align="left">
+            O direito em movimento, <em class="em-gold">lido com precisão</em>.
+          </SectionHead>
+          <span class="live-note"><span class="live-dot" aria-hidden="true"></span>Atualizado diariamente</span>
+        </div>
+
+        <div class="news-grid">
+          {
+            noticias.map((noticia, i) => (
+              <Reveal delay={i * 90}>
+                <GlassCard radius="md" as="article" class="news-card">
+                  <div class="news-meta">
+                    <span>{noticia.fonte}</span>
+                    <span class="sep" aria-hidden="true" />
+                    <span>{noticia.data}</span>
+                  </div>
+                  <h3>{noticia.titulo}</h3>
+                  <a class="news-link" href={noticia.href} aria-label={`Ler análise: ${noticia.titulo}`}>
+                    Ler análise
+                  </a>
+                </GlassCard>
+              </Reveal>
+            ))
+          }
+        </div>
 
         <p class="embreve">
           <span class="embreve-tag">Em breve</span>
-          Atualização diária automática. Os cards abaixo são exemplos do formato editorial.
+          Atualização diária automática. Os cards acima são exemplos do formato editorial.
         </p>
       </div>
     </section>
 
-    <Noticias />
-
     <PageCta
       title="Uma notícia tocou o seu caso?"
+      titleHtml='Uma notícia tocou <em class="em-gold">o seu caso</em>?'
       text="Envie uma mensagem e converse diretamente sobre a sua situação — sem juridiquês, com leitura técnica e objetiva."
     />
   </main>
 </BaseLayout>
 
 <style>
-  .curadoria {
-    padding: var(--pad-sec) 0;
-    background: var(--color-ivory);
-  }
   .cur-copy {
     max-width: 46rem;
   }
   .cur-copy p {
-    font-size: 1.02rem;
-    font-weight: 400;
     color: var(--ink-soft);
   }
   .cur-copy p + p {
     margin-top: 1.3rem;
+  }
+
+  .news-head-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem 2rem;
+  }
+  .live-note {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-top: 0.5rem;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+  .live-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--color-gold-mid);
+    box-shadow: 0 0 0 3px rgba(184, 153, 107, 0.28);
+  }
+
+  .news-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.25rem;
+  }
+  .news-grid :global([data-reveal]) {
+    display: flex;
+  }
+  .news-card {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    transition: border-color 0.4s ease, transform 0.4s var(--ease-out);
+  }
+  .news-card:hover {
+    border-color: var(--gold-line);
+    transform: translateY(-4px);
+  }
+  .news-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--color-gold-light);
+    margin-bottom: 1rem;
+  }
+  .news-meta .sep {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--color-gold-mid);
+  }
+  .news-card h3 {
+    font-size: 1.5rem;
+    flex: 1;
+  }
+  .news-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1.4rem;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    color: var(--color-ivory);
+    transition: gap 0.3s ease, color 0.3s ease;
+  }
+  .news-link::after {
+    content: "→";
+    color: var(--color-gold-light);
+  }
+  .news-link:hover {
+    color: var(--color-gold-light);
+    gap: 0.8rem;
   }
 
   .embreve {
@@ -82,19 +217,23 @@ const description =
     gap: 0.9rem;
     margin-top: 2.4rem;
     padding: 1rem 1.4rem;
-    clip-path: var(--ch-s);
-    background: rgba(134, 109, 75, 0.08);
-    border: none;
-    font-size: 0.86rem;
-    font-weight: 400;
+    border-radius: var(--radius-sm);
+    border: var(--card-border);
+    font-size: 0.9rem;
     color: var(--ink-soft);
   }
   .embreve-tag {
-    font-size: 0.64rem;
+    font-size: 0.75rem;
     font-weight: 600;
-    letter-spacing: 0.28em;
+    letter-spacing: 0.22em;
     text-transform: uppercase;
-    color: var(--color-gold);
+    color: var(--color-gold-light);
     white-space: nowrap;
+  }
+
+  @media (max-width: 1024px) {
+    .news-grid {
+      grid-template-columns: 1fr;
+    }
   }
 </style>

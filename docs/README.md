@@ -39,3 +39,4 @@ Site institucional da Dra. Érika Silvana Saquetti Martins (Saquetti Martins Adv
 ## Conformidade OAB
 
 Toda publicidade do site segue o **Provimento 205/2021 da OAB**: caráter meramente informativo, sem promessa de resultado e sem mercantilização da advocacia. O rodapé deve exibir aviso de conformidade e o número de inscrição na OAB. As notícias diárias também mantêm tom estritamente informativo.
+- [redesign-v2.md](./redesign-v2.md) — plano e decisões do redesign v2 (estilo KB, cores da marca)

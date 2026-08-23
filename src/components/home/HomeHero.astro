@@ -1,0 +1,234 @@
+---
+/**
+ * Seção 1 — Hero da home (v2): texto 54 % / foto 46 %, fundo hero-bg + padrão da marca + marca-d'água.
+ */
+import { Image } from 'astro:assets';
+import heroBg from '../../assets/img/hero-bg.png';
+import portrait from '../../assets/img/erika.jpg';
+import patternTile from '../../assets/brand/pattern-tile.svg?url';
+import Eyebrow from '../ui/Eyebrow.astro';
+import Button from '../ui/Button.astro';
+import GlassCard from '../ui/GlassCard.astro';
+import Chip from '../ui/Chip.astro';
+import Reveal from '../ui/Reveal.astro';
+import Watermark from '../ui/Watermark.astro';
+import { WHATSAPP_URL } from '../../data/site';
+---
+
+<section class="section hero" style={`--pattern: url(${patternTile})`} aria-labelledby="hero-title">
+  <Image
+    class="hero-bg"
+    src={heroBg}
+    alt=""
+    widths={[768, 1280, 1920]}
+    sizes="100vw"
+    format="webp"
+    quality={70}
+    loading="eager"
+    fetchpriority="high"
+  />
+  <span class="hero-pattern" aria-hidden="true"></span>
+  <Watermark text="Legado" />
+
+  <div class="container hero-grid">
+    <div class="hero-copy">
+      <Reveal>
+        <Eyebrow>Advocacia consultiva · Imobiliário &amp; Patrimonial</Eyebrow>
+      </Reveal>
+      <Reveal delay={120}>
+        <h1 id="hero-title">Protegendo patrimônios. <em class="em-gold">Construindo legados.</em></h1>
+      </Reveal>
+      <Reveal delay={240}>
+        <p class="lead">
+          Advocacia consultiva em Direito Imobiliário, Notarial e Registral e Planejamento
+          Patrimonial e Sucessório — estruturas jurídicas sólidas para famílias e investidores, no
+          Brasil e no exterior.
+        </p>
+      </Reveal>
+      <Reveal delay={360}>
+        <div class="hero-ctas">
+          <Button href={WHATSAPP_URL} variant="gold" external icon="whatsapp" pulse>Falar no WhatsApp</Button>
+          <Button href="#areas" variant="ghost">Conheça as áreas</Button>
+        </div>
+      </Reveal>
+    </div>
+
+    <Reveal delay={200} class="hero-photo-wrap">
+      <GlassCard radius="lg" padding="none" class="hero-photo">
+        <Image
+          class="hero-portrait"
+          src={portrait}
+          alt="Dra. Érika Silvana Saquetti Martins, advogada, sorrindo em ambiente claro"
+          widths={[480, 720, 960]}
+          sizes="(max-width: 900px) 92vw, 46vw"
+          format="webp"
+          quality={82}
+          loading="eager"
+        />
+        <span class="hero-veil" aria-hidden="true"></span>
+        <Chip class="chip chip-1">
+          <svg slot="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"
+            ><path d="M3 9 12 4l9 5-9 5-9-5Z"></path><path d="M7 11.5V16c0 1.2 2.3 2.5 5 2.5s5-1.3 5-2.5v-4.5"></path><path d="M21 9v5"></path></svg
+          >
+          Doutora em Direito
+        </Chip>
+        <Chip class="chip chip-2">
+          <svg slot="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"
+            ><path d="M12 3 5 6v5c0 4.5 3 8.2 7 9.5 4-1.3 7-5 7-9.5V6l-7-3Z"></path><path d="m9.5 12 1.8 1.8L14.5 10"></path></svg
+          >
+          Advogada desde 2009 · OAB/PR
+        </Chip>
+        <Chip class="chip chip-3">
+          <svg slot="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"
+            ><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"></path></svg
+          >
+          Brasil · EUA · Canadá · Portugal
+        </Chip>
+      </GlassCard>
+    </Reveal>
+  </div>
+</section>
+
+<style>
+  .hero {
+    padding-top: calc(var(--header-h) + clamp(3.5rem, 7vw, 6rem));
+    min-height: min(100svh, 960px);
+    display: flex;
+    align-items: center;
+    background: var(--color-navy);
+  }
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: right center;
+    opacity: 0.9;
+  }
+  .hero-pattern {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background: var(--color-gold-light);
+    -webkit-mask: var(--pattern) repeat;
+    mask: var(--pattern) repeat;
+    -webkit-mask-size: 160px auto;
+    mask-size: 160px auto;
+    opacity: 0.04;
+    pointer-events: none;
+  }
+  .hero :global(.watermark) {
+    z-index: 1;
+  }
+  .hero-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 54fr) minmax(0, 46fr);
+    gap: clamp(2rem, 5vw, 5rem);
+    align-items: center;
+  }
+  .hero-copy {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+  }
+  .hero-copy h1 {
+    text-wrap: balance;
+  }
+  .hero-copy .lead {
+    max-width: 34rem;
+  }
+  .hero-ctas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 0.5rem;
+  }
+
+  .hero-photo-wrap {
+    width: 100%;
+  }
+  .hero-photo {
+    position: relative;
+    aspect-ratio: 4 / 5;
+    overflow: hidden;
+    width: 100%;
+    max-width: 520px;
+    margin-left: auto;
+  }
+  .hero-portrait {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 15%;
+  }
+  .hero-veil {
+    position: absolute;
+    inset: auto 0 0 0;
+    height: 45%;
+    background: linear-gradient(0deg, rgba(2, 19, 43, 0.92) 0%, rgba(2, 19, 43, 0.45) 55%, rgba(2, 19, 43, 0) 100%);
+    pointer-events: none;
+  }
+  .hero-photo :global(.chip) {
+    position: absolute;
+    background: rgba(2, 19, 43, 0.82);
+    max-width: calc(100% - 2rem);
+  }
+  .hero-photo :global(.chip-1) {
+    top: 1.1rem;
+    left: 1.1rem;
+  }
+  .hero-photo :global(.chip-2) {
+    bottom: 4.4rem;
+    right: 1.1rem;
+  }
+  .hero-photo :global(.chip-3) {
+    bottom: 1.1rem;
+    left: 1.1rem;
+  }
+
+  @media (max-width: 900px) {
+    .hero {
+      min-height: 0;
+      padding-top: calc(var(--header-h) + 2rem);
+    }
+    .hero-grid {
+      grid-template-columns: 1fr;
+      gap: 2.5rem;
+    }
+    .hero-photo-wrap {
+      order: -1;
+    }
+    .hero-photo {
+      max-width: 440px;
+      margin-inline: auto;
+    }
+    .hero-copy {
+      align-items: center;
+      text-align: center;
+    }
+    .hero-copy :global([data-reveal]) {
+      width: 100%;
+    }
+    .hero-ctas {
+      width: 100%;
+      flex-direction: column;
+    }
+    .hero-ctas :global(.btn) {
+      width: 100%;
+    }
+  }
+  @media (max-width: 420px) {
+    .hero-photo :global(.chip) {
+      white-space: normal;
+      font-size: 0.8125rem;
+    }
+    .hero-photo :global(.chip-2) {
+      bottom: 4.8rem;
+    }
+  }
+</style>

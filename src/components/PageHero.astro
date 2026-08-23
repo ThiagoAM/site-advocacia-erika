@@ -1,7 +1,8 @@
 ---
 /**
- * Hero compacto (navy) das páginas internas — breadcrumb, overline,
- * h1 único da página e lead opcional. Ecoa o tema "Estrutura Arquitetônica".
+ * Hero escuro das páginas internas (v2 — "Autoridade em Navy"):
+ * breadcrumb → eyebrow → h1 display 300 (com trecho em itálico dourado) → lead → linha ouro.
+ * Foto-ambiente 3:2 cobrindo a direita sob um véu navy + halo dourado tênue no canto.
  */
 export interface Crumb {
   label: string;
@@ -9,20 +10,26 @@ export interface Crumb {
 }
 
 import { Image } from 'astro:assets';
+import Eyebrow from './ui/Eyebrow.astro';
+import GoldRule from './ui/GoldRule.astro';
+import glow from '../assets/img/glow-gold.png';
 
 interface Props {
   tag: string;
+  /** Título em texto puro (usado se não houver `titleHtml`). */
   title: string;
+  /** Título com marcação (ex.: `<em class="em-gold">…</em>`); tem precedência sobre `title`. */
+  titleHtml?: string;
   lead?: string;
   crumbs?: Crumb[];
-  /** Foto ambiente (3:2) exibida à direita, atrás de um degradê navy */
+  /** Foto ambiente (3:2) exibida à direita, atrás do véu navy. */
   image?: ImageMetadata;
 }
 
-const { tag, title, lead, crumbs = [], image } = Astro.props;
+const { tag, title, titleHtml, lead, crumbs = [], image } = Astro.props;
 ---
 
-<section class:list={['section', 'page-hero', 'grid-navy', { 'has-image': !!image }]}>
+<section class:list={['page-hero', { 'has-image': !!image }]}>
   {
     image && (
       <div class="hero-img" aria-hidden="true">
@@ -39,6 +46,10 @@ const { tag, title, lead, crumbs = [], image } = Astro.props;
       </div>
     )
   }
+  <div class="hero-glow" aria-hidden="true">
+    <Image src={glow} alt="" width={900} format="webp" quality={60} loading="eager" />
+  </div>
+
   <div class="container">
     {
       crumbs.length > 0 && (
@@ -58,28 +69,27 @@ const { tag, title, lead, crumbs = [], image } = Astro.props;
       )
     }
 
-    <span class="sec-tag">{tag}</span>
-    <h1>{title}</h1>
+    <Eyebrow>{tag}</Eyebrow>
+    {titleHtml ? <h1 set:html={titleHtml} /> : <h1>{title}</h1>}
     {lead && <p class="lead">{lead}</p>}
-    <div class="rule-double"></div>
+    <GoldRule align="left" />
   </div>
 </section>
 
 <style>
   .page-hero {
-    padding: calc(var(--header-h) + clamp(3rem, 6.5vw, 5rem)) 0 clamp(3rem, 6vw, 4.5rem);
-    background: linear-gradient(165deg, var(--color-navy) 0%, var(--color-navy-deep) 92%);
+    position: relative;
+    overflow: clip;
+    padding: calc(var(--header-h) + clamp(3.5rem, 7vw, 6rem)) 0 clamp(3.5rem, 6vw, 5rem);
+    background: linear-gradient(165deg, var(--color-navy) 0%, var(--color-navy-deep) 100%);
     color: var(--color-ivory);
   }
   .page-hero.has-image {
-    min-height: clamp(420px, 52vw, 560px);
+    min-height: clamp(440px, 52vw, 600px);
     display: flex;
     align-items: flex-end;
-    overflow: hidden;
   }
-  .page-hero.has-image .container {
-    width: min(1180px, 92%);
-  }
+
   .hero-img {
     position: absolute;
     inset: 0;
@@ -97,13 +107,35 @@ const { tag, title, lead, crumbs = [], image } = Astro.props;
     position: absolute;
     inset: 0;
     background:
-      linear-gradient(90deg, var(--color-navy) 0%, var(--color-navy) 28%, rgba(4, 30, 66, 0.82) 52%, rgba(4, 30, 66, 0.45) 100%),
-      linear-gradient(0deg, rgba(3, 23, 51, 0.75) 0%, rgba(3, 23, 51, 0) 45%);
+      linear-gradient(90deg, var(--color-navy) 0%, var(--color-navy) 30%, rgba(4, 30, 66, 0.84) 54%, rgba(4, 30, 66, 0.45) 100%),
+      linear-gradient(0deg, rgba(2, 19, 43, 0.8) 0%, rgba(2, 19, 43, 0) 45%);
   }
   @media (max-width: 860px) {
     .hero-img::after {
-      background: linear-gradient(0deg, var(--color-navy) 0%, rgba(4, 30, 66, 0.78) 45%, rgba(4, 30, 66, 0.3) 100%);
+      background: linear-gradient(0deg, var(--color-navy) 0%, rgba(4, 30, 66, 0.82) 48%, rgba(4, 30, 66, 0.3) 100%);
     }
+  }
+
+  /* halo dourado tênue no canto superior direito */
+  .hero-glow {
+    position: absolute;
+    top: -18%;
+    right: -10%;
+    width: min(62vw, 760px);
+    aspect-ratio: 1;
+    z-index: 1;
+    opacity: 0.42;
+    pointer-events: none;
+    mix-blend-mode: screen;
+  }
+  .hero-glow img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .container {
+    z-index: 2;
   }
 
   .crumbs {
@@ -122,35 +154,38 @@ const { tag, title, lead, crumbs = [], image } = Astro.props;
     display: inline-flex;
     align-items: center;
     gap: 0.75rem;
-    font-size: 0.68rem;
+    font-family: var(--font-sans);
+    font-size: 0.75rem;
     font-weight: 500;
-    letter-spacing: 0.18em;
+    letter-spacing: 0.16em;
     text-transform: uppercase;
+    color: var(--ink-faint);
   }
   .crumbs li + li::before {
     content: "/";
     color: var(--color-gold);
   }
   .crumbs a {
-    color: var(--ivory-soft);
+    color: var(--ink-faint);
     transition: color 0.3s ease;
   }
   .crumbs a:hover {
-    color: var(--color-gold);
+    color: var(--color-gold-light);
   }
   .crumbs span[aria-current] {
-    color: var(--color-gold);
+    color: var(--ink-soft);
   }
 
   .page-hero h1 {
-    font-size: clamp(2rem, 4.2vw, 3.2rem);
-    color: var(--color-ivory);
-    max-width: 24ch;
+    margin-top: 1.4rem;
+    max-width: 20ch;
+    text-wrap: balance;
   }
   .page-hero .lead {
     margin-top: 1.3rem;
-    font-weight: 400;
-    color: var(--ivory-soft);
     max-width: 40rem;
+  }
+  .page-hero :global(.gold-rule) {
+    margin-top: 1.8rem;
   }
 </style>

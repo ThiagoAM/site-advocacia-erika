@@ -1,8 +1,15 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PageHero from '../components/PageHero.astro';
-import heroImg from '../assets/img/hero-educacao.png';
 import PageCta from '../components/PageCta.astro';
+import SectionHead from '../components/ui/SectionHead.astro';
+import GlassCard from '../components/ui/GlassCard.astro';
+import IconSquare from '../components/ui/IconSquare.astro';
+import Chip from '../components/ui/Chip.astro';
+import Reveal from '../components/ui/Reveal.astro';
+import { Image } from 'astro:assets';
+import heroImg from '../assets/img/hero-educacao.png';
+import eduFig from '../assets/img/edu-fig.png';
 import { SITE_NAME } from '../data/site';
 
 const title = `Educação & Treinamentos — ${SITE_NAME}`;
@@ -54,18 +61,22 @@ const formatos = [
   {
     titulo: 'Cursos e workshops',
     texto: 'Programas estruturados, presenciais ou online, com foco na aplicação prática.',
+    icon: 'book',
   },
   {
     titulo: 'Palestras e eventos',
     texto: 'Temas jurídicos traduzidos para plateias técnicas ou leigas, em eventos e convenções.',
+    icon: 'mic',
   },
   {
     titulo: 'Mentorias',
     texto: 'Acompanhamento individual ou em pequenos grupos para profissionais da área.',
+    icon: 'compass',
   },
   {
     titulo: 'Treinamentos in-company',
     texto: 'Conteúdo sob medida para imobiliárias, incorporadoras, escritórios e equipes.',
+    icon: 'building',
   },
 ];
 ---
@@ -75,48 +86,59 @@ const formatos = [
     <PageHero
       tag="Educação & Treinamentos"
       title="Educação & Treinamentos"
+      titleHtml='Educação &amp; <em class="em-gold">Treinamentos</em>'
       lead="Cursos, palestras e mentorias que traduzem o direito imobiliário, registral e patrimonial para a prática de quem negocia, constrói e investe — com a experiência docente da pós-graduação (UNINTER e PUC) e da formação de corretores."
       crumbs={[{ label: 'Início', href: '/' }, { label: 'Educação & Treinamentos' }]}
       image={heroImg}
     />
 
-    <!-- 01 / Para quem -->
-    <section class="section publicos grid-ivory">
+    <!-- Para quem -->
+    <section class="section publicos">
       <div class="container">
-        <div class="sec-head">
-          <span class="sec-tag"><span class="num">01</span><span class="bar">/</span>Para Quem</span>
-          <h2>Conhecimento aplicado, para cada público.</h2>
-          <div class="rule-double"></div>
-        </div>
-
         <div class="pub-grid">
-          {
-            publicos.map((publico, i) => (
-              <article class="pub-card">
-                <div class="pub-card-in">
-                  <span class="pub-idx">P · {String(i + 1).padStart(2, '0')}</span>
-                  <h3>{publico.titulo}</h3>
-                  <p>{publico.texto}</p>
-                </div>
-              </article>
-            ))
-          }
+          <div>
+            <SectionHead eyebrow="Para quem" align="left">
+              Conhecimento aplicado, <em class="em-gold">para cada público</em>.
+            </SectionHead>
+
+            <ul class="pub-list">
+              {
+                publicos.map((publico) => (
+                  <li>
+                    <h3><Chip>{publico.titulo}</Chip></h3>
+                    <p>{publico.texto}</p>
+                  </li>
+                ))
+              }
+            </ul>
+          </div>
+
+          <Reveal delay={120} class="pub-fig-col">
+            <GlassCard radius="lg" padding="none" class="pub-fig">
+              <Image
+                src={eduFig}
+                alt="Ilustração de sala de aula e material de estudo em tons de azul e dourado"
+                widths={[520, 800, 1100]}
+                sizes="(max-width: 900px) 100vw, 42vw"
+                format="webp"
+                quality={78}
+              />
+            </GlassCard>
+          </Reveal>
         </div>
       </div>
     </section>
 
-    <!-- 02 / Temas -->
-    <section class="section temas grid-navy">
+    <!-- Temas -->
+    <section class="section section-navy-deep temas">
       <div class="container">
-        <div class="sec-head on-navy">
-          <span class="sec-tag"><span class="num">02</span><span class="bar">/</span>Temas</span>
-          <h2>Do registro do imóvel à sucessão da família.</h2>
-          <p class="lead">
-            Os conteúdos partem da pesquisa acadêmica e da prática consultiva — e são adaptados ao
-            repertório de cada turma.
-          </p>
-          <div class="rule-double"></div>
-        </div>
+        <SectionHead
+          eyebrow="Temas"
+          align="left"
+          lead="Os conteúdos partem da pesquisa acadêmica e da prática consultiva — e são adaptados ao repertório de cada turma."
+        >
+          Do registro do imóvel à <em class="em-gold">sucessão da família</em>.
+        </SectionHead>
 
         <ul class="temas-list">
           {
@@ -131,22 +153,48 @@ const formatos = [
       </div>
     </section>
 
-    <!-- 03 / Formatos -->
-    <section class="section formatos grid-ivory">
+    <!-- Formatos -->
+    <section class="section formatos">
       <div class="container">
-        <div class="sec-head">
-          <span class="sec-tag"><span class="num">03</span><span class="bar">/</span>Formatos</span>
-          <h2>No formato que a sua agenda pede.</h2>
-          <div class="rule-double"></div>
-        </div>
+        <SectionHead eyebrow="Formatos" align="left">
+          No formato que a <em class="em-gold">sua agenda pede</em>.
+        </SectionHead>
 
         <div class="fmt-grid">
           {
-            formatos.map((formato) => (
-              <article class="fmt-item">
-                <h3>{formato.titulo}</h3>
-                <p>{formato.texto}</p>
-              </article>
+            formatos.map((formato, i) => (
+              <Reveal delay={i * 80}>
+                <GlassCard radius="md" as="article" class="fmt-card">
+                  <IconSquare tone="navy">
+                    {formato.icon === 'book' && (
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H20v15H6.5A2.5 2.5 0 0 0 4 20.5z" />
+                        <path d="M4 20.5A2.5 2.5 0 0 1 6.5 18H20v3" />
+                      </svg>
+                    )}
+                    {formato.icon === 'mic' && (
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="9" y="3" width="6" height="11" rx="3" />
+                        <path d="M6 11a6 6 0 0 0 12 0M12 17v4M9 21h6" />
+                      </svg>
+                    )}
+                    {formato.icon === 'compass' && (
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="9" />
+                        <path d="m15.5 8.5-2 5-5 2 2-5z" />
+                      </svg>
+                    )}
+                    {formato.icon === 'building' && (
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M4 21V5l8-2v18M12 9l8 2v10M4 21h16" />
+                        <path d="M8 8h1M8 12h1M8 16h1M16 14h1M16 18h1" />
+                      </svg>
+                    )}
+                  </IconSquare>
+                  <h3>{formato.titulo}</h3>
+                  <p>{formato.texto}</p>
+                </GlassCard>
+              </Reveal>
             ))
           }
         </div>
@@ -154,8 +202,8 @@ const formatos = [
     </section>
 
     <PageCta
-      num="04"
       title="Vamos montar uma agenda?"
+      titleHtml='Vamos montar <em class="em-gold">uma agenda</em>?'
       text="Entre em contato para conversar sobre datas, formatos e conteúdos — presenciais ou online, no Brasil e no exterior."
       label="Consultar agenda no WhatsApp"
     />
@@ -163,120 +211,126 @@ const formatos = [
 </BaseLayout>
 
 <style>
-  /* ---------- 01 / públicos ---------- */
-  .publicos {
-    padding: var(--pad-sec) 0;
-    background: var(--color-ivory);
-  }
+  /* ---------- públicos ---------- */
   .pub-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+    gap: clamp(2rem, 5vw, 4.5rem);
+    align-items: start;
+  }
+  .pub-grid :global(.sec-head-v2) {
+    margin-bottom: 1.6rem;
+  }
+  .pub-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
     gap: 1.4rem;
   }
-  .pub-card {
-    display: flex;
-    clip-path: var(--ch);
-    padding: 1px;
-    background: rgba(4, 30, 66, 0.13);
-    transition:
-      transform 0.4s cubic-bezier(0.22, 0.68, 0.35, 1),
-      background 0.4s ease;
+  .pub-list li {
+    padding-top: 1.2rem;
+    border-top: 1px solid var(--ivory-line);
   }
-  .pub-card:hover {
-    transform: translateY(-6px);
-    background: var(--color-gold);
+  .pub-list h3 {
+    margin-bottom: 0.8rem;
+    line-height: 1;
   }
-  .pub-card-in {
-    flex: 1;
-    clip-path: var(--ch);
-    background: var(--color-paper);
-    padding: 2.1rem 1.9rem 1.9rem;
-    display: flex;
-    flex-direction: column;
+  .pub-list h3 :global(.chip) {
+    white-space: normal;
+    font-size: 0.9375rem;
   }
-  .pub-idx {
-    font-size: 0.66rem;
-    font-weight: 600;
-    letter-spacing: 0.3em;
-    color: var(--color-gold);
-    margin-bottom: 1.5rem;
-  }
-  .pub-card-in h3 {
-    font-size: 1.45rem;
-    color: var(--color-navy);
-    margin-bottom: 0.75rem;
-  }
-  .pub-card-in p {
-    font-size: 0.9rem;
-    font-weight: 400;
+  .pub-list p {
+    font-size: 0.9375rem;
     color: var(--ink-soft);
   }
-
-  /* ---------- 02 / temas ---------- */
-  .temas {
-    padding: var(--pad-sec) 0;
-    background: var(--color-navy);
-    color: var(--color-ivory);
+  .pub-fig-col {
+    position: sticky;
+    top: calc(var(--header-h) + 1.5rem);
   }
+  .pub-fig {
+    overflow: hidden;
+  }
+  .pub-fig :global(img) {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4 / 5;
+    object-fit: cover;
+  }
+
+  /* ---------- temas ---------- */
   .temas-list {
     list-style: none;
     padding: 0;
     margin: 0;
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 1.8rem 3rem;
-    max-width: 62rem;
+    max-width: 64rem;
   }
   .temas-list li {
-    padding-top: 1.1rem;
-    border-top: 1px solid var(--gold-faint);
+    position: relative;
+    padding: 1.1rem 0 0 1.6rem;
+    border-top: 1px solid var(--ivory-line);
+  }
+  .temas-list li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 1.75rem;
+    width: 8px;
+    height: 8px;
+    background: var(--gold-gradient);
+    transform: rotate(45deg);
   }
   .temas-list h3 {
-    font-size: 1.3rem;
-    color: var(--color-ivory);
-    margin-bottom: 0.4rem;
+    font-size: 1.45rem;
+    margin-bottom: 0.35rem;
   }
   .temas-list p {
-    font-size: 0.88rem;
-    font-weight: 400;
-    color: var(--ivory-soft);
+    font-size: 0.9375rem;
+    color: var(--ink-soft);
   }
 
-  /* ---------- 03 / formatos ---------- */
-  .formatos {
-    padding: var(--pad-sec) 0;
-    background: var(--color-ivory);
-  }
+  /* ---------- formatos ---------- */
   .fmt-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: clamp(1.6rem, 3.5vw, 2.5rem);
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1.25rem;
   }
-  .fmt-item h3 {
-    font-size: 1.35rem;
-    color: var(--color-navy);
-    margin-bottom: 0.6rem;
-    padding-top: 1.1rem;
-    border-top: 1px solid var(--gold-soft);
+  .fmt-grid :global([data-reveal]) {
+    display: flex;
   }
-  .fmt-item p {
-    font-size: 0.88rem;
-    font-weight: 400;
+  .fmt-card {
+    flex: 1;
+  }
+  .fmt-card h3 {
+    margin-top: 1.2rem;
+    font-size: 1.4rem;
+    margin-bottom: 0.5rem;
+  }
+  .fmt-card p {
+    font-size: 0.9375rem;
     color: var(--ink-soft);
   }
 
   @media (max-width: 1024px) {
+    .fmt-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (max-width: 900px) {
     .pub-grid {
       grid-template-columns: 1fr;
     }
-    .fmt-grid {
-      grid-template-columns: 1fr 1fr;
+    .pub-fig-col {
+      position: static;
+      max-width: 28rem;
     }
   }
   @media (max-width: 600px) {
-    .temas-list {
-      grid-template-columns: 1fr;
-    }
+    .temas-list,
     .fmt-grid {
       grid-template-columns: 1fr;
     }

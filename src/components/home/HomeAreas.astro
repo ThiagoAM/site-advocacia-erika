@@ -1,0 +1,119 @@
+---
+/**
+ * Seção 3 — Áreas de atuação: grid 3×2 de GlassCards-link com ícone de linha por área.
+ */
+import SectionHead from '../ui/SectionHead.astro';
+import GlassCard from '../ui/GlassCard.astro';
+import IconSquare from '../ui/IconSquare.astro';
+import Reveal from '../ui/Reveal.astro';
+import { areas } from '../../data/areas';
+
+const svgAttrs =
+  'viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"';
+
+/** Ícones de linha, um por slug (prédio, terreno, escudo-família, organograma, documento com selo, lupa). */
+const icons: Record<string, string> = {
+  'direito-imobiliario': `<svg ${svgAttrs}><path d="M4 21V5l8-2v18"/><path d="M12 9l8 2v10"/><path d="M3 21h18"/><path d="M7 8h2M7 12h2M7 16h2M15 14h2M15 18h2"/></svg>`,
+  'regularizacao-reurb': `<svg ${svgAttrs}><path d="M3 7l6-3 6 3 6-3v13l-6 3-6-3-6 3V7Z"/><path d="M9 4v13M15 7v13"/><circle cx="12" cy="11" r="1.2"/></svg>`,
+  'planejamento-patrimonial-sucessorio': `<svg ${svgAttrs}><path d="M12 3 5 6v5c0 4.5 3 8.2 7 9.5 4-1.3 7-5 7-9.5V6l-7-3Z"/><circle cx="12" cy="10" r="2"/><path d="M8.5 16c.6-1.8 1.9-2.8 3.5-2.8s2.9 1 3.5 2.8"/></svg>`,
+  'holdings-familiares': `<svg ${svgAttrs}><rect x="9" y="3" width="6" height="4.5" rx="1"/><rect x="3" y="16.5" width="6" height="4.5" rx="1"/><rect x="15" y="16.5" width="6" height="4.5" rx="1"/><path d="M12 7.5V12M6 16.5V12h12v4.5"/></svg>`,
+  'inventario-sucessoes': `<svg ${svgAttrs}><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8l-5-5Z"/><path d="M14 3v5h5"/><path d="M8 12h5M8 15.5h3"/><circle cx="16" cy="16.5" r="2.2"/><path d="m16 18.7-.8 2.3 0.8-.6.8.6-.8-2.3"/></svg>`,
+  'due-diligence-imobiliaria': `<svg ${svgAttrs}><path d="M13 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h6"/><path d="M13 3v5h5"/><path d="M8 11h4M8 14.5h3"/><circle cx="16.5" cy="16.5" r="3"/><path d="m18.7 18.7 2.3 2.3"/></svg>`,
+};
+---
+
+<section class="section areas" id="areas">
+  <div class="container">
+    <Reveal>
+      <SectionHead
+        eyebrow="Áreas de atuação"
+        lead="Seis frentes de trabalho, uma mesma lógica: compreender o caso a fundo antes de propor qualquer estrutura."
+      >
+        Cada patrimônio exige <em class="em-gold">uma estrutura própria</em>.
+      </SectionHead>
+    </Reveal>
+
+    <div class="areas-grid">
+      {
+        areas.map((area, i) => (
+          <Reveal delay={(i % 3) * 100}>
+            <GlassCard as="a" radius="md" class="area-card" href={`/areas/${area.slug}`}>
+              <IconSquare tone="gold" size={48} class="area-icon">
+                <Fragment set:html={icons[area.slug]} />
+              </IconSquare>
+              <h3>{area.titulo}</h3>
+              <p>{area.descricao}</p>
+              <span class="area-more">Saiba mais <span aria-hidden="true">→</span></span>
+            </GlassCard>
+          </Reveal>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .areas-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.25rem;
+  }
+  .areas-grid :global([data-reveal]) {
+    height: 100%;
+  }
+  .area-card {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    text-decoration: none;
+    transition: border-color 0.3s ease;
+  }
+  .area-card:hover,
+  .area-card:focus-visible {
+    border-color: rgba(217, 194, 154, 0.4);
+  }
+  .area-card :global(.area-icon) {
+    transition: transform 0.35s var(--ease-out);
+  }
+  .area-card:hover :global(.area-icon) {
+    transform: translateY(-2px);
+  }
+  .area-card h3 {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: 1.25rem;
+    line-height: 1.3;
+    margin-top: 1.4rem;
+  }
+  .area-card p {
+    color: var(--ink-soft);
+    font-size: 1rem;
+    margin-top: 0.8rem;
+    flex: 1;
+  }
+  .area-more {
+    display: inline-flex;
+    gap: 0.4rem;
+    margin-top: 1.4rem;
+    color: var(--color-gold-light);
+    font-weight: 500;
+    font-size: 0.9375rem;
+  }
+  .area-card:hover .area-more span {
+    transform: translateX(3px);
+  }
+  .area-more span {
+    display: inline-block;
+    transition: transform 0.3s var(--ease-out);
+  }
+  @media (max-width: 960px) {
+    .areas-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (max-width: 600px) {
+    .areas-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

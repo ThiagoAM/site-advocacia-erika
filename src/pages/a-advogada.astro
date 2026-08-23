@@ -1,10 +1,15 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import PageHero from '../components/PageHero.astro';
+import PageCta from '../components/PageCta.astro';
+import SectionHead from '../components/ui/SectionHead.astro';
+import GlassCard from '../components/ui/GlassCard.astro';
+import IconSquare from '../components/ui/IconSquare.astro';
+import Chip from '../components/ui/Chip.astro';
+import Reveal from '../components/ui/Reveal.astro';
 import { Image } from 'astro:assets';
 import fotoErika from '../assets/img/erika.jpg';
 import heroImg from '../assets/img/hero-a-advogada.png';
-import PageCta from '../components/PageCta.astro';
 import { SITE_NAME, OAB } from '../data/site';
 
 const title = `Dra. Érika Silvana Saquetti Martins — ${SITE_NAME}`;
@@ -79,32 +84,34 @@ const associacoes = [
     <PageHero
       tag="A Advogada"
       title="Dra. Érika Silvana Saquetti Martins"
+      titleHtml='Dra. Érika Silvana <em class="em-gold">Saquetti Martins</em>'
       lead="Advogada desde 2009 (OAB/PR 52.743), professora e pesquisadora — dedicada a simplificar questões jurídicas complexas, prevenir conflitos e proporcionar tranquilidade a famílias e investidores."
       crumbs={[{ label: 'Início', href: '/' }, { label: 'A Advogada' }]}
       image={heroImg}
     />
 
-    <!-- 01 / Trajetória -->
-    <section class="section trajetoria grid-ivory">
+    <!-- Trajetória -->
+    <section class="section trajetoria">
       <div class="container">
-        <div class="sec-head">
-          <span class="sec-tag"><span class="num">01</span><span class="bar">/</span>Trajetória</span>
-          <h2>Do serviço público à advocacia consultiva.</h2>
-          <div class="rule-double"></div>
-        </div>
+        <SectionHead eyebrow="Trajetória" align="left">
+          Do serviço público à <em class="em-gold">advocacia consultiva</em>.
+        </SectionHead>
 
         <div class="traj-grid">
-          <figure class="traj-photo">
-            <Image
-              src={fotoErika}
-              alt="Dra. Érika Silvana Saquetti Martins"
-              widths={[420, 640, 853]}
-              sizes="(max-width: 860px) 80vw, 28vw"
-              format="webp"
-              quality={82}
-            />
-            <figcaption>Dra. Érika Silvana Saquetti Martins · {OAB}</figcaption>
-          </figure>
+          <div class="traj-photo-col">
+            <GlassCard radius="md" padding="none" as="figure" class="traj-photo">
+              <Image
+                src={fotoErika}
+                alt="Dra. Érika Silvana Saquetti Martins, advogada, em retrato profissional"
+                widths={[420, 640, 853]}
+                sizes="(max-width: 860px) 80vw, 32vw"
+                format="webp"
+                quality={82}
+              />
+              <figcaption>Dra. Érika Silvana Saquetti Martins · {OAB}</figcaption>
+            </GlassCard>
+          </div>
+
           <div class="traj-copy">
             <p>
               A trajetória da Dra. Érika começa no serviço público, como servidora do Tribunal
@@ -124,123 +131,150 @@ const associacoes = [
               profissionais do mercado imobiliário e a atuação como palestrante e escritora —
               atendendo clientes no Brasil, nos Estados Unidos, no Canadá e em Portugal.
             </p>
-          </div>
 
-          <ol class="timeline">
-            {
-              marcos.map((marco) => (
-                <li>
-                  <span class="tl-periodo">{marco.periodo}</span>
-                  <h3>{marco.titulo}</h3>
-                  <p>{marco.texto}</p>
-                </li>
-              ))
-            }
-          </ol>
-        </div>
-      </div>
-    </section>
-
-    <!-- 02 / Formação -->
-    <section class="section formacao grid-navy">
-      <div class="container">
-        <div class="sec-head on-navy">
-          <span class="sec-tag"><span class="num">02</span><span class="bar">/</span>Formação</span>
-          <h2>Formação acadêmica.</h2>
-          <div class="rule-double"></div>
-        </div>
-
-        <div class="form-grid">
-          <div class="form-col">
-            <h3 class="form-label">Pós-graduação stricto sensu</h3>
-            <ul class="form-list stricto">
+            <ol class="timeline">
               {
-                formacao.map((item) => (
-                  <li>
-                    <strong>{item.titulo}</strong>
-                    <span>{item.texto}</span>
-                  </li>
+                marcos.map((marco, i) => (
+                  <Reveal as="li" delay={i * 90}>
+                    <span class="tl-periodo">{marco.periodo}</span>
+                    <h3>{marco.titulo}</h3>
+                    <p>{marco.texto}</p>
+                  </Reveal>
                 ))
               }
-            </ul>
-          </div>
-
-          <div class="form-col">
-            <h3 class="form-label">Especializações</h3>
-            <ul class="form-list">
-              {especializacoes.map((item) => <li>{item}</li>)}
-            </ul>
+            </ol>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- 03 / Docência -->
-    <section class="section docencia grid-ivory">
+    <!-- Formação -->
+    <section class="section section-navy-deep formacao">
       <div class="container">
-        <div class="sec-head">
-          <span class="sec-tag"><span class="num">03</span><span class="bar">/</span>Docência</span>
-          <h2>Quem pesquisa, ensina.</h2>
-          <div class="rule-double"></div>
+        <SectionHead eyebrow="Formação" align="left">
+          Formação <em class="em-gold">acadêmica</em>.
+        </SectionHead>
+
+        <h3 class="group-label">Pós-graduação stricto sensu</h3>
+        <div class="grid-3">
+          {
+            formacao.map((item, i) => (
+              <Reveal delay={i * 90}>
+                <GlassCard radius="md" class="form-card">
+                  <IconSquare tone="navy">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                      <path d="M3 9.5 12 5l9 4.5-9 4.5z" />
+                      <path d="M7 11.5V16c0 1.5 2.5 3 5 3s5-1.5 5-3v-4.5" />
+                      <path d="M21 9.5V15" />
+                    </svg>
+                  </IconSquare>
+                  <h4>{item.titulo}</h4>
+                  <p>{item.texto}</p>
+                </GlassCard>
+              </Reveal>
+            ))
+          }
         </div>
 
-        <div class="doc-grid">
-          <div class="doc-item">
-            <h3>Pós-graduação</h3>
-            <p>
-              Professora de cursos de pós-graduação na UNINTER e na PUC, nas disciplinas de Direito
-              Imobiliário, Direito Constitucional, Processo Civil, Gestão de Cartórios e
-              Regularização Fundiária.
-            </p>
-          </div>
-          <div class="doc-item">
-            <h3>Formação profissional</h3>
-            <p>
-              Professora de corretores, arquitetos, engenheiros e advogados pela Escola Democrata e
-              pelo Instituto dos Corretores de Santa Catarina e Oeste.
-            </p>
-          </div>
-          <div class="doc-item">
-            <h3>Palestras e publicações</h3>
-            <p>
-              Palestrante e escritora nas áreas de direito imobiliário, notarial e registral e
-              planejamento patrimonial. Conheça os
-              <a class="doc-link" href="/educacao">cursos e treinamentos</a>.
-            </p>
-          </div>
+        <h3 class="group-label mt">Especializações</h3>
+        <div class="chips">
+          {especializacoes.map((item) => <Chip>{item}</Chip>)}
         </div>
       </div>
     </section>
 
-    <!-- 04 / Instituições -->
-    <section class="section instituicoes grid-navy">
+    <!-- Docência -->
+    <section class="section docencia">
       <div class="container">
-        <div class="sec-head on-navy">
-          <span class="sec-tag"><span class="num">04</span><span class="bar">/</span>Instituições</span>
-          <h2>Comissões e associações.</h2>
-          <div class="rule-double"></div>
-        </div>
+        <SectionHead eyebrow="Docência" align="left">
+          Quem pesquisa, <em class="em-gold">ensina</em>.
+        </SectionHead>
 
-        <div class="form-grid">
-          <div class="form-col">
-            <h3 class="form-label">Comissões — OAB/PR</h3>
-            <ul class="form-list">
-              {comissoes.map((item) => <li>{item}</li>)}
-            </ul>
-          </div>
-          <div class="form-col">
-            <h3 class="form-label">Associações e redes</h3>
-            <ul class="form-list">
-              {associacoes.map((item) => <li>{item}</li>)}
-            </ul>
-          </div>
+        <div class="grid-3">
+          <Reveal>
+            <GlassCard radius="md" class="doc-card">
+              <IconSquare tone="gold">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M4 5h16v11H4z" />
+                  <path d="M9 20h6M12 16v4" />
+                </svg>
+              </IconSquare>
+              <h3>Pós-graduação</h3>
+              <p>
+                Professora de cursos de pós-graduação na UNINTER e na PUC, nas disciplinas de Direito
+                Imobiliário, Direito Constitucional, Processo Civil, Gestão de Cartórios e
+                Regularização Fundiária.
+              </p>
+            </GlassCard>
+          </Reveal>
+          <Reveal delay={90}>
+            <GlassCard radius="md" class="doc-card">
+              <IconSquare tone="gold">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="9" cy="8" r="3.5" />
+                  <path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6" />
+                  <path d="M16 4.5a3.5 3.5 0 0 1 0 7M18 14c2 .6 3.5 2.8 3.5 6" />
+                </svg>
+              </IconSquare>
+              <h3>Formação profissional</h3>
+              <p>
+                Professora de corretores, arquitetos, engenheiros e advogados pela Escola Democrata e
+                pelo Instituto dos Corretores de Santa Catarina e Oeste.
+              </p>
+            </GlassCard>
+          </Reveal>
+          <Reveal delay={180}>
+            <GlassCard radius="md" class="doc-card">
+              <IconSquare tone="gold">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 3v11" />
+                  <path d="M8.5 14a3.5 3.5 0 0 0 7 0" />
+                  <path d="M6 11a6 6 0 0 0 12 0M12 17v4M9 21h6" />
+                </svg>
+              </IconSquare>
+              <h3>Palestras e publicações</h3>
+              <p>
+                Palestrante e escritora nas áreas de direito imobiliário, notarial e registral e
+                planejamento patrimonial. Conheça os
+                <a class="doc-link" href="/educacao">cursos e treinamentos</a>.
+              </p>
+            </GlassCard>
+          </Reveal>
+        </div>
+      </div>
+    </section>
+
+    <!-- Instituições -->
+    <section class="section section-navy-deep instituicoes">
+      <div class="container">
+        <SectionHead eyebrow="Instituições" align="left">
+          Comissões e <em class="em-gold">associações</em>.
+        </SectionHead>
+
+        <div class="grid-2">
+          <Reveal>
+            <GlassCard radius="md">
+              <h3 class="group-label in-card">Comissões — OAB/PR</h3>
+              <ul class="list">
+                {comissoes.map((item) => <li>{item}</li>)}
+              </ul>
+            </GlassCard>
+          </Reveal>
+          <Reveal delay={90}>
+            <GlassCard radius="md">
+              <h3 class="group-label in-card">Associações e redes</h3>
+              <ul class="list">
+                {associacoes.map((item) => <li>{item}</li>)}
+              </ul>
+            </GlassCard>
+          </Reveal>
         </div>
       </div>
     </section>
 
     <PageCta
-      num="05"
       title="Uma conversa esclarece mais que mil páginas."
+      titleHtml='Uma conversa esclarece <em class="em-gold">mais que mil páginas</em>.'
       text="Agende uma consulta — online ou presencial — e receba uma leitura técnica e humana da sua situação patrimonial."
       label="Agendar uma conversa"
     />
@@ -248,205 +282,201 @@ const associacoes = [
 </BaseLayout>
 
 <style>
-  /* ---------- 01 / trajetória ---------- */
-  .trajetoria {
-    padding: var(--pad-sec) 0;
-    background: var(--color-ivory);
-  }
+  /* ---------- trajetória ---------- */
   .traj-grid {
     display: grid;
-    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.1fr) minmax(0, 1.1fr);
-    gap: clamp(2rem, 4.5vw, 4rem);
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+    gap: clamp(2rem, 5vw, 4.5rem);
     align-items: start;
   }
-  .traj-photo {
-    margin: 0;
+  .traj-photo-col {
     position: sticky;
     top: calc(var(--header-h) + 1.5rem);
   }
-  .traj-photo img {
+  .traj-photo {
+    margin: 0;
+    overflow: hidden;
+  }
+  .traj-photo :global(img) {
     display: block;
     width: 100%;
     height: auto;
     aspect-ratio: 3 / 4;
     object-fit: cover;
     object-position: 50% 15%;
-    clip-path: var(--ch);
   }
   .traj-photo figcaption {
-    margin-top: 0.9rem;
-    font-size: 0.66rem;
+    padding: 0.9rem 1.2rem;
+    font-size: 0.75rem;
     font-weight: 500;
-    letter-spacing: 0.22em;
+    letter-spacing: 0.16em;
     text-transform: uppercase;
-    color: var(--color-gold);
+    color: var(--color-gold-light);
+    border-top: var(--card-border);
   }
   .traj-copy p {
-    font-size: 1.02rem;
-    font-weight: 400;
     color: var(--ink-soft);
   }
-  .traj-copy p + p {
+  .traj-copy > p + p {
     margin-top: 1.3rem;
   }
 
   .timeline {
+    position: relative;
     list-style: none;
     padding: 0;
-    margin: 0;
-    border-left: 1px solid var(--gold-soft);
+    margin: clamp(2.4rem, 4vw, 3.2rem) 0 0;
   }
-  .timeline li {
-    position: relative;
-    padding: 0 0 1.9rem 1.8rem;
-  }
-  .timeline li:last-child {
-    padding-bottom: 0;
-  }
-  .timeline li::before {
+  .timeline::before {
     content: "";
     position: absolute;
-    left: -5px;
+    left: 4px;
+    top: 0.6rem;
+    bottom: 0.6rem;
+    width: 1px;
+    background: linear-gradient(180deg, var(--color-gold-light) 0%, rgba(217, 194, 154, 0.05) 100%);
+  }
+  .timeline :global(li) {
+    position: relative;
+    padding: 0 0 2rem 2rem;
+  }
+  .timeline :global(li:last-child) {
+    padding-bottom: 0;
+  }
+  .timeline :global(li)::before {
+    content: "";
+    position: absolute;
+    left: 0;
     top: 0.45em;
     width: 9px;
     height: 9px;
-    background: var(--color-ivory);
-    border: 1px solid var(--color-gold);
+    background: var(--gold-gradient);
     transform: rotate(45deg);
   }
   .tl-periodo {
     display: block;
-    font-size: 0.64rem;
+    font-size: 0.75rem;
     font-weight: 600;
-    letter-spacing: 0.3em;
+    letter-spacing: 0.22em;
     text-transform: uppercase;
-    color: var(--color-gold);
-    margin-bottom: 0.4rem;
-  }
-  .timeline h3 {
-    font-size: 1.3rem;
-    color: var(--color-navy);
+    color: var(--color-gold-light);
     margin-bottom: 0.35rem;
   }
+  .timeline h3 {
+    font-size: 1.45rem;
+    margin-bottom: 0.3rem;
+  }
   .timeline p {
-    font-size: 0.88rem;
-    font-weight: 400;
+    font-size: 0.9375rem;
     color: var(--ink-soft);
   }
 
-  /* ---------- 02 e 04 / listas em navy ---------- */
-  .formacao,
-  .instituicoes {
-    padding: var(--pad-sec) 0;
-    background: var(--color-navy);
-    color: var(--color-ivory);
-  }
-  .instituicoes {
-    background: var(--color-navy-deep);
-  }
-  .form-grid {
+  /* ---------- grids e cards ---------- */
+  .grid-3 {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    gap: clamp(2.5rem, 6vw, 5rem);
-    align-items: start;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.25rem;
   }
-  .form-label {
+  .grid-2 {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.25rem;
+  }
+  .grid-3 :global([data-reveal]),
+  .grid-2 :global([data-reveal]) {
+    display: flex;
+  }
+  .grid-3 :global(.glass),
+  .grid-2 :global(.glass) {
+    flex: 1;
+  }
+  .group-label {
     font-family: var(--font-sans);
-    font-size: 0.68rem;
+    font-size: 0.75rem;
     font-weight: 600;
-    letter-spacing: 0.32em;
+    letter-spacing: 0.24em;
     text-transform: uppercase;
-    color: var(--color-gold);
-    margin-bottom: 1.4rem;
+    color: var(--color-gold-light);
+    margin-bottom: 1.2rem;
   }
-  .form-list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: grid;
-    gap: 0.95rem;
+  .group-label.mt {
+    margin-top: clamp(2.4rem, 4vw, 3.2rem);
   }
-  .form-list li {
-    position: relative;
-    padding-left: 1.4rem;
-    font-size: 0.92rem;
+  .group-label.in-card {
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--ivory-line);
+  }
+  .form-card h4 {
+    margin-top: 1.2rem;
+    font-family: var(--font-display);
+    font-size: 1.45rem;
     font-weight: 400;
-    color: var(--ivory-soft);
-    line-height: 1.55;
+    line-height: 1.2;
   }
-  .form-list li::before {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 0.52em;
-    width: 9px;
-    height: 9px;
-    border: 1px solid var(--color-gold);
-    transform: rotate(45deg);
-  }
-  .form-list.stricto li {
-    display: grid;
-    gap: 0.15rem;
-  }
-  .form-list strong {
-    font-weight: 500;
-    color: var(--color-ivory);
-  }
-  .form-list span {
-    font-size: 0.85rem;
-  }
-
-  /* ---------- 03 / docência ---------- */
-  .docencia {
-    padding: var(--pad-sec) 0;
-    background: var(--color-ivory);
-  }
-  .doc-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: clamp(1.8rem, 4vw, 3rem);
-  }
-  .doc-item h3 {
-    font-size: 1.4rem;
-    color: var(--color-navy);
-    margin-bottom: 0.7rem;
-    padding-top: 1.1rem;
-    border-top: 1px solid var(--gold-soft);
-  }
-  .doc-item p {
-    font-size: 0.92rem;
-    font-weight: 400;
+  .form-card p,
+  .doc-card p {
+    margin-top: 0.6rem;
+    font-size: 0.9375rem;
     color: var(--ink-soft);
+  }
+  .doc-card h3 {
+    margin-top: 1.2rem;
+    font-size: 1.5rem;
   }
   .doc-link {
-    color: var(--color-gold);
+    color: var(--color-gold-light);
     text-decoration: underline;
     text-underline-offset: 3px;
     transition: color 0.3s ease;
   }
   .doc-link:hover {
-    color: var(--color-navy);
+    color: var(--color-ivory);
+  }
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.7rem;
+  }
+  .chips :global(.chip) {
+    white-space: normal;
+  }
+
+  .list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 0.9rem;
+  }
+  .list li {
+    position: relative;
+    padding-left: 1.4rem;
+    font-size: 0.9375rem;
+    color: var(--ink-soft);
+    line-height: 1.55;
+  }
+  .list li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.55em;
+    width: 8px;
+    height: 8px;
+    border: 1px solid var(--color-gold-mid);
+    transform: rotate(45deg);
   }
 
   @media (max-width: 1024px) {
-    .doc-grid {
+    .grid-3 {
       grid-template-columns: 1fr;
-    }
-  }
-  @media (max-width: 1100px) {
-    .traj-grid {
-      grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.4fr);
-    }
-    .traj-grid .timeline {
-      grid-column: 1 / -1;
     }
   }
   @media (max-width: 860px) {
     .traj-grid,
-    .form-grid {
+    .grid-2 {
       grid-template-columns: 1fr;
     }
-    .traj-photo {
+    .traj-photo-col {
       position: static;
       max-width: 22rem;
     }

@@ -1,0 +1,168 @@
+---
+/**
+ * FAQ em <details>. Summary em card de vidro, ícone +/−, abertura suave
+ * via grid-template-rows (funciona sem JS; o JS só anima o fechamento).
+ */
+interface Props {
+  items: { q: string; a: string }[];
+  class?: string;
+}
+const { items, class: className } = Astro.props;
+const uid = Math.random().toString(36).slice(2, 7);
+---
+
+<div class:list={['accordion', className]}>
+  {
+    items.map((item, i) => (
+      <details class="acc glass" name={`acc-${uid}`}>
+        <summary class="acc-summary">
+          <span class="acc-num" aria-hidden="true">
+            {String(i + 1).padStart(2, '0')}
+          </span>
+          <span class="acc-q">{item.q}</span>
+          <span class="acc-icon" aria-hidden="true" />
+        </summary>
+        <div class="acc-body">
+          <div class="acc-inner">
+            <p set:html={item.a} />
+          </div>
+        </div>
+      </details>
+    ))
+  }
+</div>
+
+<script>
+  document.querySelectorAll<HTMLDetailsElement>('.accordion .acc').forEach((d) => {
+    d.dataset.js = '';
+    const summary = d.querySelector<HTMLElement>('summary');
+    const body = d.querySelector<HTMLElement>('.acc-body');
+    if (!summary || !body) return;
+
+    summary.addEventListener('click', (e) => {
+      e.preventDefault();
+      if (d.open) {
+        d.classList.remove('is-open');
+        let finished = false;
+        const done = () => {
+          if (finished) return;
+          finished = true;
+          d.open = false;
+          body.removeEventListener('transitionend', done);
+        };
+        body.addEventListener('transitionend', done);
+        // sem transição (reduced-motion) fecha na hora; senão, fallback por tempo
+        const motion = window.matchMedia('(prefers-reduced-motion: no-preference)').matches;
+        window.setTimeout(done, motion ? 600 : 0);
+      } else {
+        d.open = true;
+        // um tick para o conteúdo existir antes de animar (setTimeout: rAF não roda em aba oculta)
+        window.setTimeout(() => d.classList.add('is-open'), 20);
+      }
+    });
+  });
+</script>
+
+<style>
+  .accordion {
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+  }
+  .acc {
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+  }
+  .acc-summary {
+    display: flex;
+    align-items: center;
+    gap: 1.1rem;
+    padding: 1.3rem 1.5rem;
+    cursor: pointer;
+    list-style: none;
+    user-select: none;
+  }
+  .acc-summary::-webkit-details-marker {
+    display: none;
+  }
+  .acc-num {
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    color: var(--color-gold-light);
+    flex: none;
+    min-width: 1.6rem;
+  }
+  .acc-q {
+    flex: 1;
+    font-family: var(--font-sans);
+    font-size: 1.0625rem;
+    font-weight: 500;
+    line-height: 1.4;
+    color: var(--color-ivory);
+  }
+  .acc-icon {
+    position: relative;
+    flex: none;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 1px solid rgba(251, 251, 248, 0.25);
+    transition: background 0.3s ease, border-color 0.3s ease;
+  }
+  .acc-icon::before,
+  .acc-icon::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 12px;
+    height: 1.5px;
+    background: var(--color-gold-light);
+    transform: translate(-50%, -50%);
+    transition: transform 0.35s var(--ease-out);
+  }
+  .acc-icon::after {
+    transform: translate(-50%, -50%) rotate(90deg);
+  }
+  .acc[open] .acc-icon::after,
+  .acc.is-open .acc-icon::after {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  .acc-summary:hover .acc-icon {
+    border-color: var(--color-gold-light);
+  }
+  .acc-summary:focus-visible {
+    outline-offset: -4px;
+  }
+
+  .acc-body {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.45s var(--ease-out);
+  }
+  .acc[open]:not([data-js]) .acc-body,
+  .acc.is-open .acc-body {
+    grid-template-rows: 1fr;
+  }
+  .acc-inner {
+    min-height: 0;
+    overflow: hidden;
+  }
+  .acc-inner p {
+    padding: 0 1.5rem 1.5rem calc(1.5rem + 1.6rem + 1.1rem);
+    color: var(--ink-soft);
+    font-size: 1rem;
+  }
+  @media (max-width: 600px) {
+    .acc-inner p {
+      padding-left: 1.5rem;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .acc-body,
+    .acc-icon::before,
+    .acc-icon::after {
+      transition: none;
+    }
+  }
+</style>

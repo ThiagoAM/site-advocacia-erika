@@ -1,0 +1,41 @@
+---
+/**
+ * Card de vidro: gradiente navy + borda 1 px marfim 16 %, sem sombra.
+ */
+interface Props {
+  radius?: 'sm' | 'md' | 'lg';
+  padding?: 'sm' | 'md' | 'lg' | 'none';
+  as?: string;
+  class?: string;
+  [key: string]: unknown;
+}
+const { radius = 'md', padding = 'md', as: Tag = 'div', class: className, ...rest } = Astro.props;
+---
+
+<Tag class:list={['glass', `r-${radius}`, `p-${padding}`, className]} {...rest}>
+  <slot />
+</Tag>
+
+<style>
+  .r-sm {
+    border-radius: var(--radius-sm);
+  }
+  .r-md {
+    border-radius: var(--radius-md);
+  }
+  .r-lg {
+    border-radius: var(--radius-lg);
+  }
+  .p-none {
+    padding: 0;
+  }
+  .p-sm {
+    padding: clamp(1.25rem, 2.5vw, 1.6rem);
+  }
+  .p-md {
+    padding: clamp(1.6rem, 3.2vw, 2.5rem) clamp(1.4rem, 2.6vw, 2rem);
+  }
+  .p-lg {
+    padding: clamp(2.2rem, 4.5vw, 3.5rem) clamp(1.6rem, 3.2vw, 2.5rem);
+  }
+</style>

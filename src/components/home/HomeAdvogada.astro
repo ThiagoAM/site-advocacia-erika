@@ -1,0 +1,164 @@
+---
+/**
+ * Seção 5 — A Advogada: card com bio + credenciais e foto com selo circular girando.
+ */
+import { Image } from 'astro:assets';
+import portrait from '../../assets/img/erika.jpg';
+import Selo from '../../assets/brand/logo-circular-mono.svg';
+import Eyebrow from '../ui/Eyebrow.astro';
+import Button from '../ui/Button.astro';
+import GlassCard from '../ui/GlassCard.astro';
+import Reveal from '../ui/Reveal.astro';
+
+const creds = [
+  ['Doutora em Direito', 'pesquisa em REURB'],
+  ['Mestre em Políticas Públicas', 'UFPR'],
+  ['Mestre em Direito', 'UNINTER'],
+  ['Professora', 'de pós-graduação, palestrante e escritora'],
+  ['Membro de comissões', 'da OAB/PR'],
+  ['Atendimento internacional', 'Brasil, EUA, Canadá e Portugal'],
+];
+---
+
+<section class="section advogada" id="advogada" aria-labelledby="adv-name">
+  <div class="container adv-grid">
+    <Reveal>
+      <GlassCard radius="lg" padding="lg" class="adv-card">
+        <Eyebrow>Quem conduz</Eyebrow>
+        <h2 class="adv-name" id="adv-name"><em class="em-gold">Dra. Érika Silvana Saquetti Martins</em></h2>
+        <p class="adv-bio">
+          Advogada desde 2009, a Dra. Érika Silvana Saquetti Martins dedica sua trajetória à
+          proteção de patrimônios e à construção de legados. Doutora em Direito com pesquisa em
+          regularização fundiária, une profundidade acadêmica e prática consultiva para entregar
+          soluções seguras — a famílias e investidores no Brasil e no exterior.
+        </p>
+        <ul class="creds">
+          {
+            creds.map(([t, d]) => (
+              <li>
+                <strong>{t}</strong> — {d}
+              </li>
+            ))
+          }
+        </ul>
+        <Button href="/a-advogada" variant="gold">Conhecer a trajetória</Button>
+      </GlassCard>
+    </Reveal>
+
+    <Reveal delay={150} class="adv-photo-wrap">
+      <GlassCard radius="md" padding="none" class="adv-photo">
+        <Image
+          class="adv-img"
+          src={portrait}
+          alt="Dra. Érika Silvana Saquetti Martins em retrato, olhando para a câmera"
+          widths={[480, 720, 960]}
+          sizes="(max-width: 900px) 92vw, 40vw"
+          format="webp"
+          quality={82}
+          loading="eager"
+        />
+        <span class="selo spin-slow" aria-hidden="true">
+          <Selo aria-hidden="true" role="presentation" aria-label={undefined} />
+        </span>
+      </GlassCard>
+    </Reveal>
+  </div>
+</section>
+
+<style>
+  .adv-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+    gap: clamp(2rem, 5vw, 4.5rem);
+    align-items: center;
+  }
+  .adv-card {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.4rem;
+  }
+  .adv-name {
+    font-size: clamp(2.1rem, 3.2vw, 2.6rem);
+    line-height: 1.15;
+    text-wrap: balance;
+  }
+  .adv-bio {
+    color: var(--ink-soft);
+    max-width: 36rem;
+  }
+  .creds {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.8rem 1.8rem;
+    font-size: 0.9375rem;
+    color: var(--ink-soft);
+  }
+  .creds li {
+    position: relative;
+    padding-left: 1.3rem;
+    line-height: 1.5;
+  }
+  .creds li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.55em;
+    width: 8px;
+    height: 8px;
+    transform: rotate(45deg);
+    background: var(--color-gold-mid);
+  }
+  .creds strong {
+    color: var(--color-ivory);
+  }
+  .adv-photo {
+    position: relative;
+    aspect-ratio: 3 / 4;
+    overflow: hidden;
+  }
+  .adv-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 18%;
+  }
+  .selo {
+    position: absolute;
+    right: 1.25rem;
+    bottom: 1.25rem;
+    width: 96px;
+    height: 96px;
+    color: var(--color-ivory);
+    opacity: 0.7;
+  }
+  .selo :global(svg) {
+    width: 100%;
+    height: 100%;
+  }
+  @media (max-width: 900px) {
+    .adv-grid {
+      grid-template-columns: 1fr;
+    }
+    .adv-photo-wrap {
+      order: -1;
+    }
+    .adv-photo {
+      max-width: 420px;
+      margin-inline: auto;
+    }
+  }
+  @media (max-width: 600px) {
+    .creds {
+      grid-template-columns: 1fr;
+    }
+    .adv-card :global(.btn) {
+      width: 100%;
+    }
+  }
+</style>

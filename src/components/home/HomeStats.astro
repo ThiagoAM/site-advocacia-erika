@@ -1,0 +1,56 @@
+---
+/**
+ * Seção 2 — Faixa de credenciais: 4 Stat em GlassCards.
+ */
+import GlassCard from '../ui/GlassCard.astro';
+import Stat from '../ui/Stat.astro';
+import Reveal from '../ui/Reveal.astro';
+
+const itens = [
+  { value: '2009', label: 'Advocacia consultiva desde então' },
+  { value: 'Doutora', label: 'em Direito, pesquisa em REURB' },
+  { value: '4 países', label: 'Brasil · EUA · Canadá · Portugal' },
+  { value: 'OAB/PR', label: '52.743 · membro de comissões' },
+];
+---
+
+<section class="section stats section-navy-deep" aria-label="Credenciais">
+  <div class="container">
+    <div class="stats-grid">
+      {
+        itens.map((item, i) => (
+          <Reveal delay={i * 100}>
+            <GlassCard radius="sm" padding="sm" class="stat-card">
+              <Stat value={item.value} label={item.label} />
+            </GlassCard>
+          </Reveal>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .stats {
+    padding-block: clamp(2.5rem, 5vw, 4rem);
+  }
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 1.25rem;
+  }
+  .stats-grid :global([data-reveal]),
+  .stat-card {
+    height: 100%;
+  }
+  @media (max-width: 900px) {
+    .stats-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (max-width: 520px) {
+    .stats-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

@@ -1,0 +1,17 @@
+---
+/**
+ * Wrapper com `data-reveal`: entra com fade + blur ao rolar (script em BaseLayout).
+ */
+interface Props {
+  /** Atraso em ms (escalonar cards). */
+  delay?: number;
+  as?: string;
+  class?: string;
+  [key: string]: unknown;
+}
+const { delay = 0, as: Tag = 'div', class: className, ...rest } = Astro.props;
+---
+
+<Tag data-reveal class={className} style={delay ? `--reveal-delay:${delay}ms` : undefined} {...rest}>
+  <slot />
+</Tag>

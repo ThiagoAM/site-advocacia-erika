@@ -1,0 +1,53 @@
+---
+/**
+ * Cabeça de seção: eyebrow → h2 (slot; pode conter <em class="em-gold">) → lead → linha dourada.
+ */
+import Eyebrow from './Eyebrow.astro';
+import GoldRule from './GoldRule.astro';
+
+interface Props {
+  eyebrow?: string;
+  align?: 'center' | 'left';
+  lead?: string;
+  /** Nível do título (2 por padrão). */
+  level?: 1 | 2;
+  class?: string;
+}
+const { eyebrow, align = 'center', lead, level = 2, class: className } = Astro.props;
+const Heading = level === 1 ? 'h1' : 'h2';
+---
+
+<div class:list={['sec-head-v2', `a-${align}`, className]}>
+  {eyebrow && <Eyebrow>{eyebrow}</Eyebrow>}
+  <Heading class="sec-title"><slot /></Heading>
+  {lead && <p class="lead">{lead}</p>}
+  <GoldRule align={align} />
+</div>
+
+<style>
+  .sec-head-v2 {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    max-width: 48rem;
+    margin-bottom: clamp(2.8rem, 5vw, 4rem);
+  }
+  .a-center {
+    align-items: center;
+    text-align: center;
+    margin-inline: auto;
+  }
+  .a-left {
+    align-items: flex-start;
+    text-align: left;
+  }
+  .sec-title {
+    text-wrap: balance;
+  }
+  .lead {
+    max-width: 40rem;
+  }
+  .sec-head-v2 :global(.gold-rule) {
+    margin-top: 0.4rem;
+  }
+</style>

@@ -1,0 +1,13 @@
+---
+/**
+ * Palavra gigante em serif outline ao fundo da seção (o pai precisa de
+ * `position: relative; overflow: clip` — `.section` já faz isso).
+ */
+interface Props {
+  text: string;
+  class?: string;
+}
+const { text, class: className } = Astro.props;
+---
+
+<span class:list={['watermark', className]} aria-hidden="true">{text}</span>

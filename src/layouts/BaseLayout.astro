@@ -20,6 +20,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     <title>{title}</title>
     <meta name="description" content={description} />
     <meta name="generator" content={Astro.generator} />
+    <meta name="theme-color" content="#041E42" />
     <link rel="canonical" href={canonicalURL} />
 
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -33,17 +34,58 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     <meta property="og:url" content={canonicalURL} />
     <meta property="og:locale" content="pt_BR" />
 
-    <!-- Fontes: Italiana (display) + Space Grotesk (corpo) -->
+    <!-- Fontes: Cormorant Garamond (display) + Montserrat (corpo) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Montserrat:wght@400;500;600&display=swap"
       rel="stylesheet"
     />
+
+    <!-- sem JS, os blocos [data-reveal] ficam visíveis -->
+    <noscript>
+      <style>
+        [data-reveal] {
+          opacity: 1 !important;
+          filter: none !important;
+          transform: none !important;
+        }
+      </style>
+    </noscript>
   </head>
   <body>
     <Header />
     <slot />
     <Footer />
+
+    <script>
+      // Revelação ao rolar: fade + blur + deslocamento (ver [data-reveal] em global.css)
+      const targets = Array.from(document.querySelectorAll<HTMLElement>('[data-reveal]'));
+      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      if (reduce || !('IntersectionObserver' in window)) {
+        targets.forEach((el) => el.classList.add('is-visible'));
+      } else {
+        const io = new IntersectionObserver(
+          (entries) => {
+            for (const entry of entries) {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('is-visible');
+                io.unobserve(entry.target);
+              }
+            }
+          },
+          { threshold: 0.15, rootMargin: '0px 0px -10% 0px' },
+        );
+
+        // o que já está na viewport no carregamento aparece de imediato
+        const vh = window.innerHeight;
+        targets.forEach((el) => {
+          const r = el.getBoundingClientRect();
+          if (r.top < vh && r.bottom > 0) el.classList.add('is-visible');
+          else io.observe(el);
+        });
+      }
+    </script>
   </body>
 </html>

@@ -1,31 +1,31 @@
 ---
-import Brand from './Brand.astro';
-import IconWhatsApp from './IconWhatsApp.astro';
+import Logo from '../assets/brand/logo-horizontal-mono.svg';
+import Button from './ui/Button.astro';
 import { WHATSAPP_URL } from '../data/site';
 
 const navLinks = [
-  { href: '/#inicio', label: 'Início' },
+  { href: '/', label: 'Início' },
   { href: '/a-advogada', label: 'A Advogada' },
   { href: '/#areas', label: 'Áreas de Atuação' },
-  { href: '/noticias', label: 'Conteúdo' },
+  { href: '/educacao', label: 'Educação' },
+  { href: '/noticias', label: 'Notícias' },
   { href: '/contato', label: 'Contato' },
 ];
 ---
 
-<header class="site-header">
+<header class="site-header" id="site-header">
   <div class="container header-in">
-    <Brand />
+    <a href="/" class="logo" aria-label="Saquetti Martins Advocacia — início">
+      <Logo aria-hidden="true" role="presentation" aria-label={undefined} />
+    </a>
 
     <nav class="main-nav" aria-label="Navegação principal">
       {navLinks.map((link) => <a href={link.href}>{link.label}</a>)}
     </nav>
 
-    <span class="btn-o header-cta">
-      <a class="btn" href={WHATSAPP_URL} target="_blank" rel="noopener">
-        <IconWhatsApp />
-        Falar no WhatsApp
-      </a>
-    </span>
+    <div class="header-cta">
+      <Button href={WHATSAPP_URL} variant="ghost" external icon="whatsapp">Falar no WhatsApp</Button>
+    </div>
 
     <button
       type="button"
@@ -34,34 +34,59 @@ const navLinks = [
       aria-controls="mobile-nav"
       aria-label="Abrir menu"
     >
-      <span></span><span></span>
+      <span></span><span></span><span></span>
     </button>
   </div>
 
-  <nav id="mobile-nav" class="mobile-nav" aria-label="Navegação móvel" hidden>
-    {navLinks.map((link) => <a href={link.href}>{link.label}</a>)}
-    <a class="btn btn-gold" href={WHATSAPP_URL} target="_blank" rel="noopener">Falar no WhatsApp</a>
-  </nav>
+  <div id="mobile-nav" class="mobile-nav" hidden>
+    <nav aria-label="Navegação móvel" class="container mobile-nav-in">
+      {navLinks.map((link) => <a href={link.href}>{link.label}</a>)}
+      <div class="mobile-cta">
+        <Button href={WHATSAPP_URL} variant="gold" external icon="whatsapp">Falar no WhatsApp</Button>
+      </div>
+    </nav>
+  </div>
 </header>
 
 <script>
-  const btn = document.querySelector<HTMLButtonElement>('.menu-btn');
+  const header = document.getElementById('site-header');
+  const btn = header?.querySelector<HTMLButtonElement>('.menu-btn');
   const nav = document.getElementById('mobile-nav');
 
-  if (btn && nav) {
+  // fica opaco após 40px de rolagem
+  if (header) {
+    const update = () => header.classList.toggle('is-scrolled', window.scrollY > 40);
+    window.addEventListener('scroll', update, { passive: true });
+    update();
+  }
+
+  if (header && btn && nav) {
     const setOpen = (open: boolean) => {
       btn.setAttribute('aria-expanded', String(open));
       btn.setAttribute('aria-label', open ? 'Fechar menu' : 'Abrir menu');
       nav.hidden = !open;
+      header.classList.toggle('is-open', open);
+      document.body.style.overflow = open ? 'hidden' : '';
     };
+    const isOpen = () => btn.getAttribute('aria-expanded') === 'true';
 
-    btn.addEventListener('click', () => {
-      setOpen(btn.getAttribute('aria-expanded') !== 'true');
-    });
+    btn.addEventListener('click', () => setOpen(!isOpen()));
 
-    // fecha o menu ao navegar para uma âncora
     nav.querySelectorAll('a').forEach((link) => {
       link.addEventListener('click', () => setOpen(false));
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && isOpen()) {
+        setOpen(false);
+        btn.focus();
+      }
+    });
+
+    // ao voltar ao desktop, fecha o painel e destrava o scroll
+    const mq = window.matchMedia('(min-width: 1025px)');
+    mq.addEventListener('change', (e) => {
+      if (e.matches && isOpen()) setOpen(false);
     });
   }
 </script>
@@ -73,10 +98,15 @@ const navLinks = [
     left: 0;
     right: 0;
     z-index: 100;
-    background: rgba(251, 251, 248, 0.94);
+    background: rgba(4, 30, 66, 0.72);
     -webkit-backdrop-filter: blur(14px);
     backdrop-filter: blur(14px);
-    border-bottom: 1px solid var(--ink-faint);
+    border-bottom: 1px solid var(--ivory-line);
+    transition: background 0.35s ease;
+  }
+  .site-header.is-scrolled,
+  .site-header.is-open {
+    background: var(--color-navy);
   }
   .header-in {
     height: var(--header-h);
@@ -86,19 +116,37 @@ const navLinks = [
     gap: 2rem;
   }
 
+  .logo {
+    display: inline-flex;
+    align-items: center;
+    color: var(--color-ivory);
+    flex: none;
+    transition: color 0.3s ease;
+  }
+  .logo:hover {
+    color: var(--color-gold-light);
+  }
+  .logo :global(svg) {
+    height: 40px;
+    width: auto;
+    display: block;
+  }
+
   .main-nav {
     display: flex;
     align-items: center;
-    gap: 2.1rem;
+    gap: clamp(1.2rem, 2vw, 2rem);
   }
   .main-nav a {
     position: relative;
-    font-size: 0.8rem;
+    font-family: var(--font-sans);
+    font-size: 0.8125rem;
     font-weight: 500;
-    letter-spacing: 0.12em;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--ink-soft);
-    padding: 0.35rem 0;
+    padding: 0.4rem 0;
+    white-space: nowrap;
     transition: color 0.3s ease;
   }
   .main-nav a::after {
@@ -108,11 +156,12 @@ const navLinks = [
     bottom: 0;
     width: 0;
     height: 1px;
-    background: var(--color-gold);
-    transition: width 0.35s ease;
+    background: var(--color-gold-light);
+    transition: width 0.35s var(--ease-out);
   }
-  .main-nav a:hover {
-    color: var(--color-navy);
+  .main-nav a:hover,
+  .main-nav a:focus-visible {
+    color: var(--color-ivory);
   }
   .main-nav a:hover::after {
     width: 100%;
@@ -121,9 +170,18 @@ const navLinks = [
   .header-cta {
     flex: none;
   }
-  .header-cta .btn {
-    padding: 0.85rem 1.4rem;
-    font-size: 0.72rem;
+  .header-cta :global(.btn) {
+    font-size: 0.8125rem;
+    padding: 0.45rem 0.45rem 0.45rem 1.1rem;
+    gap: 0.7rem;
+  }
+  .header-cta :global(.btn-icon) {
+    width: 32px;
+    height: 32px;
+  }
+  .header-cta :global(.btn-icon svg) {
+    width: 15px;
+    height: 15px;
   }
 
   /* ---------- menu mobile ---------- */
@@ -131,10 +189,11 @@ const navLinks = [
     display: none;
     flex-direction: column;
     justify-content: center;
-    gap: 6px;
+    gap: 5px;
     width: 44px;
     height: 44px;
     padding: 10px;
+    margin-right: -10px;
     cursor: pointer;
     flex: none;
     background: none;
@@ -143,50 +202,26 @@ const navLinks = [
   .menu-btn span {
     display: block;
     height: 1.5px;
-    background: var(--color-navy);
+    background: var(--color-ivory);
     transition:
-      transform 0.35s ease,
-      opacity 0.3s ease;
+      transform 0.35s var(--ease-out),
+      opacity 0.25s ease;
   }
   .menu-btn[aria-expanded="true"] span:nth-child(1) {
-    transform: translateY(3.75px) rotate(45deg);
+    transform: translateY(6.5px) rotate(45deg);
   }
   .menu-btn[aria-expanded="true"] span:nth-child(2) {
-    transform: translateY(-3.75px) rotate(-45deg);
+    opacity: 0;
+  }
+  .menu-btn[aria-expanded="true"] span:nth-child(3) {
+    transform: translateY(-6.5px) rotate(-45deg);
   }
 
   .mobile-nav {
     display: none;
   }
-  .mobile-nav a {
-    font-family: var(--font-display);
-    font-size: 1.5rem;
-    color: var(--color-ivory);
-    padding: 1rem 0;
-    border-bottom: 1px solid rgba(251, 251, 248, 0.09);
-    transition:
-      color 0.3s ease,
-      padding-left 0.3s ease;
-  }
-  .mobile-nav a:hover {
-    color: var(--color-gold);
-    padding-left: 0.5rem;
-  }
-  .mobile-nav a.btn-gold {
-    font-family: var(--font-sans);
-    font-size: 0.78rem;
-    color: #fffdf8;
-    margin-top: 1.6rem;
-    align-self: flex-start;
-    border-bottom: none;
-    padding: 1.05rem 1.8rem;
-  }
-  .mobile-nav a.btn-gold:hover {
-    color: var(--color-navy);
-    padding-left: 1.8rem;
-  }
 
-  @media (max-width: 860px) {
+  @media (max-width: 1024px) {
     .main-nav,
     .header-cta {
       display: none;
@@ -194,12 +229,59 @@ const navLinks = [
     .menu-btn {
       display: flex;
     }
+    .logo :global(svg) {
+      height: 32px;
+    }
     .mobile-nav:not([hidden]) {
+      display: block;
+      position: fixed;
+      top: var(--header-h);
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: var(--color-navy-deep);
+      overflow-y: auto;
+      z-index: 99;
+    }
+    .mobile-nav-in {
       display: flex;
       flex-direction: column;
-      background: var(--color-navy);
-      border-top: 1px solid var(--gold-faint);
-      padding: 1rem 4% 2rem;
+      padding: 1.5rem 0 3rem;
+      min-height: 100%;
+    }
+    .mobile-nav-in > a {
+      font-family: var(--font-display);
+      font-weight: 300;
+      font-size: clamp(1.9rem, 6vw, 2.4rem);
+      line-height: 1.2;
+      color: var(--color-ivory);
+      padding: 0.9rem 0;
+      border-bottom: 1px solid var(--ivory-line);
+      transition:
+        color 0.3s ease,
+        padding-left 0.3s var(--ease-out);
+    }
+    .mobile-nav-in > a:hover {
+      color: var(--color-gold-light);
+      padding-left: 0.5rem;
+    }
+    .mobile-cta {
+      margin-top: 2rem;
+    }
+    @media (prefers-reduced-motion: no-preference) {
+      .mobile-nav:not([hidden]) {
+        animation: nav-in 0.35s var(--ease-out);
+      }
+      @keyframes nav-in {
+        from {
+          opacity: 0;
+          transform: translateY(-8px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
     }
   }
 </style>

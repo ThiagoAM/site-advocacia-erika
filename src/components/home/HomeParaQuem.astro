@@ -1,0 +1,105 @@
+---
+/**
+ * Seção 6 — Para quem: dois cards com listas de ✓ em ouro.
+ */
+import SectionHead from '../ui/SectionHead.astro';
+import GlassCard from '../ui/GlassCard.astro';
+import Reveal from '../ui/Reveal.astro';
+
+const grupos = [
+  {
+    titulo: 'Para famílias e pessoas',
+    itens: [
+      'Comprar ou vender um imóvel com segurança',
+      'Regularizar um imóvel sem matrícula ou com pendências',
+      'Planejar a sucessão e evitar conflitos',
+      'Estruturar uma holding familiar',
+      'Resolver um inventário',
+    ],
+  },
+  {
+    titulo: 'Para empresas e profissionais do mercado',
+    itens: [
+      'Incorporadoras e construtoras',
+      'Corretores e imobiliárias',
+      'Investidores no Brasil e no exterior',
+      'Tabeliães e registradores',
+      'Due diligence de ativos',
+    ],
+  },
+];
+---
+
+<section class="section paraquem section-navy-deep" id="para-quem">
+  <div class="container">
+    <Reveal>
+      <SectionHead eyebrow="Para quem" lead="Situações em que uma leitura jurídica prévia costuma fazer diferença.">
+        Para quem <em class="em-gold">construímos</em>
+      </SectionHead>
+    </Reveal>
+    <div class="pq-grid">
+      {
+        grupos.map((g, i) => (
+          <Reveal delay={i * 120}>
+            <GlassCard radius="lg" padding="lg" class="pq-card">
+              <h3>{g.titulo}</h3>
+              <ul>
+                {g.itens.map((item) => (
+                  <li>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <circle cx="12" cy="12" r="10" stroke-opacity=".45" />
+                      <path d="m7.5 12.5 3 3 6-7" />
+                    </svg>
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </GlassCard>
+          </Reveal>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .pq-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.5rem;
+  }
+  .pq-grid :global([data-reveal]),
+  .pq-card {
+    height: 100%;
+  }
+  .pq-card h3 {
+    font-size: clamp(1.6rem, 2.4vw, 2rem);
+  }
+  .pq-card ul {
+    list-style: none;
+    margin: 1.6rem 0 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+  }
+  .pq-card li {
+    display: flex;
+    gap: 0.9rem;
+    align-items: flex-start;
+    color: var(--ink-soft);
+    line-height: 1.5;
+  }
+  .pq-card svg {
+    flex: none;
+    width: 24px;
+    height: 24px;
+    color: var(--color-gold-light);
+    margin-top: 0.1em;
+  }
+  @media (max-width: 800px) {
+    .pq-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

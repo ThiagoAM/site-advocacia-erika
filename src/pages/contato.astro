@@ -4,6 +4,11 @@ import PageHero from '../components/PageHero.astro';
 import heroImg from '../assets/img/hero-contato.png';
 import IconWhatsApp from '../components/IconWhatsApp.astro';
 import ContactForm from '../components/ContactForm.astro';
+import SectionHead from '../components/ui/SectionHead.astro';
+import GlassCard from '../components/ui/GlassCard.astro';
+import IconSquare from '../components/ui/IconSquare.astro';
+import Button from '../components/ui/Button.astro';
+import Reveal from '../components/ui/Reveal.astro';
 import {
   EMAIL,
   INSTAGRAM_HANDLE,
@@ -16,6 +21,24 @@ import {
 const title = `Contato — ${SITE_NAME}`;
 const description =
   'Fale com a Dra. Érika Saquetti Martins por WhatsApp, e-mail ou Instagram. Atendimento em Curitiba e online para todo o Brasil, EUA, Canadá e Portugal.';
+
+const atendimento = [
+  {
+    titulo: 'Horário',
+    texto:
+      'De segunda a sexta-feira, das 9h às 18h (horário de Brasília). Mensagens recebidas fora desse horário são respondidas no próximo dia útil.',
+  },
+  {
+    titulo: 'No Brasil',
+    texto:
+      'Base em Curitiba — PR, com atendimento online para todo o país. Consultas presenciais mediante agendamento.',
+  },
+  {
+    titulo: 'No exterior',
+    texto:
+      'Atendimento por videoconferência para clientes nos Estados Unidos, no Canadá e em Portugal, com horários compatíveis com cada fuso.',
+  },
+];
 ---
 
 <BaseLayout title={title} description={description}>
@@ -23,106 +46,96 @@ const description =
     <PageHero
       tag="Contato"
       title="Vamos conversar?"
+      titleHtml='Vamos <em class="em-gold">conversar</em>?'
       lead="Atendimento consultivo, humano e direto — presencial em Curitiba e online para todo o Brasil e para o exterior."
       crumbs={[{ label: 'Início', href: '/' }, { label: 'Contato' }]}
       image={heroImg}
     />
 
-    <!-- 01 / Canais diretos -->
-    <section class="section canais grid-ivory">
+    <!-- Canais diretos -->
+    <section class="section canais">
       <div class="container">
-        <div class="sec-head">
-          <span class="sec-tag"><span class="num">01</span><span class="bar">/</span>Canais Diretos</span>
-          <h2>Escolha o caminho mais simples para você.</h2>
-          <div class="rule-double"></div>
-        </div>
+        <SectionHead eyebrow="Canais diretos" align="left">
+          Escolha o caminho <em class="em-gold">mais simples</em> para você.
+        </SectionHead>
 
         <div class="canais-grid">
-          <a class="canal" href={WHATSAPP_URL} target="_blank" rel="noopener">
-            <span class="canal-in">
-              <span class="canal-icon"><IconWhatsApp /></span>
-              <span class="canal-nome">WhatsApp</span>
-              <span class="canal-valor">{WHATSAPP_DISPLAY}</span>
-              <span class="canal-desc">O canal mais rápido para primeiras conversas e agendamento de consultas.</span>
-              <span class="canal-go">Iniciar conversa</span>
-            </span>
-          </a>
+          <Reveal>
+            <GlassCard radius="md" class="canal canal-wa">
+              <IconSquare tone="gold" size={72}><IconWhatsApp /></IconSquare>
+              <h3>WhatsApp</h3>
+              <p class="canal-valor">{WHATSAPP_DISPLAY}</p>
+              <p class="canal-desc">O canal mais rápido para primeiras conversas e agendamento de consultas.</p>
+              <div class="canal-action">
+                <Button href={WHATSAPP_URL} variant="gold" external icon="whatsapp">Iniciar conversa</Button>
+              </div>
+            </GlassCard>
+          </Reveal>
 
-          <a class="canal" href={`mailto:${EMAIL}`}>
-            <span class="canal-in">
-              <span class="canal-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"
-                  ><rect x="2.5" y="5" width="19" height="14" rx="2"></rect><path
-                    d="m3.5 6.5 8.5 6.5 8.5-6.5"></path></svg
-                >
-              </span>
-              <span class="canal-nome">E-mail</span>
-              <span class="canal-valor">{EMAIL}</span>
-              <span class="canal-desc">Para mensagens mais detalhadas e envio de documentos com organização.</span>
-              <span class="canal-go">Escrever e-mail</span>
-            </span>
-          </a>
+          <Reveal delay={90}>
+            <GlassCard radius="md" class="canal">
+              <IconSquare tone="navy" size={72}>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                  <rect x="2.5" y="5" width="19" height="14" rx="2"></rect>
+                  <path d="m3.5 6.5 8.5 6.5 8.5-6.5"></path>
+                </svg>
+              </IconSquare>
+              <h3>E-mail</h3>
+              <p class="canal-valor">{EMAIL}</p>
+              <p class="canal-desc">Para mensagens mais detalhadas e envio de documentos com organização.</p>
+              <div class="canal-action">
+                <a class="canal-go" href={`mailto:${EMAIL}`}>Escrever e-mail</a>
+              </div>
+            </GlassCard>
+          </Reveal>
 
-          <a class="canal" href={INSTAGRAM_URL} target="_blank" rel="noopener">
-            <span class="canal-in">
-              <span class="canal-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"
-                  ><rect x="3" y="3" width="18" height="18" rx="5"></rect><circle cx="12" cy="12" r="4"
-                  ></circle><circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"
-                  ></circle></svg
-                >
-              </span>
-              <span class="canal-nome">Instagram</span>
-              <span class="canal-valor">{INSTAGRAM_HANDLE}</span>
-              <span class="canal-desc">Conteúdo sobre direito imobiliário e patrimonial — e mensagens diretas.</span>
-              <span class="canal-go">Seguir e conversar</span>
-            </span>
-          </a>
+          <Reveal delay={180}>
+            <GlassCard radius="md" class="canal">
+              <IconSquare tone="navy" size={72}>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                  <rect x="3" y="3" width="18" height="18" rx="5"></rect>
+                  <circle cx="12" cy="12" r="4"></circle>
+                  <circle cx="17.2" cy="6.8" r="1.1" fill="currentColor" stroke="none"></circle>
+                </svg>
+              </IconSquare>
+              <h3>Instagram</h3>
+              <p class="canal-valor">{INSTAGRAM_HANDLE}</p>
+              <p class="canal-desc">Conteúdo sobre direito imobiliário e patrimonial — e mensagens diretas.</p>
+              <div class="canal-action">
+                <a class="canal-go" href={INSTAGRAM_URL} target="_blank" rel="noopener">Seguir e conversar</a>
+              </div>
+            </GlassCard>
+          </Reveal>
         </div>
       </div>
     </section>
 
-    <!-- 02 / Envie uma mensagem (Web3Forms) -->
-    <ContactForm num="02" />
+    <!-- Envie uma mensagem (Web3Forms / mailto) -->
+    <ContactForm />
 
-    <!-- 03 / Como funciona -->
-    <section class="section atendimento grid-navy">
+    <!-- Como funciona -->
+    <section class="section atendimento">
       <div class="container">
-        <div class="sec-head on-navy">
-          <span class="sec-tag"><span class="num">03</span><span class="bar">/</span>Atendimento</span>
-          <h2>Como funciona o atendimento.</h2>
-          <div class="rule-double"></div>
-        </div>
+        <SectionHead eyebrow="Atendimento" align="left">
+          Como funciona <em class="em-gold">o atendimento</em>.
+        </SectionHead>
 
         <div class="atd-grid">
-          <div class="atd-item">
-            <h3>Horário</h3>
-            <p>
-              De segunda a sexta-feira, das 9h às 18h (horário de Brasília). Mensagens recebidas
-              fora desse horário são respondidas no próximo dia útil.
-            </p>
-          </div>
-          <div class="atd-item">
-            <h3>No Brasil</h3>
-            <p>
-              Base em Curitiba — PR, com atendimento online para todo o país. Consultas presenciais
-              mediante agendamento.
-            </p>
-          </div>
-          <div class="atd-item">
-            <h3>No exterior</h3>
-            <p>
-              Atendimento por videoconferência para clientes nos Estados Unidos, no Canadá e em
-              Portugal, com horários compatíveis com cada fuso.
-            </p>
-          </div>
+          {
+            atendimento.map((item, i) => (
+              <Reveal delay={i * 90}>
+                <GlassCard radius="md" class="atd-card">
+                  <span class="atd-num em-gold">{String(i + 1).padStart(2, '0')}</span>
+                  <h3>{item.titulo}</h3>
+                  <p>{item.texto}</p>
+                </GlassCard>
+              </Reveal>
+            ))
+          }
         </div>
 
         <div class="atd-cta">
-          <a class="btn btn-gold" href={WHATSAPP_URL} target="_blank" rel="noopener">
-            <IconWhatsApp />
-            Agendar pelo WhatsApp
-          </a>
+          <Button href={WHATSAPP_URL} variant="gold" external icon="whatsapp">Agendar pelo WhatsApp</Button>
         </div>
       </div>
     </section>
@@ -130,123 +143,101 @@ const description =
 </BaseLayout>
 
 <style>
-  /* ---------- 01 / canais ---------- */
-  .canais {
-    padding: var(--pad-sec) 0;
-    background: var(--color-ivory);
-  }
+  /* ---------- canais ---------- */
   .canais-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1.4rem;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.25rem;
+  }
+  .canais-grid :global([data-reveal]),
+  .atd-grid :global([data-reveal]) {
+    display: flex;
   }
   .canal {
-    display: flex;
-    clip-path: var(--ch);
-    padding: 1px;
-    background: rgba(4, 30, 66, 0.13);
-    transition:
-      transform 0.4s cubic-bezier(0.22, 0.68, 0.35, 1),
-      background 0.4s ease;
-  }
-  .canal:hover,
-  .canal:focus-visible {
-    outline: none;
-    transform: translateY(-6px);
-    background: var(--color-gold);
-  }
-  .canal-in {
     flex: 1;
-    clip-path: var(--ch);
-    background: var(--color-paper);
-    padding: 2rem 1.9rem 1.8rem;
     display: flex;
     flex-direction: column;
+    transition: border-color 0.4s ease;
   }
-  .canal-icon {
-    display: inline-flex;
-    color: var(--color-gold);
-    margin-bottom: 1.4rem;
+  .canal:hover {
+    border-color: var(--gold-line);
   }
-  .canal-icon :global(svg) {
-    width: 26px;
-    height: 26px;
+  .canal-wa {
+    border-color: var(--gold-line);
   }
-  .canal-nome {
-    font-family: var(--font-display);
-    font-size: 1.5rem;
-    color: var(--color-navy);
-    line-height: 1.15;
+  .canal h3 {
+    margin-top: 1.3rem;
+    font-size: 1.6rem;
   }
   .canal-valor {
-    margin-top: 0.35rem;
-    font-size: 0.8rem;
+    margin-top: 0.2rem;
+    font-size: 0.9375rem;
     font-weight: 500;
-    letter-spacing: 0.08em;
-    color: var(--color-gold);
+    letter-spacing: 0.04em;
+    color: var(--color-gold-light);
     overflow-wrap: anywhere;
   }
   .canal-desc {
     margin-top: 0.9rem;
-    font-size: 0.88rem;
-    font-weight: 400;
+    font-size: 0.9375rem;
     color: var(--ink-soft);
     flex: 1;
+  }
+  .canal-action {
+    margin-top: 1.6rem;
   }
   .canal-go {
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    margin-top: 1.5rem;
-    font-size: 0.72rem;
+    font-size: 0.9375rem;
     font-weight: 500;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--ink-soft);
-    transition:
-      color 0.3s ease,
-      gap 0.3s ease;
+    color: var(--color-ivory);
+    transition: gap 0.3s ease, color 0.3s ease;
   }
   .canal-go::after {
     content: "→";
-    color: var(--color-gold);
+    color: var(--color-gold-light);
   }
-  .canal:hover .canal-go {
-    color: var(--color-navy);
+  .canal-go:hover {
+    color: var(--color-gold-light);
     gap: 0.8rem;
   }
 
-  /* ---------- 02 / atendimento ---------- */
+  /* ---------- atendimento ---------- */
   .atendimento {
-    padding: var(--pad-sec) 0;
     background: var(--color-navy);
-    color: var(--color-ivory);
   }
   .atd-grid {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: clamp(1.8rem, 4vw, 3rem);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.25rem;
   }
-  .atd-item h3 {
-    font-size: 1.4rem;
-    color: var(--color-ivory);
-    margin-bottom: 0.7rem;
-    padding-top: 1.1rem;
-    border-top: 1px solid var(--gold-faint);
+  .atd-card {
+    flex: 1;
   }
-  .atd-item p {
-    font-size: 0.9rem;
-    font-weight: 400;
-    color: var(--ivory-soft);
+  .atd-num {
+    display: block;
+    font-family: var(--font-display);
+    font-style: normal;
+    font-size: 2.6rem;
+    line-height: 1;
+  }
+  .atd-card h3 {
+    margin-top: 1rem;
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
+  .atd-card p {
+    font-size: 0.9375rem;
+    color: var(--ink-soft);
   }
   .atd-cta {
     margin-top: clamp(2.4rem, 5vw, 3.5rem);
   }
 
   @media (max-width: 1024px) {
-    .canais-grid {
-      grid-template-columns: 1fr;
-    }
+    .canais-grid,
     .atd-grid {
       grid-template-columns: 1fr;
     }

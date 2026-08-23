@@ -13,11 +13,12 @@ const description =
     <PageHero
       tag="Transparência"
       title="Política de Privacidade"
+      titleHtml='Política de <em class="em-gold">Privacidade</em>'
       lead="Como este site trata — e, sobretudo, como não trata — os seus dados pessoais, em conformidade com a Lei Geral de Proteção de Dados (Lei nº 13.709/2018 — LGPD)."
       crumbs={[{ label: 'Início', href: '/' }, { label: 'Política de Privacidade' }]}
     />
 
-    <section class="section policy grid-ivory">
+    <section class="section policy">
       <div class="container">
         <article class="policy-body">
           <h2>1. Quem é a controladora dos dados</h2>
@@ -115,20 +116,18 @@ const description =
 </BaseLayout>
 
 <style>
-  .policy {
-    padding: var(--pad-sec) 0;
-    background: var(--color-ivory);
-  }
   .policy-body {
-    max-width: 46rem;
+    max-width: 70ch;
+    color: rgba(251, 251, 248, 0.85);
   }
   .policy-body h2 {
-    font-size: clamp(1.5rem, 2.6vw, 1.9rem);
-    color: var(--color-navy);
-    margin-top: 2.6rem;
+    font-size: clamp(1.7rem, 2.8vw, 2.2rem);
+    font-weight: 400;
+    color: var(--color-gold-light);
+    margin-top: 2.8rem;
     margin-bottom: 0.9rem;
-    padding-top: 1.2rem;
-    border-top: 1px solid var(--gold-faint);
+    padding-top: 1.4rem;
+    border-top: 1px solid var(--ivory-line);
   }
   .policy-body h2:first-child {
     margin-top: 0;
@@ -136,9 +135,7 @@ const description =
     border-top: none;
   }
   .policy-body p {
-    font-size: 0.98rem;
-    font-weight: 400;
-    color: var(--ink-soft);
+    font-size: 1rem;
   }
   .policy-body p + p {
     margin-top: 0.9rem;
@@ -153,37 +150,38 @@ const description =
   .policy-body li {
     position: relative;
     padding-left: 1.4rem;
-    font-size: 0.94rem;
-    font-weight: 400;
-    color: var(--ink-soft);
-    line-height: 1.55;
+    font-size: 0.9625rem;
+    line-height: 1.6;
   }
   .policy-body li::before {
     content: "";
     position: absolute;
     left: 0;
-    top: 0.52em;
-    width: 8px;
-    height: 8px;
-    border: 1px solid var(--color-gold);
+    top: 0.6em;
+    width: 7px;
+    height: 7px;
+    border: 1px solid var(--color-gold-mid);
     transform: rotate(45deg);
   }
   .policy-body a {
-    color: var(--color-gold);
+    color: var(--color-ivory);
     text-decoration: underline;
-    text-underline-offset: 3px;
-    transition: color 0.3s ease;
+    text-decoration-color: var(--color-gold);
+    text-decoration-thickness: 1px;
+    text-underline-offset: 4px;
+    transition: color 0.3s ease, text-decoration-color 0.3s ease;
     overflow-wrap: anywhere;
   }
   .policy-body a:hover {
-    color: var(--color-navy);
+    color: var(--color-gold-light);
+    text-decoration-color: var(--color-gold-light);
   }
   .vigencia {
     margin-top: 1.4rem;
-    font-size: 0.72rem;
+    font-size: 0.8125rem;
     font-weight: 500;
-    letter-spacing: 0.24em;
+    letter-spacing: 0.18em;
     text-transform: uppercase;
-    color: var(--color-gold);
+    color: var(--color-gold-light);
   }
 </style>

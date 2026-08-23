@@ -15,7 +15,7 @@ Site institucional estático para a Saquetti Martins Advocacia, com foco em SEO,
 | CI/CD | GitHub Actions (`withastro/action`) |
 | Domínio customizado | `public/CNAME` |
 | DNS | Cloudflare |
-| Fontes web | Google Fonts (Inter) — ver [identidade-visual.md](./identidade-visual.md) |
+| Fontes web | Google Fonts (Cormorant Garamond + Montserrat) — ver [identidade-visual.md](./identidade-visual.md) |
 | Notícias | Agente OpenClaw diário — ver [noticias-pipeline.md](./noticias-pipeline.md) |
 
 ## Fases
@@ -25,7 +25,7 @@ Status em **22/08/2026**.
 | Fase | Escopo | Status |
 |---|---|---|
 | **0 — Fundação** | Registro dos domínios; scaffold Astro + Tailwind; CI de deploy (GitHub Actions → Pages); obter SVGs do logo e licenças das fontes com a designer | Scaffold e CI prontos; faltam domínios e assets da designer |
-| **1 — Design system** | Tokens de design (cores, tipografia, espaçamento); componentes base; implementação do Tema 3 "Estrutura Arquitetônica" | **Concluída** (19/08/2026) |
+| **1 — Design system** | Tokens, componentes `ui/*`, header/footer. Tema 3 (19/08) substituído pelo **Redesign v2 "Autoridade em Navy"** (22/08/2026) a pedido da cliente — ver [redesign-v2.md](./redesign-v2.md) | **Concluída** (v2 em 22/08/2026) |
 | **2 — Páginas institucionais** | Home; A Advogada; **1 página por área de atuação** (importante para SEO); Educação & Treinamentos; Contato com formulário (Web3Forms) | **Concluída** (22/08/2026) — formulário de contato com Web3Forms; pendência operacional: cadastrar o secret `PUBLIC_WEB3FORMS_KEY` |
 | **3 — Notícias diárias** | Pipeline de notícias por IA no mesmo repositório (`data/` + `scripts/`); renderização estática no build | Pendente |
 | **4 — Qualidade e conformidade** | SEO técnico; Open Graph; sitemap; schema.org `LegalService`/`Attorney`; LGPD / política de privacidade; acessibilidade; Lighthouse ≥ 95; rodapé com aviso de conformidade com o Provimento 205/2021 da OAB e número de inscrição | Pendente |
@@ -41,8 +41,8 @@ Status em **22/08/2026**.
 - Pendência externa: SVGs finais do logo e licenças de fonte (designer / agência Spasso).
 
 ### Fase 1 — Design system
-- Tokens: paleta Azul Legado / Ouro Patrimônio / Marfim; tipografia Inter.
-- Componentes do Tema 3: cards com cantos chanfrados (clip-path), numeração blueprint de seções, labels uppercase com tracking largo, linhas duplas douradas, grid vertical de fundo, seções alternando marfim e navy.
+- Tokens: paleta Azul Legado / Ouro Patrimônio / Marfim; tipografia Cormorant Garamond + Montserrat.
+- Componentes v2 (`src/components/ui/`): Eyebrow, SectionHead, GoldRule, Button, GlassCard, IconSquare, Stat, Reveal, Marquee, Accordion, Watermark, Chip.
 
 ### Fase 2 — Páginas
 - Uma página dedicada por área de atuação (SEO on-page: título, meta description, headings, conteúdo próprio).

@@ -1,0 +1,80 @@
+---
+/**
+ * Faixa de texto em loop contínuo (60 s). `tilt` inclina a faixa em −3°.
+ * O conteúdo é duplicado para o loop; a cópia fica `aria-hidden`.
+ */
+interface Props {
+  items: string[];
+  tilt?: boolean;
+  class?: string;
+}
+const { items, tilt = false, class: className } = Astro.props;
+---
+
+<div class:list={['marquee', { 'is-tilt': tilt }, className]}>
+  <div class="marquee-track">
+    <ul class="marquee-list">
+      {items.map((item) => <li>{item}</li>)}
+    </ul>
+    <ul class="marquee-list" aria-hidden="true">
+      {items.map((item) => <li>{item}</li>)}
+    </ul>
+  </div>
+</div>
+
+<style>
+  .marquee {
+    position: relative;
+    overflow: hidden;
+    border-top: var(--card-border);
+    border-bottom: var(--card-border);
+    background: var(--color-navy-deep);
+    padding-block: 1.1rem;
+  }
+  .is-tilt {
+    transform: rotate(-3deg);
+    width: 110vw;
+    margin-inline: -5vw;
+  }
+  .marquee-track {
+    display: flex;
+    width: max-content;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .marquee-track {
+      animation: marquee 60s linear infinite;
+    }
+    .marquee:hover .marquee-track {
+      animation-play-state: paused;
+    }
+  }
+  .marquee-list {
+    display: flex;
+    flex: none;
+    align-items: center;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .marquee-list li {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    padding-right: 2rem;
+    font-family: var(--font-sans);
+    font-size: clamp(0.95rem, 1.3vw, 1.3rem);
+    font-weight: 400;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+    white-space: nowrap;
+  }
+  .marquee-list li::after {
+    content: "";
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--color-gold-mid);
+    flex: none;
+  }
+</style>

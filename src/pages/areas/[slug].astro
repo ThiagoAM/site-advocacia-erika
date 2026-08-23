@@ -2,6 +2,9 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import PageHero from '../../components/PageHero.astro';
 import PageCta from '../../components/PageCta.astro';
+import SectionHead from '../../components/ui/SectionHead.astro';
+import GlassCard from '../../components/ui/GlassCard.astro';
+import Reveal from '../../components/ui/Reveal.astro';
 import { areas, type Area } from '../../data/areas';
 import { SITE_NAME } from '../../data/site';
 
@@ -23,6 +26,24 @@ interface Props {
 const { area } = Astro.props;
 const heroImg = areaImages[`../../assets/img/area-${area.slug}.png`]?.default;
 const title = `${area.titulo} — ${SITE_NAME}`;
+const outras = areas.filter((a) => a.slug !== area.slug);
+
+const esc = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+/** Itálico dourado na segunda metade (após " e " / " & ") ou, sem conjunção, na última palavra. */
+function italicTitle(t: string) {
+  const m = t.match(/^(.*?\s(?:e|&)\s)(.+)$/);
+  if (m) return `${esc(m[1])}<em class="em-gold">${esc(m[2])}</em>`;
+  const words = t.split(' ');
+  const last = words.pop() ?? '';
+  return `${esc(words.join(' '))} <em class="em-gold">${esc(last)}</em>`;
+}
+/** Última palavra em itálico (mantém pontuação final fora do itálico). */
+function italicLast(t: string) {
+  const m = t.match(/^(.*\s)(\S+?)([.!?]?)$/);
+  if (!m) return esc(t);
+  return `${esc(m[1])}<em class="em-gold">${esc(m[2])}</em>${esc(m[3])}`;
+}
 ---
 
 <BaseLayout title={title} description={area.descricao}>
@@ -30,6 +51,7 @@ const title = `${area.titulo} — ${SITE_NAME}`;
     <PageHero
       tag="Área de Atuação"
       title={area.titulo}
+      titleHtml={italicTitle(area.titulo)}
       lead={area.descricao}
       crumbs={[
         { label: 'Início', href: '/' },
@@ -39,69 +61,87 @@ const title = `${area.titulo} — ${SITE_NAME}`;
       image={heroImg}
     />
 
-    <!-- 01 / Visão geral -->
-    <section class="section area-intro grid-ivory">
+    <!-- Visão geral -->
+    <section class="section area-intro">
       <div class="container">
-        <div class="sec-head">
-          <span class="sec-tag"><span class="num">01</span><span class="bar">/</span>Visão Geral</span>
-          <h2>{area.introTitulo}</h2>
-          <div class="rule-double"></div>
-        </div>
-        <div class="intro-copy">
-          {area.intro.map((paragrafo) => <p>{paragrafo}</p>)}
-          <a class="intro-link" href="/a-advogada">Conheça a trajetória da Dra. Érika</a>
+        <SectionHead eyebrow="Visão geral" align="left">
+          <Fragment set:html={italicLast(area.introTitulo)} />
+        </SectionHead>
+
+        <div class="intro-grid">
+          <div class="intro-copy">
+            {area.intro.map((paragrafo) => <p>{paragrafo}</p>)}
+            <a class="intro-link" href="/a-advogada">Conheça a trajetória da Dra. Érika</a>
+          </div>
+
+          <Reveal delay={120}>
+            <GlassCard radius="md" class="quem-card">
+              <span class="quem-tag">Para quem é</span>
+              <h3>Esta atuação é para você?</h3>
+              <p class="quem-lead">{area.paraQuem.texto}</p>
+              <ul class="perfis">
+                {area.paraQuem.perfis.map((perfil) => <li>{perfil}</li>)}
+              </ul>
+            </GlassCard>
+          </Reveal>
         </div>
       </div>
     </section>
 
-    <!-- 02 / Como posso ajudar -->
-    <section class="section area-topics grid-navy">
+    <!-- O que fazemos -->
+    <section class="section section-navy-deep area-topics">
       <div class="container">
-        <div class="sec-head on-navy">
-          <span class="sec-tag"><span class="num">02</span><span class="bar">/</span>Atuação</span>
-          <h2>Como posso ajudar</h2>
-          <p class="lead">
-            Frentes concretas de trabalho nesta área — sempre precedidas de um diagnóstico do seu
-            caso.
-          </p>
-          <div class="rule-double"></div>
-        </div>
+        <SectionHead
+          eyebrow="Atuação"
+          align="left"
+          lead="Frentes concretas de trabalho nesta área — sempre precedidas de um diagnóstico do seu caso."
+        >
+          O que <em class="em-gold">fazemos</em>
+        </SectionHead>
 
         <div class="topics-grid">
           {
             area.topicos.map((topico, i) => (
-              <article class="topic">
-                <div class="topic-in">
-                  <span class="topic-idx">T · {String(i + 1).padStart(2, '0')}</span>
+              <Reveal delay={(i % 3) * 90}>
+                <GlassCard radius="sm" padding="sm" as="article" class="topic">
+                  <span class="topic-idx">
+                    <span class="diamond" aria-hidden="true" />
+                    {String(i + 1).padStart(2, '0')}
+                  </span>
                   <h3>{topico.titulo}</h3>
                   <p>{topico.texto}</p>
-                </div>
-              </article>
+                </GlassCard>
+              </Reveal>
             ))
           }
         </div>
       </div>
     </section>
 
-    <!-- 03 / Para quem é -->
-    <section class="section area-quem grid-ivory">
+    <!-- Outras áreas -->
+    <section class="section area-outras">
       <div class="container">
-        <div class="sec-head">
-          <span class="sec-tag"><span class="num">03</span><span class="bar">/</span>Para Quem É</span>
-          <h2>Esta atuação é para você?</h2>
-          <p class="lead">{area.paraQuem.texto}</p>
-          <div class="rule-double"></div>
-        </div>
+        <SectionHead eyebrow="Outras áreas" align="left">
+          Conheça as <em class="em-gold">demais áreas</em>
+        </SectionHead>
 
-        <ul class="perfis">
-          {area.paraQuem.perfis.map((perfil) => <li>{perfil}</li>)}
-        </ul>
+        <div class="outras-grid">
+          {
+            outras.map((o) => (
+              <GlassCard radius="sm" padding="sm" as="a" href={`/areas/${o.slug}/`} class="outra">
+                <h3>{o.titulo}</h3>
+                <p>{o.descricao}</p>
+                <span class="outra-go">Saiba mais</span>
+              </GlassCard>
+            ))
+          }
+        </div>
       </div>
     </section>
 
     <PageCta
-      num="04"
       title="Vamos conversar sobre o seu caso?"
+      titleHtml='Vamos conversar <em class="em-gold">sobre o seu caso</em>?'
       text="Envie uma mensagem descrevendo a sua situação e receba uma leitura técnica e humana — o primeiro passo de qualquer estrutura bem construída."
       label="Falar no WhatsApp"
     />
@@ -109,17 +149,14 @@ const title = `${area.titulo} — ${SITE_NAME}`;
 </BaseLayout>
 
 <style>
-  /* ---------- 01 / visão geral ---------- */
-  .area-intro {
-    padding: var(--pad-sec) 0;
-    background: var(--color-ivory);
-  }
-  .intro-copy {
-    max-width: 46rem;
+  /* ---------- visão geral ---------- */
+  .intro-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+    gap: clamp(2rem, 5vw, 4.5rem);
+    align-items: start;
   }
   .intro-copy p {
-    font-size: 1.02rem;
-    font-weight: 400;
     color: var(--ink-soft);
   }
   .intro-copy p + p {
@@ -130,90 +167,50 @@ const title = `${area.titulo} — ${SITE_NAME}`;
     align-items: center;
     gap: 0.5rem;
     margin-top: 1.8rem;
-    font-size: 0.72rem;
+    font-size: 0.9375rem;
     font-weight: 500;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--ink-soft);
-    transition:
-      color 0.3s ease,
-      gap 0.3s ease;
+    color: var(--color-gold-light);
+    transition: gap 0.3s ease;
   }
   .intro-link::after {
     content: "→";
-    color: var(--color-gold);
   }
   .intro-link:hover {
-    color: var(--color-navy);
     gap: 0.8rem;
   }
 
-  /* ---------- 02 / tópicos ---------- */
-  .area-topics {
-    padding: var(--pad-sec) 0;
-    background: var(--color-navy);
-    color: var(--color-ivory);
-  }
-  .topics-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1.4rem;
-  }
-  .topic {
-    display: flex;
-    clip-path: var(--ch);
-    padding: 1px;
-    background: var(--ivory-faint);
-    transition:
-      transform 0.4s cubic-bezier(0.22, 0.68, 0.35, 1),
-      background 0.4s ease;
-  }
-  .topic:hover {
-    transform: translateY(-6px);
-    background: var(--color-gold);
-  }
-  .topic-in {
-    flex: 1;
-    clip-path: var(--ch);
-    background: var(--color-navy-soft);
-    padding: 1.9rem 1.8rem 1.7rem;
+  .quem-card {
     display: flex;
     flex-direction: column;
   }
-  .topic-idx {
-    font-size: 0.66rem;
+  .quem-tag {
+    font-size: 0.75rem;
     font-weight: 600;
-    letter-spacing: 0.3em;
-    color: var(--color-gold);
-    margin-bottom: 1.3rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--color-gold-light);
+    margin-bottom: 0.9rem;
   }
-  .topic-in h3 {
-    font-size: 1.35rem;
-    color: var(--color-ivory);
+  .quem-card h3 {
     margin-bottom: 0.7rem;
   }
-  .topic-in p {
-    font-size: 0.88rem;
-    font-weight: 400;
-    color: var(--ivory-soft);
-  }
-
-  /* ---------- 03 / para quem é ---------- */
-  .area-quem {
-    padding: var(--pad-sec) 0;
-    background: var(--color-ivory);
+  .quem-lead {
+    color: var(--ink-soft);
+    padding-bottom: 1.2rem;
+    margin-bottom: 1.2rem;
+    border-bottom: 1px solid var(--ivory-line);
   }
   .perfis {
+    list-style: none;
+    padding: 0;
+    margin: 0;
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0.95rem 2.5rem;
-    max-width: 52rem;
+    gap: 0.8rem;
   }
   .perfis li {
     position: relative;
     padding-left: 1.4rem;
-    font-size: 0.94rem;
-    font-weight: 400;
+    font-size: 0.9375rem;
     color: var(--ink-soft);
     line-height: 1.55;
   }
@@ -221,23 +218,112 @@ const title = `${area.titulo} — ${SITE_NAME}`;
     content: "";
     position: absolute;
     left: 0;
-    top: 0.52em;
-    width: 9px;
-    height: 9px;
-    border: 1px solid var(--color-gold);
+    top: 0.55em;
+    width: 8px;
+    height: 8px;
+    border: 1px solid var(--color-gold-mid);
     transform: rotate(45deg);
   }
 
+  /* ---------- o que fazemos ---------- */
+  .topics-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.25rem;
+  }
+  .topics-grid :global([data-reveal]) {
+    display: flex;
+  }
+  .topic {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.4s var(--ease-out), border-color 0.4s ease;
+  }
+  .topic:hover {
+    transform: translateY(-4px);
+    border-color: var(--gold-line);
+  }
+  .topic-idx {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-family: var(--font-display);
+    font-size: 1.2rem;
+    color: var(--color-gold-light);
+    margin-bottom: 1.1rem;
+  }
+  .diamond {
+    width: 9px;
+    height: 9px;
+    background: var(--gold-gradient);
+    transform: rotate(45deg);
+  }
+  .topic h3 {
+    font-size: 1.45rem;
+    margin-bottom: 0.6rem;
+  }
+  .topic p {
+    font-size: 0.9375rem;
+    color: var(--ink-soft);
+  }
+
+  /* ---------- outras áreas ---------- */
+  .outras-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.25rem;
+  }
+  .outra {
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    transition: transform 0.4s var(--ease-out), border-color 0.4s ease;
+  }
+  .outra:hover {
+    transform: translateY(-4px);
+    border-color: var(--gold-line);
+  }
+  .outra h3 {
+    font-size: 1.35rem;
+    margin-bottom: 0.5rem;
+  }
+  .outra p {
+    font-size: 0.9rem;
+    color: var(--ink-soft);
+    flex: 1;
+  }
+  .outra-go {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1.2rem;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--color-gold-light);
+    transition: gap 0.3s ease;
+  }
+  .outra-go::after {
+    content: "→";
+  }
+  .outra:hover .outra-go {
+    gap: 0.8rem;
+  }
+
   @media (max-width: 1024px) {
-    .topics-grid {
-      grid-template-columns: repeat(2, 1fr);
+    .topics-grid,
+    .outras-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (max-width: 860px) {
+    .intro-grid {
+      grid-template-columns: 1fr;
     }
   }
   @media (max-width: 600px) {
-    .topics-grid {
-      grid-template-columns: 1fr;
-    }
-    .perfis {
+    .topics-grid,
+    .outras-grid {
       grid-template-columns: 1fr;
     }
   }

@@ -1,0 +1,168 @@
+---
+/**
+ * Seção 4 — Método: fundo metodo-bg escurecido, coluna esquerda sticky, 4 etapas numeradas.
+ */
+import { Image } from 'astro:assets';
+import metodoBg from '../../assets/img/metodo-bg.png';
+import Eyebrow from '../ui/Eyebrow.astro';
+import Button from '../ui/Button.astro';
+import GlassCard from '../ui/GlassCard.astro';
+import GoldRule from '../ui/GoldRule.astro';
+import Reveal from '../ui/Reveal.astro';
+import { WHATSAPP_URL } from '../../data/site';
+
+const etapas = [
+  {
+    num: '01',
+    titulo: 'Diagnóstico',
+    texto:
+      'Leitura técnica do caso e dos documentos: matrículas, contratos, certidões e a situação familiar ou societária envolvida.',
+  },
+  {
+    num: '02',
+    titulo: 'Estratégia',
+    texto:
+      'Desenho da estrutura jurídica e dos caminhos possíveis, com os prós e contras de cada um, para que a decisão seja informada.',
+  },
+  {
+    num: '03',
+    titulo: 'Execução',
+    texto:
+      'Contratos, escrituras, registros e regularização, com acompanhamento das exigências junto a cartórios e órgãos públicos.',
+  },
+  {
+    num: '04',
+    titulo: 'Acompanhamento',
+    texto:
+      'Orientação contínua e revisão do planejamento ao longo do tempo, conforme a família, o patrimônio e a legislação mudam.',
+  },
+];
+---
+
+<section class="section metodo" id="metodo" aria-labelledby="metodo-title">
+  <Image class="metodo-bg" src={metodoBg} alt="" widths={[768, 1280, 1920]} sizes="100vw" format="webp" quality={65} />
+  <span class="metodo-overlay" aria-hidden="true"></span>
+
+  <div class="container metodo-grid">
+    <div class="metodo-intro">
+      <Reveal>
+        <Eyebrow>Como trabalhamos</Eyebrow>
+        <h2 id="metodo-title">Da primeira conversa <em class="em-gold">à segurança registrada</em>.</h2>
+        <GoldRule align="left" width="200px" />
+        <p class="lead">
+          Cada caso passa pelas mesmas quatro etapas. O ritmo e os instrumentos variam; o
+          cuidado com documentação, registro e clareza sobre os caminhos, não.
+        </p>
+        <Button href={WHATSAPP_URL} variant="ghost" external>Agendar uma conversa</Button>
+      </Reveal>
+    </div>
+
+    <ol class="etapas">
+      {
+        etapas.map((e, i) => (
+          <li>
+            <Reveal delay={i * 90}>
+              <GlassCard radius="lg" padding="lg" class="etapa">
+                <span class="etapa-num em-gold" aria-hidden="true">{e.num}</span>
+                <div>
+                  <h3>{e.titulo}</h3>
+                  <p>{e.texto}</p>
+                </div>
+              </GlassCard>
+            </Reveal>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+</section>
+
+<style>
+  .metodo {
+    background: var(--color-navy-deep);
+  }
+  .metodo-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+  .metodo-overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background: rgba(4, 30, 66, 0.55);
+  }
+  .metodo-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+    gap: clamp(2.5rem, 6vw, 6rem);
+    align-items: start;
+  }
+  .metodo-intro {
+    position: sticky;
+    top: calc(var(--header-h) + 2.5rem);
+  }
+  .metodo-intro :global([data-reveal]) {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.4rem;
+  }
+  .metodo-intro h2 {
+    text-wrap: balance;
+  }
+  .metodo-intro .lead {
+    max-width: 30rem;
+  }
+  .etapas {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+  .etapa {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: clamp(1.2rem, 3vw, 2.2rem);
+    align-items: start;
+  }
+  .etapa-num {
+    font-family: var(--font-display);
+    font-style: normal;
+    font-weight: 300;
+    font-size: clamp(2.6rem, 4vw, 3.6rem);
+    line-height: 1;
+    min-width: 2ch;
+  }
+  .etapa h3 {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: 1.3rem;
+    line-height: 1.3;
+  }
+  .etapa p {
+    color: var(--ink-soft);
+    font-size: 1rem;
+    margin-top: 0.6rem;
+  }
+  @media (max-width: 900px) {
+    .metodo-grid {
+      grid-template-columns: 1fr;
+    }
+    .metodo-intro {
+      position: static;
+    }
+  }
+  @media (max-width: 480px) {
+    .etapa {
+      grid-template-columns: 1fr;
+      gap: 0.8rem;
+    }
+  }
+</style>

@@ -10,16 +10,21 @@
  * Sem PUBLIC_WEB3FORMS_KEY no build, o formulário continua visível em modo
  * degradado: o envio abre o aplicativo de e-mail do visitante com a mensagem
  * preenchida (mailto). Com a chave, envia pela API do Web3Forms.
+ *
+ * Apresentação (v2): seção navy com cabeça de seção; o formulário fica sobre
+ * um card MARFIM — o único bloco claro do site — para legibilidade dos campos.
+ * Os tokens de texto (`--ink-*`) são redefinidos localmente dentro do card.
  */
-import IconWhatsApp from './IconWhatsApp.astro';
+import SectionHead from './ui/SectionHead.astro';
+import GlassCard from './ui/GlassCard.astro';
+import Button from './ui/Button.astro';
 import { areas } from '../data/areas';
 import { EMAIL, SITE_NAME, WHATSAPP_URL } from '../data/site';
 
 interface Props {
+  /** Mantido por compatibilidade (numeração antiga); não é exibido. */
   num?: string;
 }
-
-const { num = '02' } = Astro.props;
 
 const accessKey = import.meta.env.PUBLIC_WEB3FORMS_KEY ?? '';
 const hasKey = accessKey.trim().length > 0;
@@ -27,122 +32,114 @@ const hasKey = accessKey.trim().length > 0;
 const assuntos = [...areas.map((a) => a.titulo), 'Educação & Treinamentos', 'Outro'];
 ---
 
-<section class="section mensagem grid-ivory" id="mensagem" data-mode={hasKey ? 'api' : 'mailto'} data-email={EMAIL}>
-      <div class="container">
-        <div class="sec-head">
-          <span class="sec-tag">
-            <span class="num">{num}</span>
-            <span class="bar">/</span>Envie uma mensagem
-          </span>
-          <h2>Prefere escrever? Conte-nos o seu caso.</h2>
-          <div class="rule-double" />
-          <p class="lead">
-            Descreva brevemente a situação e o melhor canal para retorno. As mensagens são lidas
-            pela própria advogada e respondidas em dias úteis, na ordem de chegada.
-          </p>
-        </div>
+<section class="section section-navy-deep mensagem" id="mensagem" data-mode={hasKey ? 'api' : 'mailto'} data-email={EMAIL}>
+  <div class="container">
+    <SectionHead
+      eyebrow="Envie uma mensagem"
+      align="left"
+      lead="Descreva brevemente a situação e o melhor canal para retorno. As mensagens são lidas pela própria advogada e respondidas em dias úteis, na ordem de chegada."
+    >
+      Prefere escrever? <em class="em-gold">Conte-nos o seu caso</em>.
+    </SectionHead>
 
-        <div class="form-wrap">
-            <div class="form-card">
-              <form
-                id="contact-form"
-                class="contact-form"
-                method="POST"
-                action={hasKey ? 'https://api.web3forms.com/submit' : `mailto:${EMAIL}`}
-                enctype={hasKey ? undefined : 'text/plain'}
-              >
-                {hasKey && <input type="hidden" name="access_key" value={accessKey} />}
-                <input type="hidden" name="subject" value={`Novo contato pelo site — ${SITE_NAME}`} />
-                <input type="hidden" name="from_name" value={`Site ${SITE_NAME}`} />
-                {/* honeypot anti-spam (Web3Forms) — invisível para pessoas */}
-                <input type="checkbox" name="botcheck" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true" />
+    <div class="form-wrap">
+      <div class="form-card">
+        <form
+          id="contact-form"
+          class="contact-form"
+          method="POST"
+          action={hasKey ? 'https://api.web3forms.com/submit' : `mailto:${EMAIL}`}
+          enctype={hasKey ? undefined : 'text/plain'}
+        >
+          {hasKey && <input type="hidden" name="access_key" value={accessKey} />}
+          <input type="hidden" name="subject" value={`Novo contato pelo site — ${SITE_NAME}`} />
+          <input type="hidden" name="from_name" value={`Site ${SITE_NAME}`} />
+          {/* honeypot anti-spam (Web3Forms) — invisível para pessoas */}
+          <input type="checkbox" name="botcheck" class="hp" tabindex="-1" autocomplete="off" aria-hidden="true" />
 
-                <div class="grid">
-                  <div class="field">
-                    <label for="cf-nome">Nome <span class="req" aria-hidden="true">*</span></label>
-                    <input id="cf-nome" name="name" type="text" required autocomplete="name" placeholder="Seu nome completo" />
-                  </div>
+          <div class="grid">
+            <div class="field">
+              <label for="cf-nome">Nome <span class="req" aria-hidden="true">*</span></label>
+              <input id="cf-nome" name="name" type="text" required autocomplete="name" placeholder="Seu nome completo" />
+            </div>
 
-                  <div class="field">
-                    <label for="cf-email">E-mail <span class="req" aria-hidden="true">*</span></label>
-                    <input id="cf-email" name="email" type="email" required autocomplete="email" inputmode="email" placeholder="voce@exemplo.com" />
-                  </div>
+            <div class="field">
+              <label for="cf-email">E-mail <span class="req" aria-hidden="true">*</span></label>
+              <input id="cf-email" name="email" type="email" required autocomplete="email" inputmode="email" placeholder="voce@exemplo.com" />
+            </div>
 
-                  <div class="field">
-                    <label for="cf-telefone">Telefone / WhatsApp <span class="opt">opcional</span></label>
-                    <input id="cf-telefone" name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="+55 (41) 9 9999-9999" />
-                  </div>
+            <div class="field">
+              <label for="cf-telefone">Telefone / WhatsApp <span class="opt">opcional</span></label>
+              <input id="cf-telefone" name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="+55 (41) 9 9999-9999" />
+            </div>
 
-                  <div class="field">
-                    <label for="cf-assunto">Assunto <span class="req" aria-hidden="true">*</span></label>
-                    <div class="select-wrap">
-                      <select id="cf-assunto" name="assunto" required autocomplete="off">
-                        <option value="" selected disabled>Selecione uma área</option>
-                        {assuntos.map((a) => (
-                          <option value={a}>{a}</option>
-                        ))}
-                      </select>
-                    </div>
-                  </div>
-
-                  <div class="field span-2">
-                    <label for="cf-mensagem">Mensagem <span class="req" aria-hidden="true">*</span></label>
-                    <textarea id="cf-mensagem" name="message" required rows="6" minlength="10" autocomplete="off" placeholder="Conte, em poucas linhas, o que você precisa." />
-                  </div>
-
-                  <div class="field span-2 consent">
-                    <input id="cf-lgpd" name="consentimento_lgpd" type="checkbox" required value="sim" />
-                    <label for="cf-lgpd">
-                      Li e concordo com a <a href="/politica-de-privacidade/">Política de Privacidade</a> e autorizo o
-                      uso dos dados informados exclusivamente para retorno deste contato.
-                      <span class="req" aria-hidden="true">*</span>
-                    </label>
-                  </div>
-                </div>
-
-                <div class="actions">
-                  <button class="btn btn-solid" type="submit" data-submit>
-                    <span data-submit-label>Enviar mensagem</span>
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true">
-                      <path d="M4 12h15" />
-                      <path d="m13 6 6 6-6 6" />
-                    </svg>
-                  </button>
-                  <p class="note">Campos marcados com * são obrigatórios. Nenhuma informação é compartilhada com terceiros.</p>
-                </div>
-
-                <p class="status" data-status aria-live="polite" />
-              </form>
-
-              <div class="success" data-success hidden>
-                <span class="rule-double" aria-hidden="true" />
-                <h3>Mensagem enviada.</h3>
-                <p>Retornaremos em breve pelo canal informado. Se preferir, siga a conversa pelo WhatsApp.</p>
-                <a class="btn-o" href={WHATSAPP_URL} target="_blank" rel="noopener">
-                  <span class="btn">
-                    <IconWhatsApp />
-                    Falar no WhatsApp
-                  </span>
-                </a>
+            <div class="field">
+              <label for="cf-assunto">Assunto <span class="req" aria-hidden="true">*</span></label>
+              <div class="select-wrap">
+                <select id="cf-assunto" name="assunto" required autocomplete="off">
+                  <option value="" selected disabled>Selecione uma área</option>
+                  {assuntos.map((a) => (
+                    <option value={a}>{a}</option>
+                  ))}
+                </select>
               </div>
             </div>
 
-            <aside class="form-aside">
-              <p class="aside-tag">Atendimento</p>
-              <p>
-                As informações enviadas são tratadas com sigilo profissional e utilizadas apenas para
-                responder ao seu contato.
-              </p>
-              <p>
-                Em caso de urgência, o WhatsApp costuma ser o caminho mais ágil.
-              </p>
-              <p class="aside-email">
-                <a href={`mailto:${EMAIL}`}>{EMAIL}</a>
-              </p>
-            </aside>
+            <div class="field span-2">
+              <label for="cf-mensagem">Mensagem <span class="req" aria-hidden="true">*</span></label>
+              <textarea id="cf-mensagem" name="message" required rows="6" minlength="10" autocomplete="off" placeholder="Conte, em poucas linhas, o que você precisa." />
+            </div>
+
+            <div class="field span-2 consent">
+              <input id="cf-lgpd" name="consentimento_lgpd" type="checkbox" required value="sim" />
+              <label for="cf-lgpd">
+                Li e concordo com a <a href="/politica-de-privacidade/">Política de Privacidade</a> e autorizo o
+                uso dos dados informados exclusivamente para retorno deste contato.
+                <span class="req" aria-hidden="true">*</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="actions">
+            <button class="btn btn-navy" type="submit" data-submit>
+              <span data-submit-label>Enviar mensagem</span>
+              <span class="btn-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M4 12h14" />
+                  <path d="m12 6 6 6-6 6" />
+                </svg>
+              </span>
+            </button>
+            <p class="note">Campos marcados com * são obrigatórios. Nenhuma informação é compartilhada com terceiros.</p>
+          </div>
+
+          <p class="status" data-status aria-live="polite" />
+        </form>
+
+        <div class="success" data-success hidden>
+          <span class="success-rule" aria-hidden="true" />
+          <h3>Mensagem enviada.</h3>
+          <p>Retornaremos em breve pelo canal informado. Se preferir, siga a conversa pelo WhatsApp.</p>
+          <Button href={WHATSAPP_URL} variant="gold" external icon="whatsapp">Falar no WhatsApp</Button>
         </div>
       </div>
-    </section>
+
+      <GlassCard radius="md" as="aside" class="form-aside">
+        <p class="aside-tag">Atendimento</p>
+        <p>
+          As informações enviadas são tratadas com sigilo profissional e utilizadas apenas para
+          responder ao seu contato.
+        </p>
+        <p>
+          Em caso de urgência, o WhatsApp costuma ser o caminho mais ágil.
+        </p>
+        <p class="aside-email">
+          <a href={`mailto:${EMAIL}`}>{EMAIL}</a>
+        </p>
+      </GlassCard>
+    </div>
+  </div>
+</section>
 
 <script>
   const form = document.getElementById('contact-form') as HTMLFormElement | null;
@@ -232,29 +229,32 @@ const assuntos = [...areas.map((a) => a.titulo), 'Educação & Treinamentos', 'O
 </script>
 
 <style>
-  .mensagem {
-    padding: var(--pad-sec) 0;
-    background: var(--color-paper);
-    border-top: 1px solid var(--ink-faint);
-  }
-
   .form-wrap {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) 17rem;
-    gap: clamp(2rem, 5vw, 4rem);
+    grid-template-columns: minmax(0, 1fr) 18rem;
+    gap: clamp(1.5rem, 4vw, 3rem);
     align-items: start;
   }
 
-  /* cartão chanfrado com borda de 1px (mesmo truque dos cards) */
+  /* ---------- card marfim: único bloco claro do site ----------
+     tokens de texto redefinidos para o fundo claro */
   .form-card {
-    clip-path: var(--ch);
-    padding: 1px;
-    background: rgba(4, 30, 66, 0.13);
+    --ink: var(--color-navy);
+    --ink-soft: rgba(4, 30, 66, 0.84);
+    --ink-faint: rgba(4, 30, 66, 0.62);
+    --field-border: rgba(4, 30, 66, 0.2);
+    background: var(--color-ivory);
+    color: var(--color-navy);
+    border-radius: var(--radius-lg);
+    border: 1px solid rgba(251, 251, 248, 0.35);
+    overflow: hidden;
+  }
+  .form-card ::selection {
+    background: var(--color-gold);
+    color: var(--color-ivory);
   }
   .contact-form,
   .success {
-    clip-path: var(--ch);
-    background: var(--color-ivory);
     padding: clamp(1.6rem, 3.5vw, 2.8rem);
   }
 
@@ -283,9 +283,9 @@ const assuntos = [...areas.map((a) => a.titulo), 'Educação & Treinamentos', 'O
     gap: 0.5rem;
   }
   .field label {
-    font-size: 0.72rem;
-    font-weight: 500;
-    letter-spacing: 0.2em;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
     text-transform: uppercase;
     color: var(--color-navy);
   }
@@ -294,10 +294,10 @@ const assuntos = [...areas.map((a) => a.titulo), 'Educação & Treinamentos', 'O
   }
   .opt {
     margin-left: 0.4rem;
-    font-weight: 400;
-    letter-spacing: 0.08em;
+    font-weight: 500;
+    letter-spacing: 0.06em;
     text-transform: none;
-    color: var(--gold-soft);
+    color: var(--ink-faint);
   }
 
   .field input:not([type='checkbox']),
@@ -307,32 +307,30 @@ const assuntos = [...areas.map((a) => a.titulo), 'Educação & Treinamentos', 'O
     font: inherit;
     font-size: 0.95rem;
     color: var(--color-navy);
-    background: var(--color-paper);
-    border: 1px solid rgba(4, 30, 66, 0.2);
-    border-radius: 0;
+    background: #ffffff;
+    border: 1px solid var(--field-border);
+    border-radius: var(--radius-sm);
     padding: 0.85rem 1rem;
-    clip-path: var(--ch-s);
     transition:
       border-color 0.25s ease,
       box-shadow 0.25s ease;
   }
   .field input::placeholder,
   .field textarea::placeholder {
-    color: rgba(4, 30, 66, 0.4);
+    color: var(--ink-faint);
   }
   .field textarea {
     resize: vertical;
     min-height: 9rem;
   }
 
-  /* foco: outline ouro — o clip-path cortaria o outline externo, então
-     desenhamos por dentro com box-shadow inset + borda */
+  /* foco: ouro */
   .field input:not([type='checkbox']):focus-visible,
   .field select:focus-visible,
   .field textarea:focus-visible {
     outline: none;
     border-color: var(--color-gold);
-    box-shadow: inset 0 0 0 1px var(--color-gold);
+    box-shadow: 0 0 0 3px rgba(134, 109, 75, 0.25);
   }
 
   /* estado inválido só após interação do usuário */
@@ -353,7 +351,7 @@ const assuntos = [...areas.map((a) => a.titulo), 'Educação & Treinamentos', 'O
     cursor: pointer;
   }
   .select-wrap select:invalid {
-    color: rgba(4, 30, 66, 0.55);
+    color: var(--ink-faint);
   }
   .select-wrap::after {
     content: '';
@@ -387,7 +385,7 @@ const assuntos = [...areas.map((a) => a.titulo), 'Educação & Treinamentos', 'O
     outline-offset: 3px;
   }
   .consent label {
-    font-size: 0.86rem;
+    font-size: 0.875rem;
     font-weight: 400;
     letter-spacing: 0;
     text-transform: none;
@@ -411,13 +409,30 @@ const assuntos = [...areas.map((a) => a.titulo), 'Educação & Treinamentos', 'O
     align-items: center;
     gap: 1rem 1.6rem;
   }
+  /* botão navy sobre o card marfim (ícone circular dourado) */
+  .btn-navy {
+    background: var(--color-navy);
+    color: var(--color-ivory);
+    border-color: var(--color-navy);
+  }
+  .btn-navy .btn-icon {
+    background: var(--gold-gradient-soft);
+    color: var(--color-navy);
+  }
+  .btn-navy:hover {
+    background: var(--color-navy-soft);
+    transform: translateY(-1px);
+  }
+  .btn-navy:focus-visible {
+    outline-color: var(--color-gold);
+  }
   .actions .btn[disabled] {
     opacity: 0.65;
     cursor: progress;
     transform: none;
   }
   .note {
-    font-size: 0.76rem;
+    font-size: 0.8125rem;
     color: var(--ink-soft);
     max-width: 26rem;
   }
@@ -432,9 +447,10 @@ const assuntos = [...areas.map((a) => a.titulo), 'Educação & Treinamentos', 'O
   }
   .status.is-error {
     border-left: 2px solid var(--color-gold);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
     padding: 0.6rem 0.9rem;
     color: var(--color-navy);
-    background: rgba(134, 109, 75, 0.08);
+    background: rgba(134, 109, 75, 0.1);
   }
 
   /* estado de sucesso */
@@ -442,12 +458,15 @@ const assuntos = [...areas.map((a) => a.titulo), 'Educação & Treinamentos', 'O
     text-align: center;
     padding-block: clamp(2.8rem, 6vw, 4.5rem);
   }
-  .success :global(.rule-double) {
+  .success-rule {
     display: block;
+    width: min(60%, 240px);
+    height: 1px;
     margin: 0 auto 1.6rem;
+    background: var(--color-gold);
   }
   .success h3 {
-    font-size: clamp(1.6rem, 3vw, 2.2rem);
+    font-size: clamp(1.8rem, 3vw, 2.4rem);
     color: var(--color-navy);
     outline: none;
   }
@@ -457,34 +476,35 @@ const assuntos = [...areas.map((a) => a.titulo), 'Educação & Treinamentos', 'O
     color: var(--ink-soft);
   }
 
-  /* aside */
+  /* aside (vidro, sobre navy) */
   .form-aside {
-    padding-top: 0.6rem;
-    font-size: 0.9rem;
+    font-size: 0.9375rem;
     color: var(--ink-soft);
   }
   .form-aside p + p {
     margin-top: 0.9rem;
   }
   .aside-tag {
-    font-size: 0.72rem;
-    font-weight: 500;
-    letter-spacing: 0.3em;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.24em;
     text-transform: uppercase;
-    color: var(--color-gold);
+    color: var(--color-gold-light);
     padding-bottom: 0.9rem;
-    border-bottom: 1px solid var(--gold-faint);
+    border-bottom: 1px solid var(--ivory-line);
     margin-bottom: 1.1rem;
   }
   .aside-email a {
-    color: var(--color-navy);
+    color: var(--color-ivory);
     font-weight: 500;
     overflow-wrap: anywhere;
     text-decoration: underline;
     text-decoration-color: var(--color-gold);
     text-underline-offset: 3px;
   }
-
+  .aside-email a:hover {
+    color: var(--color-gold-light);
+  }
 
   @media (max-width: 900px) {
     .form-wrap {

@@ -1,0 +1,27 @@
+---
+/**
+ * Linha 1 px em degradê transparente → ouro → transparente.
+ */
+interface Props {
+  align?: 'center' | 'left';
+  /** Largura CSS (ex.: "240px", "60%"). */
+  width?: string;
+  class?: string;
+}
+const { align = 'center', width, class: className } = Astro.props;
+---
+
+<span
+  class:list={['gold-rule', `is-${align}`, className]}
+  style={width ? `width:${width}` : undefined}
+  aria-hidden="true"></span>
+
+<style>
+  .is-center {
+    margin-inline: auto;
+  }
+  .is-left {
+    margin-inline: 0;
+    background: linear-gradient(90deg, #d9c29a 0%, rgba(217, 194, 154, 0) 100%);
+  }
+</style>

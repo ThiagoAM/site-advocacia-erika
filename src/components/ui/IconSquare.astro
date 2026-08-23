@@ -1,0 +1,45 @@
+---
+/**
+ * Quadrado com ícone (slot com SVG em `currentColor`).
+ * navy: fundo navy-deep + borda 16 % + ícone ouro claro · gold: gradiente dourado + ícone navy.
+ */
+interface Props {
+  tone?: 'navy' | 'gold';
+  size?: 48 | 72;
+  class?: string;
+}
+const { tone = 'navy', size = 48, class: className } = Astro.props;
+---
+
+<span class:list={['icon-sq', `t-${tone}`, `s-${size}`, className]} aria-hidden="true"><slot /></span>
+
+<style>
+  .icon-sq {
+    display: inline-grid;
+    place-items: center;
+    flex: none;
+    border-radius: 12px;
+  }
+  .icon-sq :global(svg) {
+    width: 50%;
+    height: 50%;
+  }
+  .s-48 {
+    width: 48px;
+    height: 48px;
+  }
+  .s-72 {
+    width: 72px;
+    height: 72px;
+    border-radius: 14px;
+  }
+  .t-navy {
+    background: var(--color-navy-deep);
+    border: var(--card-border);
+    color: var(--color-gold-light);
+  }
+  .t-gold {
+    background: var(--gold-gradient);
+    color: var(--color-navy);
+  }
+</style>

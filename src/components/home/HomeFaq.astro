@@ -1,0 +1,54 @@
+---
+/**
+ * Seção 10 — FAQ: 6 perguntas em Accordion. Tom informativo, sem promessa de resultado.
+ */
+import SectionHead from '../ui/SectionHead.astro';
+import Accordion from '../ui/Accordion.astro';
+import Reveal from '../ui/Reveal.astro';
+
+const faq = [
+  {
+    q: 'O que é REURB e quando se aplica?',
+    a: 'A Regularização Fundiária Urbana (REURB) é o procedimento previsto na Lei 13.465/2017 para regularizar núcleos urbanos informais consolidados, conferindo título de propriedade aos ocupantes. Aplica-se a loteamentos e ocupações que existem de fato, mas não constam do registro de imóveis, nas modalidades social (REURB-S) e específica (REURB-E).',
+  },
+  {
+    q: 'Quando vale a pena constituir uma holding familiar?',
+    a: 'Em geral, quando há patrimônio relevante — imóveis, participações societárias — e interesse em organizar a administração e a sucessão com regras claras. A resposta depende de uma análise prévia dos custos, dos efeitos tributários e da dinâmica da família; em alguns casos, outros instrumentos são mais adequados.',
+  },
+  {
+    q: 'Qual a diferença entre inventário judicial e extrajudicial?',
+    a: 'O inventário extrajudicial é feito por escritura pública em cartório de notas, quando os herdeiros são capazes, estão de acordo e há assistência de advogado. O judicial é necessário quando há menores ou incapazes, divergência entre herdeiros ou outras situações previstas em lei, e costuma ser mais demorado.',
+  },
+  {
+    q: 'Atende quem mora fora do Brasil?',
+    a: 'Sim. Parte da atuação é voltada a brasileiros residentes nos Estados Unidos, no Canadá e em Portugal que possuem imóveis, herdeiros ou negócios no Brasil. As reuniões são feitas por videoconferência e os atos formais, com procuração consular ou apostilada.',
+  },
+  {
+    q: 'Como funciona a primeira consulta?',
+    a: 'A primeira conversa serve para entender o caso, os documentos existentes e o objetivo da família ou do investidor. A partir dela, é apresentada uma leitura técnica da situação e dos caminhos possíveis, com os respectivos custos e prazos estimados, para que a decisão seja tomada com informação.',
+  },
+  {
+    q: 'O que é due diligence imobiliária?',
+    a: 'É a auditoria jurídica de um imóvel e de seus vendedores antes da compra: análise da matrícula, da cadeia de proprietários, de certidões pessoais e fiscais e da situação urbanística e ambiental. O resultado é um mapa de riscos que orienta a negociação ou a desistência do negócio.',
+  },
+];
+---
+
+<section class="section faq" id="faq">
+  <div class="container faq-wrap">
+    <Reveal>
+      <SectionHead eyebrow="Dúvidas comuns" lead="Respostas breves às perguntas que mais chegam ao escritório.">
+        Perguntas <em class="em-gold">frequentes</em>
+      </SectionHead>
+    </Reveal>
+    <Reveal delay={120}>
+      <Accordion items={faq} />
+    </Reveal>
+  </div>
+</section>
+
+<style>
+  .faq-wrap {
+    max-width: 860px;
+  }
+</style>

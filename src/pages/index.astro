@@ -1,27 +1,52 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import Hero from '../components/Hero.astro';
-import Credibilidade from '../components/Credibilidade.astro';
-import Areas from '../components/Areas.astro';
-import Advogada from '../components/Advogada.astro';
-import Educacao from '../components/Educacao.astro';
-import Noticias from '../components/Noticias.astro';
-import CtaFinal from '../components/CtaFinal.astro';
-import { areas } from '../data/areas';
+import HomeHero from '../components/home/HomeHero.astro';
+import HomeStats from '../components/home/HomeStats.astro';
+import HomeAreas from '../components/home/HomeAreas.astro';
+import HomeMetodo from '../components/home/HomeMetodo.astro';
+import HomeAdvogada from '../components/home/HomeAdvogada.astro';
+import HomeParaQuem from '../components/home/HomeParaQuem.astro';
+import HomeEducacao from '../components/home/HomeEducacao.astro';
+import HomeNoticias from '../components/home/HomeNoticias.astro';
+import HomeFaq from '../components/home/HomeFaq.astro';
+import HomeCta from '../components/home/HomeCta.astro';
+import Marquee from '../components/ui/Marquee.astro';
 
 const title = 'Saquetti Martins Advocacia — Protegendo patrimônios. Construindo legados.';
 const description =
-  'Advocacia consultiva premium em Direito Imobiliário, Notarial e Registral, REURB e Planejamento Patrimonial e Sucessório. Dra. Érika Silvana Saquetti Martins — Brasil, EUA, Canadá e Portugal.';
+  'Advocacia consultiva em Direito Imobiliário, Notarial e Registral, REURB e Planejamento Patrimonial e Sucessório. Dra. Érika Silvana Saquetti Martins — Brasil, EUA, Canadá e Portugal.';
 ---
 
 <BaseLayout title={title} description={description}>
   <main id="inicio">
-    <Hero />
-    <Credibilidade />
-    <Areas areas={areas} />
-    <Advogada />
-    <Educacao />
-    <Noticias />
-    <CtaFinal />
+    <HomeHero />
+    <HomeStats />
+    <HomeAreas />
+    <HomeMetodo />
+    <HomeAdvogada />
+    <HomeParaQuem />
+    <HomeEducacao />
+    <HomeNoticias />
+    <div class="marquee-wrap">
+      <Marquee
+        items={[
+          'Saquetti Martins Advocacia',
+          'Protegendo patrimônios',
+          'Construindo legados',
+          'Direito Imobiliário',
+          'Planejamento Patrimonial',
+        ]}
+        tilt
+      />
+    </div>
+    <HomeFaq />
+    <HomeCta />
   </main>
 </BaseLayout>
+
+<style>
+  .marquee-wrap {
+    overflow: clip;
+    padding-block: 2.5rem 3rem;
+  }
+</style>
