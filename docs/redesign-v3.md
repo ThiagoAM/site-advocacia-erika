@@ -67,12 +67,16 @@ gerador, então alinham no ponto exato:
 | Canadá | 18,20 % | 19,20 % |
 | EUA | 20,43 % | 30,99 % |
 | Portugal | 46,23 % | 31,20 % |
+| Itália | 52,14 % | 29,47 % |
 | Brasil | 33,74 % | 70,02 % |
 
+> A Itália entrou depois (23/08/2026), pela mesma projeção — ver
+> [redesign-v4.md](./redesign-v4.md).
+
 No celular, `.mapa-inner` (que mantém a proporção 210 × 83) cresce para 175 % e desloca −10 %:
-pontos e marcadores ampliam juntos, centrando no Atlântico. Ampliado, Portugal fica perto da
-borda direita — nessa faixa o rótulo dele sobe para cima do próprio ponto, o que evita tanto o
-estouro à direita quanto a colisão com o rótulo da EUA à esquerda.
+pontos e marcadores ampliam juntos, centrando no Atlântico. Os rótulos que estourariam a borda
+ou se cruzariam nessa faixa sobem para cima do próprio ponto — ver a v4 para o arranjo atual,
+que mudou com a entrada da Itália.
 
 ## 4. Leiautes quebrados corrigidos
 

@@ -173,3 +173,44 @@ No build estático (`dist`), Chromium headless:
 
 Os utilitários Swift de recorte, descontaminação e preparo foram de uso pontual e não
 estão versionados; o processo está descrito acima e é reprodutível.
+
+## 7. Itália, o quinto país
+
+Acrescentada em 23/08/2026 a Brasil, EUA, Canadá e Portugal — no mapa da seção "Alcance" e em
+todos os textos (hero, faixa de credenciais, CTA, FAQ, `/a-advogada`, `/contato` e os metadados
+das páginas).
+
+As coordenadas saem da **mesma projeção equiretangular** do mapa (ver
+[redesign-v3.md](./redesign-v3.md)), que para o enquadramento em uso se reduz a:
+
+```
+x % = 50 + 0,285714 · (lon − 5)
+y % = (49,6 − 0,6 · lat) / 83 · 100
+```
+
+Conferida contra os quatro marcadores existentes, reproduz os quatro exatamente. Roma
+(lon 12,5 / lat 41,9) → **52,14 % / 29,47 %**, sobre a massa de terra pontilhada.
+`italia: [12.5, 41.9]` entrou em `scripts/gen-world-dots.mjs`, que segue sendo a fonte de
+verdade das coordenadas.
+
+**O que a Itália quebrou.** Ela fica a 5,9 % de Portugal na horizontal e 1,7 % na vertical. O
+rótulo de Portugal saía à direita e passava por cima do marcador dela, então Portugal virou
+`side: 'left'` — e isso o pôs de frente para o do Canadá, que sai à direita e está a apenas
+12 % da altura do mapa acima dele. Com rótulos de ~28 px, isso só cabe em mapas largos:
+
+| Largura | Sobreposição Canadá × Portugal |
+|---|---|
+| 320 px | 50 × 6 px |
+| 720 px | 27 × 1 px |
+| 1150 px ou mais | nenhuma (folga acima de 20 px) |
+
+Correções, ambas medidas e não estimadas:
+
+- `.pin-canada` sobe para cima do próprio ponto abaixo de **1100 px**; acima disso a folga passa
+  de 20 px e ele fica na horizontal. O espaço acima do marcador do Canadá é oceano.
+- `.pin-italia` sobe para cima do próprio ponto abaixo de **700 px**, onde o mapa é ampliado e o
+  rótulo à direita estouraria a borda.
+
+Verificado com um teste dedicado que mede, em **37 larguras** de 320 a 2560 px, sobreposição
+entre rótulos, rótulo cobrindo o marcador de outro país e rótulo fora da caixa do mapa — todas
+limpas.

@@ -29,7 +29,7 @@ Site institucional da Dra. Érika Silvana Saquetti Martins (Saquetti Martins Adv
 | OAB | OAB/PR (advogada desde 2009) |
 | Formação | Doutora em Direito (pesquisa em REURB); Mestre em Políticas Públicas (UFPR); Mestre em Direito (UNINTER) |
 | Outras atuações | Professora de pós-graduação, palestrante, escritora |
-| Público-alvo | Brasil, EUA, Canadá e Portugal |
+| Público-alvo | Brasil, EUA, Canadá, Portugal e Itália |
 
 ## Áreas de atuação
 

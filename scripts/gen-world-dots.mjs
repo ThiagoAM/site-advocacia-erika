@@ -83,6 +83,7 @@ const PLACES = {
   eua: [-98.5, 39.8],
   canada: [-106.3, 56.1],
   portugal: [-8.2, 39.5],
+  italia: [12.5, 41.9],
 };
 const marks = Object.fromEntries(
   Object.entries(PLACES).map(([k, lonlat]) => {

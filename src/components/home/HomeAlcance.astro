@@ -18,8 +18,11 @@ import Reveal from '../ui/Reveal.astro';
 const paises = [
   { nome: 'Canadá', x: 18.2, y: 19.2, side: 'right', delay: 0 },
   { nome: 'EUA', x: 20.43, y: 30.99, side: 'left', delay: 150 },
-  { nome: 'Portugal', x: 46.23, y: 31.2, side: 'right', delay: 300 },
-  { nome: 'Brasil', x: 33.74, y: 70.02, side: 'right', delay: 450 },
+  // Portugal virou `left`: com a Itália a 52,14 % o rótulo à direita passava
+  // por cima do marcador dela.
+  { nome: 'Portugal', x: 46.23, y: 31.2, side: 'left', delay: 300 },
+  { nome: 'Itália', x: 52.14, y: 29.47, side: 'right', delay: 450 },
+  { nome: 'Brasil', x: 33.74, y: 70.02, side: 'right', delay: 600 },
 ] as const;
 
 const notas = [
@@ -47,7 +50,7 @@ const notas = [
         <div
           class="mapa"
           role="img"
-          aria-label="Mapa-múndi destacando atendimento no Brasil, Estados Unidos, Canadá e Portugal"
+          aria-label="Mapa-múndi destacando atendimento no Brasil, Estados Unidos, Canadá, Portugal e Itália"
         >
           <div class="mapa-inner">
             <span class="mapa-dots" style={`--dots:url(${worldDots})`} aria-hidden="true"></span>
@@ -74,8 +77,8 @@ const notas = [
             </svg>
           </span>
           <span class="mapa-badge-txt">
-            <strong>4 países</strong>
-            <span>Brasil · EUA · Canadá · Portugal</span>
+            <strong>5 países</strong>
+            <span>Brasil · EUA · Canadá · Portugal · Itália</span>
           </span>
         </GlassCard>
       </div>
@@ -296,6 +299,18 @@ const notas = [
       padding: 0.34rem 0.72rem;
       letter-spacing: 0.1em;
     }
+    /* Canadá e Portugal estão a só 12 % da altura do mapa um do outro, e agora
+       apontam um para o outro (Canadá à direita, Portugal à esquerda desde que
+       a Itália entrou). Abaixo de ~1100 px de largura os rótulos se cruzam —
+       em 720 px por 1 px. O do Canadá sobe para cima do próprio ponto, onde só
+       há oceano. Acima de 1100 px a folga passa de 20 px e ele fica na
+       horizontal. */
+    .pin-canada {
+      flex-direction: column-reverse;
+      align-items: center;
+      gap: 0.3rem;
+      transform: translate(-50%, calc(-100% + 6px));
+    }
     .mapa-badge {
       position: static;
       width: auto;
@@ -338,9 +353,9 @@ const notas = [
       font-size: 0.625rem;
       padding: 0.28rem 0.6rem;
     }
-    /* Ampliado, Portugal fica perto da borda direita e o rótulo à esquerda
-       encostaria no da EUA — então ele sobe para cima do próprio ponto. */
-    .pin-portugal {
+    /* Ampliado, a Itália fica perto da borda direita e o rótulo à direita
+       estouraria — ele sobe para cima do próprio ponto. */
+    .pin-italia {
       flex-direction: column-reverse;
       align-items: center;
       gap: 0.3rem;
