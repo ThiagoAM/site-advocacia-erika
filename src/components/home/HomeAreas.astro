@@ -1,12 +1,19 @@
 ---
 /**
- * Seção 3 — Áreas de atuação: grid 3×2 de GlassCards-link com ícone de linha por área.
+ * Seção 3 — Áreas de atuação.
+ * Grid 3×2 de cards-link. Cada card carrega a foto-ambiente da própria área
+ * como fundo muito escuro, que ganha luz no hover — mesma imagem já usada no
+ * hero de `/areas/<slug>`, sem custo de arte nova.
  */
+import { Image } from 'astro:assets';
 import SectionHead from '../ui/SectionHead.astro';
-import GlassCard from '../ui/GlassCard.astro';
 import IconSquare from '../ui/IconSquare.astro';
 import Reveal from '../ui/Reveal.astro';
 import { areas } from '../../data/areas';
+
+const areaImages = import.meta.glob<{ default: ImageMetadata }>('../../assets/img/area-*.png', {
+  eager: true,
+});
 
 const svgAttrs =
   'viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"';
@@ -22,7 +29,7 @@ const icons: Record<string, string> = {
 };
 ---
 
-<section class="section areas" id="areas">
+<section class="section areas section-alt section-hairline" id="areas">
   <div class="container">
     <Reveal>
       <SectionHead
@@ -35,18 +42,33 @@ const icons: Record<string, string> = {
 
     <div class="areas-grid">
       {
-        areas.map((area, i) => (
-          <Reveal delay={(i % 3) * 100}>
-            <GlassCard as="a" radius="md" class="area-card" href={`/areas/${area.slug}`}>
-              <IconSquare tone="gold" size={48} class="area-icon">
-                <Fragment set:html={icons[area.slug]} />
-              </IconSquare>
-              <h3>{area.titulo}</h3>
-              <p>{area.descricao}</p>
-              <span class="area-more">Saiba mais <span aria-hidden="true">→</span></span>
-            </GlassCard>
-          </Reveal>
-        ))
+        areas.map((area, i) => {
+          const img = areaImages[`../../assets/img/area-${area.slug}.png`]?.default;
+          return (
+            <Reveal delay={(i % 3) * 100}>
+              <a class="area-card" href={`/areas/${area.slug}`}>
+                {img && (
+                  <span class="area-bg" aria-hidden="true">
+                    <Image src={img} alt="" widths={[420, 640]} sizes="420px" format="webp" quality={55} loading="lazy" />
+                  </span>
+                )}
+                <span class="area-inner">
+                  <span class="area-top">
+                    <IconSquare tone="gold" size={48} class="area-icon">
+                      <Fragment set:html={icons[area.slug]} />
+                    </IconSquare>
+                    <span class="area-num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+                  </span>
+                  <h3>{area.titulo}</h3>
+                  <p>{area.descricao}</p>
+                  <span class="area-more">
+                    Saiba mais <span aria-hidden="true">→</span>
+                  </span>
+                </span>
+              </a>
+            </Reveal>
+          );
+        })
       }
     </div>
   </div>
@@ -61,19 +83,78 @@ const icons: Record<string, string> = {
   .areas-grid :global([data-reveal]) {
     height: 100%;
   }
+
   .area-card {
-    display: flex;
-    flex-direction: column;
+    position: relative;
+    display: block;
     height: 100%;
+    isolation: isolate;
+    overflow: hidden;
+    border-radius: var(--radius-md);
+    border: var(--card-border);
+    background: var(--card-gradient);
+    box-shadow: var(--card-shadow);
     text-decoration: none;
-    transition: border-color 0.3s ease;
+    color: var(--color-ivory);
+    transition:
+      border-color 0.4s ease,
+      transform 0.4s var(--ease-out);
   }
   .area-card:hover,
   .area-card:focus-visible {
-    border-color: rgba(217, 194, 154, 0.4);
+    border-color: var(--card-border-hover);
+    transform: translateY(-3px);
+  }
+
+  /* foto-ambiente da área: quase invisível em repouso, respira no hover */
+  .area-bg {
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    opacity: 0.2;
+    transition:
+      opacity 0.55s var(--ease-out),
+      transform 0.7s var(--ease-out);
+  }
+  .area-bg :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: saturate(0.6);
+  }
+  .area-bg::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(165deg, rgba(1, 6, 15, 0.55) 0%, rgba(1, 6, 15, 0.88) 55%, rgba(1, 6, 15, 0.96) 100%);
+  }
+  .area-card:hover .area-bg,
+  .area-card:focus-visible .area-bg {
+    opacity: 0.4;
+    transform: scale(1.04);
+  }
+
+  .area-inner {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: clamp(1.6rem, 3.2vw, 2.2rem) clamp(1.4rem, 2.6vw, 1.9rem);
+  }
+  .area-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+  .area-num {
+    font-family: var(--font-display);
+    font-size: 1.35rem;
+    line-height: 1;
+    letter-spacing: 0.08em;
+    color: rgba(217, 194, 154, 0.5);
   }
   .area-card :global(.area-icon) {
-    transition: transform 0.35s var(--ease-out);
+    transition: transform 0.4s var(--ease-out);
   }
   .area-card:hover :global(.area-icon) {
     transform: translateY(-2px);
@@ -81,31 +162,32 @@ const icons: Record<string, string> = {
   .area-card h3 {
     font-family: var(--font-sans);
     font-weight: 600;
-    font-size: 1.25rem;
+    font-size: 1.2rem;
     line-height: 1.3;
-    margin-top: 1.4rem;
+    margin-top: 1.5rem;
   }
   .area-card p {
     color: var(--ink-soft);
-    font-size: 1rem;
-    margin-top: 0.8rem;
+    font-size: 0.9375rem;
+    margin-top: 0.75rem;
     flex: 1;
   }
   .area-more {
     display: inline-flex;
     gap: 0.4rem;
-    margin-top: 1.4rem;
+    margin-top: 1.5rem;
     color: var(--color-gold-light);
     font-weight: 500;
     font-size: 0.9375rem;
-  }
-  .area-card:hover .area-more span {
-    transform: translateX(3px);
   }
   .area-more span {
     display: inline-block;
     transition: transform 0.3s var(--ease-out);
   }
+  .area-card:hover .area-more span {
+    transform: translateX(4px);
+  }
+
   @media (max-width: 960px) {
     .areas-grid {
       grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -114,6 +196,19 @@ const icons: Record<string, string> = {
   @media (max-width: 600px) {
     .areas-grid {
       grid-template-columns: 1fr;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .area-card,
+    .area-bg,
+    .area-more span {
+      transition: none;
+    }
+    .area-card:hover {
+      transform: none;
+    }
+    .area-card:hover .area-bg {
+      transform: none;
     }
   }
 </style>

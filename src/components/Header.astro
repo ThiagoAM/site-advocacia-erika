@@ -98,15 +98,18 @@ const navLinks = [
     left: 0;
     right: 0;
     z-index: 100;
-    background: rgba(4, 30, 66, 0.72);
-    -webkit-backdrop-filter: blur(14px);
-    backdrop-filter: blur(14px);
-    border-bottom: 1px solid var(--ivory-line);
-    transition: background 0.35s ease;
+    background: rgba(1, 6, 15, 0.55);
+    -webkit-backdrop-filter: blur(16px) saturate(1.2);
+    backdrop-filter: blur(16px) saturate(1.2);
+    border-bottom: 1px solid transparent;
+    transition:
+      background 0.35s ease,
+      border-color 0.35s ease;
   }
   .site-header.is-scrolled,
   .site-header.is-open {
-    background: var(--color-navy);
+    background: rgba(1, 6, 15, 0.92);
+    border-bottom-color: var(--ivory-line);
   }
   .header-in {
     height: var(--header-h);
@@ -239,7 +242,7 @@ const navLinks = [
       left: 0;
       right: 0;
       bottom: 0;
-      background: var(--color-navy-deep);
+      background: var(--color-abyss);
       overflow-y: auto;
       z-index: 99;
     }

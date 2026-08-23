@@ -100,14 +100,18 @@ const associacoes = [
         <div class="traj-grid">
           <div class="traj-photo-col">
             <GlassCard radius="md" padding="none" as="figure" class="traj-photo">
-              <Image
-                src={fotoErika}
-                alt="Dra. Érika Silvana Saquetti Martins, advogada, em retrato profissional"
-                widths={[420, 640, 853]}
-                sizes="(max-width: 860px) 80vw, 32vw"
-                format="webp"
-                quality={82}
-              />
+              <span class="traj-photo-img">
+                <Image
+                  class="photo-grade"
+                  src={fotoErika}
+                  alt="Dra. Érika Silvana Saquetti Martins, advogada, em retrato profissional"
+                  widths={[420, 640, 853]}
+                  sizes="(max-width: 860px) 80vw, 32vw"
+                  format="webp"
+                  quality={82}
+                />
+                <span class="photo-tint" aria-hidden="true"></span>
+              </span>
               <figcaption>Dra. Érika Silvana Saquetti Martins · {OAB}</figcaption>
             </GlassCard>
           </div>
@@ -296,6 +300,10 @@ const associacoes = [
   .traj-photo {
     margin: 0;
     overflow: hidden;
+  }
+  .traj-photo-img {
+    position: relative;
+    display: block;
   }
   .traj-photo :global(img) {
     display: block;

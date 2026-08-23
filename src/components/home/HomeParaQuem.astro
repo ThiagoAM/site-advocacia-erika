@@ -5,6 +5,7 @@
 import SectionHead from '../ui/SectionHead.astro';
 import GlassCard from '../ui/GlassCard.astro';
 import Reveal from '../ui/Reveal.astro';
+import Watermark from '../ui/Watermark.astro';
 
 const grupos = [
   {
@@ -30,7 +31,8 @@ const grupos = [
 ];
 ---
 
-<section class="section paraquem section-navy-deep" id="para-quem">
+<section class="section paraquem section-hairline" id="para-quem">
+  <Watermark text="Legado" />
   <div class="container">
     <Reveal>
       <SectionHead eyebrow="Para quem" lead="Situações em que uma leitura jurídica prévia costuma fazer diferença.">
@@ -63,6 +65,13 @@ const grupos = [
 </section>
 
 <style>
+  /* a palavra-fantasma fica ATRÁS da cabeça de seção: assim ela lê como
+     textura, e não como um pedaço de letra sobrando embaixo dos cards */
+  .paraquem :global(.watermark) {
+    top: 7%;
+    bottom: auto;
+    font-size: clamp(5rem, 15vw, 13rem);
+  }
   .pq-grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));

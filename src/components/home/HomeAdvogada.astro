@@ -20,7 +20,7 @@ const creds = [
 ];
 ---
 
-<section class="section advogada" id="advogada" aria-labelledby="adv-name">
+<section class="section advogada section-hairline" id="advogada" aria-labelledby="adv-name">
   <div class="container adv-grid">
     <Reveal>
       <GlassCard radius="lg" padding="lg" class="adv-card">
@@ -48,7 +48,7 @@ const creds = [
     <Reveal delay={150} class="adv-photo-wrap">
       <GlassCard radius="md" padding="none" class="adv-photo">
         <Image
-          class="adv-img"
+          class="adv-img photo-grade"
           src={portrait}
           alt="Dra. Érika Silvana Saquetti Martins em retrato, olhando para a câmera"
           widths={[480, 720, 960]}
@@ -57,6 +57,7 @@ const creds = [
           quality={82}
           loading="eager"
         />
+        <span class="photo-tint" aria-hidden="true"></span>
         <span class="selo spin-slow" aria-hidden="true">
           <Selo aria-hidden="true" role="presentation" aria-label={undefined} />
         </span>
@@ -130,6 +131,7 @@ const creds = [
   }
   .selo {
     position: absolute;
+    z-index: 2;
     right: 1.25rem;
     bottom: 1.25rem;
     width: 96px;

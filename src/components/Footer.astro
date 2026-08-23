@@ -1,6 +1,5 @@
 ---
 import LogoVertical from '../assets/brand/logo-vertical-mono.svg';
-import patternTile from '../assets/brand/pattern-tile.svg?url';
 import Eyebrow from './ui/Eyebrow.astro';
 import IconWhatsApp from './IconWhatsApp.astro';
 import {
@@ -23,7 +22,8 @@ const navLinks = [
 ];
 ---
 
-<footer class="site-footer" style={`--pattern: url(${patternTile})`}>
+<footer class="site-footer">
+  <span class="footer-glow" aria-hidden="true"></span>
   <div class="container">
     <div class="footer-grid">
       <div class="footer-brand">
@@ -102,23 +102,30 @@ const navLinks = [
 <style>
   .site-footer {
     position: relative;
-    background: var(--color-navy-deep);
+    background: linear-gradient(180deg, var(--color-ink-900) 0%, var(--color-abyss) 60%);
     color: var(--ink-soft);
     padding: clamp(3.5rem, 7vw, 5.5rem) 0 0;
-    border-top: 1px solid var(--gold-faint);
     overflow: clip;
   }
-  /* padrão da marca a 6 % */
+  /* fio de luz no topo, no lugar do padrão em mosaico da v2 */
   .site-footer::before {
     content: "";
     position: absolute;
-    inset: 0;
-    background: var(--color-gold-light);
-    -webkit-mask: var(--pattern) repeat;
-    mask: var(--pattern) repeat;
-    -webkit-mask-size: 160px auto;
-    mask-size: 160px auto;
-    opacity: 0.06;
+    inset: 0 0 auto 0;
+    height: 1px;
+    background: linear-gradient(90deg, rgba(251, 251, 248, 0) 0%, rgba(217, 194, 154, 0.34) 50%, rgba(251, 251, 248, 0) 100%);
+    pointer-events: none;
+  }
+  /* brilho dourado bem discreto atrás da marca */
+  .footer-glow {
+    position: absolute;
+    z-index: 0;
+    left: -6%;
+    top: -30%;
+    width: min(720px, 90%);
+    aspect-ratio: 1 / 1;
+    border-radius: 50%;
+    background: radial-gradient(50% 50% at 50% 50%, rgba(184, 153, 107, 0.13) 0%, rgba(134, 109, 75, 0.05) 42%, rgba(1, 6, 15, 0) 70%);
     pointer-events: none;
   }
   .footer-grid {
@@ -164,9 +171,11 @@ const navLinks = [
     padding: 0;
   }
   .footer-col li {
-    margin-bottom: 0.7rem;
+    margin-bottom: 0.15rem;
   }
   .footer-col a {
+    display: inline-block;
+    padding-block: 0.42rem;
     font-size: 0.9375rem;
     color: var(--ink-soft);
     transition: color 0.3s ease;
@@ -180,7 +189,14 @@ const navLinks = [
     gap: 0.85rem;
   }
   .footer-contact li {
-    margin-bottom: 1rem;
+    margin-bottom: 0.6rem;
+    min-width: 0;
+  }
+  .footer-contact a {
+    padding-block: 0.3rem;
+  }
+  .footer-contact a > span:last-child {
+    overflow-wrap: anywhere;
   }
   .footer-contact .lbl {
     display: block;
@@ -197,8 +213,16 @@ const navLinks = [
     width: 38px;
     height: 38px;
     border-radius: 50%;
-    border: 1px solid var(--color-gold-mid);
+    border: 1px solid rgba(217, 194, 154, 0.32);
+    background: rgba(251, 251, 248, 0.03);
     color: var(--color-gold-light);
+    transition:
+      border-color 0.3s ease,
+      background-color 0.3s ease;
+  }
+  .footer-contact a:hover .ic {
+    border-color: var(--color-gold-light);
+    background: rgba(217, 194, 154, 0.1);
   }
   .footer-contact .ic :global(svg) {
     width: 16px;
@@ -212,6 +236,7 @@ const navLinks = [
 
   .footer-bottom {
     position: relative;
+    z-index: 1;
     border-top: 1px solid var(--ivory-line);
     padding: 1.5rem 0 2rem;
   }

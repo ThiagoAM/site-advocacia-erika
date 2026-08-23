@@ -1,14 +1,12 @@
 ---
 /**
- * CTA de encerramento das páginas internas (v2): centrado, halo dourado ao fundo,
+ * CTA de encerramento das páginas internas (v3): centrado, halo dourado em CSS,
  * h2 com trecho em itálico dourado, botão WhatsApp com pulso e linha de canais
  * secundários (e-mail e Instagram).
  */
-import { Image } from 'astro:assets';
 import Button from './ui/Button.astro';
 import Eyebrow from './ui/Eyebrow.astro';
 import GoldRule from './ui/GoldRule.astro';
-import glow from '../assets/img/glow-gold.png';
 import { EMAIL, INSTAGRAM_HANDLE, INSTAGRAM_URL, WHATSAPP_URL } from '../data/site';
 
 interface Props {
@@ -25,9 +23,7 @@ const { title, titleHtml, text, label = 'Falar no WhatsApp' } = Astro.props;
 ---
 
 <section class="section page-cta">
-  <div class="cta-glow" aria-hidden="true">
-    <Image src={glow} alt="" width={1024} format="webp" quality={60} loading="lazy" />
-  </div>
+  <span class="cta-glow" aria-hidden="true"></span>
   <div class="container">
     <Eyebrow>Contato</Eyebrow>
     {titleHtml ? <h2 set:html={titleHtml} /> : <h2>{title}</h2>}
@@ -47,7 +43,7 @@ const { title, titleHtml, text, label = 'Falar no WhatsApp' } = Astro.props;
 
 <style>
   .page-cta {
-    background: linear-gradient(180deg, var(--color-navy) 0%, var(--color-navy-deep) 100%);
+    background: var(--bg-page);
     border-top: 1px solid var(--ivory-line);
     text-align: center;
   }
@@ -60,19 +56,20 @@ const { title, titleHtml, text, label = 'Falar no WhatsApp' } = Astro.props;
   .cta-glow {
     position: absolute;
     left: 50%;
-    top: 50%;
-    width: min(110vw, 1100px);
+    top: 42%;
+    width: min(130vw, 1000px);
     aspect-ratio: 1;
     transform: translate(-50%, -50%);
-    opacity: 0.38;
+    border-radius: 50%;
+    background: radial-gradient(
+      50% 50% at 50% 50%,
+      rgba(184, 153, 107, 0.24) 0%,
+      rgba(134, 109, 75, 0.12) 34%,
+      rgba(4, 30, 66, 0.1) 58%,
+      rgba(1, 6, 15, 0) 74%
+    );
     pointer-events: none;
-    mix-blend-mode: screen;
     z-index: 0;
-  }
-  .cta-glow img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
   }
   .page-cta h2 {
     font-size: clamp(2.2rem, 4.6vw, 3.6rem);

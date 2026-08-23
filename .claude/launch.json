@@ -2,6 +2,12 @@
   "version": "0.0.1",
   "configurations": [
     {
+      "name": "astro-dev",
+      "runtimeExecutable": "/Users/thiagomartins/.local/share/fnm/node-versions/v22.23.1/installation/bin/node",
+      "runtimeArgs": ["./node_modules/astro/bin/astro.mjs", "dev", "--port", "4321"],
+      "port": 4321
+    },
+    {
       "name": "site-static",
       "runtimeExecutable": "python3",
       "runtimeArgs": ["-m", "http.server", "4173", "-d", "dist"],

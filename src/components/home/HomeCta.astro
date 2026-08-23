@@ -1,9 +1,12 @@
 ---
 /**
- * Seção 11 — CTA final + 3 canais. Glow dourado ao fundo.
+ * Seção final — CTA + 3 canais.
+ *
+ * v3: o halo dourado passou a ser um degradê radial em CSS. A imagem anterior
+ * usava `mix-blend-mode: screen`, que clareava a seção inteira e destoava do
+ * resto do site. Os cards de canal também estavam com larguras diferentes
+ * porque o wrapper de revelação centralizava e encolhia cada um.
  */
-import { Image } from 'astro:assets';
-import glow from '../../assets/img/glow-gold.png';
 import Button from '../ui/Button.astro';
 import GlassCard from '../ui/GlassCard.astro';
 import Reveal from '../ui/Reveal.astro';
@@ -34,20 +37,19 @@ const canais = [
 ];
 ---
 
-<section class="section cta section-navy-deep" id="contato" aria-labelledby="cta-title">
-  <Image class="cta-glow" src={glow} alt="" widths={[800, 1024]} sizes="900px" format="webp" quality={60} />
+<section class="section cta section-hairline" id="contato" aria-labelledby="cta-title">
+  <span class="cta-halo" aria-hidden="true"></span>
+
   <div class="container cta-wrap">
-    <Reveal>
+    <Reveal class="cta-head">
       <h2 id="cta-title">Vamos desenhar <em class="em-gold">a estrutura do seu legado</em>?</h2>
-    </Reveal>
-    <Reveal delay={120}>
       <p class="lead">
         Agende uma conversa e receba uma leitura técnica e humana do seu caso — em Direito
         Imobiliário, regularização de imóveis ou planejamento patrimonial e sucessório.
       </p>
-    </Reveal>
-    <Reveal delay={240}>
-      <Button href={WHATSAPP_URL} variant="gold" external icon="whatsapp" pulse>Agendar consulta no WhatsApp</Button>
+      <div class="cta-action">
+        <Button href={WHATSAPP_URL} variant="gold" external icon="whatsapp" pulse>Agendar consulta no WhatsApp</Button>
+      </div>
       <p class="cta-note">Atendimento · Brasil — EUA — Canadá — Portugal</p>
     </Reveal>
 
@@ -55,10 +57,10 @@ const canais = [
       {
         canais.map((c, i) => (
           <li>
-            <Reveal delay={300 + i * 90}>
+            <Reveal delay={200 + i * 90} class="canal-reveal">
               <GlassCard
                 as="a"
-                radius="sm"
+                radius="md"
                 padding="sm"
                 class="canal"
                 href={c.href}
@@ -84,92 +86,118 @@ const canais = [
 </section>
 
 <style>
-  .cta-glow {
+  .cta {
+    background: var(--bg-page);
+  }
+  /* halo em CSS: escurece nas bordas até o fundo da página, sem blend-mode */
+  .cta-halo {
     position: absolute;
-    left: 50%;
-    top: 50%;
     z-index: 0;
-    width: min(900px, 140vw);
-    height: auto;
-    transform: translate(-50%, -55%);
-    mix-blend-mode: screen;
-    opacity: 0.85;
+    left: 50%;
+    top: 34%;
+    width: min(1000px, 150%);
+    aspect-ratio: 1 / 1;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    background: radial-gradient(
+      50% 50% at 50% 50%,
+      rgba(184, 153, 107, 0.26) 0%,
+      rgba(134, 109, 75, 0.13) 34%,
+      rgba(4, 30, 66, 0.1) 58%,
+      rgba(1, 6, 15, 0) 74%
+    );
     pointer-events: none;
   }
+
   .cta-wrap {
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    gap: 1.5rem;
-    max-width: 880px;
+    max-width: 1020px;
   }
-  .cta-wrap :global([data-reveal]) {
+  /* head e cards são blocos independentes: nada encolhe por causa do wrapper */
+  .cta-wrap :global(.cta-head) {
     display: flex;
     flex-direction: column;
     align-items: center;
-    min-width: 0;
+    text-align: center;
+    gap: 1.4rem;
   }
   .cta-wrap h2 {
     text-wrap: balance;
+    max-width: 20ch;
   }
   .cta-wrap .lead {
-    max-width: 38rem;
+    max-width: 40rem;
+  }
+  .cta-action {
+    margin-top: 0.4rem;
+    display: flex;
+    justify-content: center;
+    width: 100%;
   }
   .cta-note {
-    margin-top: 1.2rem;
-    font-size: 0.8125rem;
+    font-size: 0.75rem;
     letter-spacing: 0.16em;
     text-transform: uppercase;
-    color: var(--ink-soft);
+    color: var(--ink-faint);
   }
+
   .canais {
     list-style: none;
-    margin: 2rem 0 0;
+    margin: clamp(2.5rem, 5vw, 3.5rem) 0 0;
     padding: 0;
     width: 100%;
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 1rem;
   }
-  .canais :global([data-reveal]) {
-    height: 100%;
+  .canais li {
+    display: flex;
+    min-width: 0;
+  }
+  /* o wrapper de revelação precisa ocupar a célula inteira da grade —
+     sem isto cada card ficava com a largura do próprio texto */
+  .canais :global(.canal-reveal) {
+    display: flex;
+    width: 100%;
+    min-width: 0;
   }
   .canal {
     display: flex;
     align-items: center;
-    gap: 1rem;
-    height: 100%;
+    gap: 0.95rem;
+    width: 100%;
+    min-width: 0;
     text-align: left;
     text-decoration: none;
-    min-width: 0;
-    transition: border-color 0.3s ease;
+    transition:
+      border-color 0.3s ease,
+      transform 0.3s var(--ease-out);
   }
   .canal:hover {
-    border-color: rgba(217, 194, 154, 0.4);
+    border-color: var(--card-border-hover);
+    transform: translateY(-2px);
   }
   .canal-icon {
     flex: none;
     display: inline-grid;
     place-items: center;
-    width: 44px;
-    height: 44px;
+    width: 42px;
+    height: 42px;
     border-radius: 50%;
     background: var(--gold-gradient);
-    color: var(--color-navy);
+    color: #06122a;
   }
   .canal-icon svg {
-    width: 20px;
-    height: 20px;
+    width: 19px;
+    height: 19px;
   }
   .canal-txt {
     display: flex;
     flex-direction: column;
-    gap: 0.15rem;
+    gap: 0.2rem;
     min-width: 0;
   }
   .canal-rotulo {
-    font-size: 0.75rem;
+    font-size: 0.6875rem;
     font-weight: 500;
     letter-spacing: 0.16em;
     text-transform: uppercase;
@@ -177,16 +205,19 @@ const canais = [
   }
   .canal-valor {
     color: var(--color-ivory);
-    font-size: 0.9375rem;
+    font-size: 0.875rem;
+    line-height: 1.35;
+    /* e-mails longos quebram dentro do card em vez de estourar a coluna */
     overflow-wrap: anywhere;
   }
-  @media (max-width: 860px) {
+
+  @media (max-width: 900px) {
     .canais {
       grid-template-columns: 1fr;
     }
   }
   @media (max-width: 600px) {
-    .cta-wrap :global(.btn) {
+    .cta-action :global(.btn) {
       width: 100%;
     }
   }

@@ -1,0 +1,356 @@
+---
+/**
+ * Seção — Alcance internacional.
+ * Mapa-múndi pontilhado (SVG gerado a partir do Natural Earth 50m, ver
+ * `src/assets/brand/world-dots.svg`) com marcadores nos quatro países.
+ * As coordenadas dos marcadores vêm da MESMA projeção equiretangular usada
+ * para gerar os pontos — por isso são percentuais fixos e alinham no ponto.
+ *
+ * `.mapa-inner` mantém a proporção do SVG (210 × 83) e é ele que cresce e
+ * desloca no celular: pontos e marcadores se movem juntos, sem contas soltas.
+ */
+import worldDots from '../../assets/brand/world-dots.svg?url';
+import SectionHead from '../ui/SectionHead.astro';
+import GlassCard from '../ui/GlassCard.astro';
+import Reveal from '../ui/Reveal.astro';
+
+/** x/y em % do mapa (projeção equiretangular, lon −170…180, lat −56…83). */
+const paises = [
+  { nome: 'Canadá', x: 18.2, y: 19.2, side: 'right', delay: 0 },
+  { nome: 'EUA', x: 20.43, y: 30.99, side: 'left', delay: 150 },
+  { nome: 'Portugal', x: 46.23, y: 31.2, side: 'right', delay: 300 },
+  { nome: 'Brasil', x: 33.74, y: 70.02, side: 'right', delay: 450 },
+] as const;
+
+const notas = [
+  ['Reuniões por videochamada', 'Fuso e agenda combinados caso a caso, sem exigir viagem ao Brasil.'],
+  ['Procuração no consulado', 'Orientação sobre o documento certo para cada ato — venda, inventário ou registro.'],
+  ['Documentos à distância', 'Certidões, matrículas e escrituras acompanhadas junto a cartórios e órgãos brasileiros.'],
+];
+---
+
+<section class="section alcance section-alt section-hairline" id="alcance" aria-label="Alcance internacional">
+  <span class="alcance-halo halo" aria-hidden="true"></span>
+
+  <div class="container">
+    <Reveal>
+      <SectionHead
+        eyebrow="Alcance"
+        lead="Brasileiros que moram fora seguem com imóveis, heranças e famílias no Brasil. O atendimento acompanha a distância — por videochamada, com procuração e documentos tratados a partir daqui."
+      >
+        Patrimônio no Brasil, <em class="em-gold">vida em outro país</em>.
+      </SectionHead>
+    </Reveal>
+
+    <Reveal delay={120}>
+      <div class="mapa-wrap">
+        <div
+          class="mapa"
+          role="img"
+          aria-label="Mapa-múndi destacando atendimento no Brasil, Estados Unidos, Canadá e Portugal"
+        >
+          <div class="mapa-inner">
+            <span class="mapa-dots" style={`--dots:url(${worldDots})`} aria-hidden="true"></span>
+            {
+              paises.map((p) => (
+                <span
+                  class:list={['pin', `pin-${p.side}`, `pin-${p.nome.toLowerCase().replace('á', 'a')}`]}
+                  style={`left:${p.x}%; top:${p.y}%; --pin-delay:${p.delay}ms`}
+                  aria-hidden="true"
+                >
+                  <span class="pin-dot" />
+                  <span class="pin-label">{p.nome}</span>
+                </span>
+              ))
+            }
+          </div>
+        </div>
+
+        <GlassCard radius="md" padding="sm" class="mapa-badge">
+          <span class="mapa-badge-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="9"></circle>
+              <path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"></path>
+            </svg>
+          </span>
+          <span class="mapa-badge-txt">
+            <strong>4 países</strong>
+            <span>Brasil · EUA · Canadá · Portugal</span>
+          </span>
+        </GlassCard>
+      </div>
+    </Reveal>
+
+    <ul class="alcance-notas">
+      {
+        notas.map(([titulo, texto], i) => (
+          <li>
+            <Reveal delay={i * 100}>
+              <div class="nota">
+                <span class="nota-num" aria-hidden="true">
+                  {String(i + 1).padStart(2, '0')}
+                </span>
+                <h3>{titulo}</h3>
+                <p>{texto}</p>
+              </div>
+            </Reveal>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</section>
+
+<style>
+  .alcance-halo {
+    width: min(1100px, 130%);
+    aspect-ratio: 2 / 1;
+    left: 50%;
+    top: 46%;
+    transform: translate(-50%, -50%);
+    opacity: 0.5;
+  }
+
+  /* ---------- mapa ---------- */
+  .mapa-wrap {
+    position: relative;
+    margin-top: clamp(0.5rem, 2vw, 1.5rem);
+  }
+  .mapa {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 210 / 83;
+  }
+  .mapa-inner {
+    position: absolute;
+    inset: 0;
+  }
+  /* os pontos entram como máscara: assim recebem um degradê próprio
+     (mais frios à esquerda, dourados sobre a Europa) em vez de cor chapada. */
+  .mapa-dots {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      100deg,
+      rgba(139, 158, 184, 0.42) 0%,
+      rgba(176, 194, 216, 0.7) 32%,
+      rgba(217, 194, 154, 0.58) 60%,
+      rgba(139, 158, 184, 0.36) 100%
+    );
+    -webkit-mask-image: var(--dots);
+    mask-image: var(--dots);
+    -webkit-mask-size: 100% 100%;
+    mask-size: 100% 100%;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+  }
+
+  /* ---------- marcadores ---------- */
+  .pin {
+    position: absolute;
+    z-index: 2;
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    white-space: nowrap;
+  }
+  .pin-right {
+    transform: translate(-5px, -50%);
+  }
+  .pin-left {
+    flex-direction: row-reverse;
+    transform: translate(calc(-100% + 5px), -50%);
+  }
+  .pin-dot {
+    position: relative;
+    flex: none;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--color-gold-light);
+    box-shadow:
+      0 0 0 4px rgba(184, 153, 107, 0.2),
+      0 0 14px 2px rgba(217, 194, 154, 0.5);
+  }
+  .pin-dot::after {
+    content: "";
+    position: absolute;
+    inset: -4px;
+    border-radius: 50%;
+    border: 1px solid rgba(217, 194, 154, 0.5);
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .pin-dot::after {
+      animation: pin-ping 3.4s var(--ease-out) infinite;
+      animation-delay: var(--pin-delay, 0ms);
+    }
+    @keyframes pin-ping {
+      0% {
+        transform: scale(0.9);
+        opacity: 0.85;
+      }
+      70%,
+      100% {
+        transform: scale(2.7);
+        opacity: 0;
+      }
+    }
+  }
+  .pin-label {
+    padding: 0.42rem 0.9rem;
+    border-radius: var(--radius-pill);
+    border: 1px solid rgba(251, 251, 248, 0.14);
+    background: rgba(2, 11, 24, 0.88);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-ivory);
+  }
+
+  /* ---------- selo ---------- */
+  .mapa-badge {
+    position: absolute;
+    right: 0;
+    bottom: 6%;
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    width: max-content;
+    max-width: min(20rem, 100%);
+    background: rgba(2, 11, 24, 0.94);
+  }
+  .mapa-badge-icon {
+    flex: none;
+    display: inline-grid;
+    place-items: center;
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    border: 1px solid rgba(217, 194, 154, 0.32);
+    color: var(--color-gold-light);
+  }
+  .mapa-badge-icon svg {
+    width: 22px;
+    height: 22px;
+  }
+  .mapa-badge-txt {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.35;
+    min-width: 0;
+  }
+  .mapa-badge-txt strong {
+    font-family: var(--font-display);
+    font-size: 1.75rem;
+    font-weight: 400;
+    color: var(--color-gold-light);
+    line-height: 1.15;
+  }
+  .mapa-badge-txt span {
+    font-size: 0.75rem;
+    line-height: 1.4;
+    letter-spacing: 0.05em;
+    color: var(--ink-soft);
+    margin-top: 0.2rem;
+  }
+
+  /* ---------- notas ---------- */
+  .alcance-notas {
+    list-style: none;
+    margin: clamp(2.5rem, 5vw, 4rem) 0 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1.5rem 2.5rem;
+  }
+  .nota {
+    border-top: 1px solid var(--ivory-line);
+    padding-top: 1.2rem;
+  }
+  .nota-num {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    color: var(--color-gold-mid);
+    letter-spacing: 0.1em;
+  }
+  .nota h3 {
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    font-weight: 600;
+    margin-top: 0.5rem;
+  }
+  .nota p {
+    color: var(--ink-soft);
+    font-size: 0.9375rem;
+    margin-top: 0.5rem;
+  }
+
+  /* ---------- responsivo ---------- */
+  @media (max-width: 1100px) {
+    .pin-label {
+      font-size: 0.6875rem;
+      padding: 0.34rem 0.72rem;
+      letter-spacing: 0.1em;
+    }
+    .mapa-badge {
+      position: static;
+      width: auto;
+      max-width: none;
+      margin-top: 1.5rem;
+    }
+  }
+  @media (max-width: 960px) {
+    .alcance-notas {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 1.5rem 2rem;
+    }
+  }
+  @media (max-width: 680px) {
+    .alcance-notas {
+      grid-template-columns: 1fr;
+      gap: 1.25rem;
+    }
+  }
+
+  /* No celular o mundo inteiro fica pequeno demais. Ampliamos o mapa e
+     centralizamos no Atlântico, onde estão os quatro países. */
+  @media (max-width: 700px) {
+    .mapa {
+      aspect-ratio: 100 / 76;
+      overflow: hidden;
+    }
+    .mapa-inner {
+      inset: auto auto auto -10%;
+      top: 50%;
+      width: 175%;
+      aspect-ratio: 210 / 83;
+      transform: translateY(-50%);
+    }
+    .pin-dot {
+      width: 8px;
+      height: 8px;
+    }
+    .pin-label {
+      font-size: 0.625rem;
+      padding: 0.28rem 0.6rem;
+    }
+    /* Ampliado, Portugal fica perto da borda direita e o rótulo à esquerda
+       encostaria no da EUA — então ele sobe para cima do próprio ponto. */
+    .pin-portugal {
+      flex-direction: column-reverse;
+      align-items: center;
+      gap: 0.3rem;
+      transform: translate(-50%, calc(-100% + 6px));
+    }
+  }
+  @media (max-width: 380px) {
+    .mapa-inner {
+      width: 165%;
+      inset-inline-start: -8%;
+    }
+  }
+</style>

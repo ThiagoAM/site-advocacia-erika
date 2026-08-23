@@ -26,10 +26,10 @@ const { items, tilt = false, class: className } = Astro.props;
   .marquee {
     position: relative;
     overflow: hidden;
-    border-top: var(--card-border);
-    border-bottom: var(--card-border);
-    background: var(--color-navy-deep);
-    padding-block: 1.1rem;
+    border-top: 1px solid rgba(251, 251, 248, 0.08);
+    border-bottom: 1px solid rgba(251, 251, 248, 0.08);
+    background: linear-gradient(180deg, rgba(10, 43, 87, 0.22) 0%, rgba(1, 6, 15, 0.9) 100%);
+    padding-block: 1.15rem;
   }
   .is-tilt {
     transform: rotate(-3deg);
