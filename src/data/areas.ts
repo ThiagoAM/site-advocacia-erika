@@ -205,7 +205,7 @@ export const areas: Area[] = [
       'Estruturação societária do patrimônio familiar com governança, eficiência tributária e proteção de longo prazo.',
     introTitulo: 'Estrutura societária a serviço da família.',
     intro: [
-      'Antes de mais nada, é preciso deixar claro que holding não é uma empresa. A holding familiar é um sistema que tem por objetivo oferecer um planejamento patrimonial, tributário e sucessório, e que pode ser estruturado com quantas empresas (células) forem necessárias para atender à complexidade patrimonial de determinada família.',
+      'Antes de mais nada, é preciso deixar claro que holding não é apenas uma empresa. A holding familiar é um sistema que tem por objetivo oferecer um planejamento patrimonial, tributário e sucessório, e que pode ser estruturado com quantas empresas (células) forem necessárias para atender à complexidade patrimonial de determinada família.',
       'Bem desenhado, esse sistema organiza a gestão dos bens, disciplina a convivência entre herdeiros e estrutura a sucessão por meio de quotas, com regras claras de governança.',
       'Para chegar até ele, é necessário ter em mente três conceitos — holding pura, holding patrimonial e holding mista. Qual deles se aplica, e em que combinação, depende do que a família tem, do que ela produz e do que pretende organizar.',
       'Holding não é fórmula pronta, nem convém a todos os casos. Antes de constituir a sociedade, é preciso analisar a situação específica: o patrimônio, a família, os objetivos e os efeitos tributários envolvidos — e, muitas vezes, a resposta tecnicamente honesta é combinar a holding com outros instrumentos, ou simplesmente não constituí-la.',
