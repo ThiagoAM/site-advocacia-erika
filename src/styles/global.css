@@ -1,5 +1,19 @@
 @import "tailwindcss";
 
+/* ------------------------------------------------------------
+   Selina SM — a display da marca (Brand Kit, ago/2026).
+   A SELINA.otf original não trazia nenhum glifo acentuado nem o
+   pingo do i/j; `scripts/build-selina.py` repara e gera este WOFF2.
+   ------------------------------------------------------------ */
+@font-face {
+  font-family: "Selina SM";
+  src: url("/fonts/selina-sm.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+2013-2014, U+2018-201E, U+2026;
+}
+
 /* ============================================================
    Design system v3 — Saquetti Martins Advocacia
    "Navy Profundo" (docs/redesign-v3.md)
@@ -19,7 +33,7 @@
   --color-gold-light: #d9c29a;
   --color-ivory: #fbfbf8;
 
-  --font-display: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+  --font-display: "Selina SM", Georgia, "Times New Roman", serif;
   --font-sans: "Montserrat", -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
 }
 
@@ -53,6 +67,9 @@
   --card-border-hover: rgba(217, 194, 154, 0.42);
   --card-shadow: 0 1px 0 0 rgba(251, 251, 248, 0.05) inset;
   --ivory-line: rgba(251, 251, 248, 0.07);
+
+  /* padrão oficial (ladrilho sem emenda, 394 × 395) */
+  --pattern-tile: url("../assets/brand/pattern-01.svg");
 
   /* halo dourado reutilizável (sem imagem) */
   --halo-gold: radial-gradient(60% 60% at 50% 50%, rgba(184, 153, 107, 0.3) 0%, rgba(134, 109, 75, 0.14) 38%, rgba(1, 6, 15, 0) 72%);
@@ -125,22 +142,26 @@
   h3,
   h4 {
     font-family: var(--font-display);
-    font-weight: 300;
-    line-height: 1.15;
+    /* a Selina tem um único peso: nada de negrito/itálico sintéticos */
+    font-weight: 400;
+    font-synthesis: none;
+    line-height: 1.18;
     letter-spacing: 0;
     color: var(--color-ivory);
   }
+  /* A Selina tem altura-x maior que a Cormorant: em corpo igual, ela “cresce”.
+     As escalas abaixo mantêm a mancha das versões anteriores. */
   h1 {
-    font-size: clamp(2.65rem, 5.4vw, 4.5rem);
-    letter-spacing: -0.012em;
+    font-size: clamp(2.35rem, 4.8vw, 3.8rem);
+    letter-spacing: 0.004em;
   }
   h2 {
-    font-size: clamp(2.15rem, 4vw, 3.3rem);
-    letter-spacing: -0.01em;
+    font-size: clamp(1.95rem, 3.5vw, 2.9rem);
+    letter-spacing: 0.006em;
   }
   h3 {
     font-size: clamp(1.5rem, 2.2vw, 1.9rem);
-    font-weight: 400;
+    letter-spacing: 0.008em;
   }
   h4 {
     font-family: var(--font-sans);
@@ -150,6 +171,12 @@
   }
   em {
     font-style: italic;
+  }
+  /* a Selina tem um só corte: itálico sintético em título fica torto */
+  h1 em,
+  h2 em,
+  h3 em {
+    font-style: normal;
   }
   strong {
     font-weight: 600;
@@ -215,6 +242,13 @@
   .em-gold {
     font-style: italic;
     color: #d9c29a; /* fallback */
+  }
+  /* a Selina não tem itálico — dentro de título o ouro já é o destaque */
+  h1 .em-gold,
+  h2 .em-gold,
+  h3 .em-gold,
+  .stat-value.em-gold {
+    font-style: normal;
   }
   @supports (background-clip: text) or (-webkit-background-clip: text) {
     .em-gold {
@@ -398,6 +432,35 @@
     color: var(--color-navy);
   }
 
+
+  /* ---------- padrão oficial da marca ----------
+     O SVG entra como máscara: a cor vem do gradiente dourado, então o
+     mesmo ladrilho serve a qualquer superfície. */
+  .pattern-veil {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background: var(--gold-gradient-soft);
+    opacity: 0.055;
+    -webkit-mask-image: var(--pattern-tile);
+    mask-image: var(--pattern-tile);
+    -webkit-mask-size: 190px auto;
+    mask-size: 190px auto;
+    -webkit-mask-repeat: repeat;
+    mask-repeat: repeat;
+  }
+  /* esmaece nas bordas para o padrão nunca competir com o texto */
+  .pattern-veil-fade {
+    -webkit-mask-composite: source-in;
+    mask-composite: intersect;
+    -webkit-mask-image: var(--pattern-tile), radial-gradient(105% 68% at 50% 50%, #000 0%, rgba(0, 0, 0, 0.45) 58%, transparent 100%);
+    mask-image: var(--pattern-tile), radial-gradient(105% 68% at 50% 50%, #000 0%, rgba(0, 0, 0, 0.45) 58%, transparent 100%);
+    -webkit-mask-size: 190px auto, cover;
+    mask-size: 190px auto, cover;
+    -webkit-mask-repeat: repeat, no-repeat;
+    mask-repeat: repeat, no-repeat;
+  }
 
   /* ---------- textura de grão (sem imagem: SVG inline) ---------- */
   .grain::after {

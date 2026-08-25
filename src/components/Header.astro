@@ -1,5 +1,5 @@
 ---
-import Logo from '../assets/brand/logo-horizontal-mono.svg';
+import Logo from '../assets/brand/logo-horizontal-light.svg';
 import Button from './ui/Button.astro';
 import { WHATSAPP_URL } from '../data/site';
 
@@ -122,12 +122,12 @@ const navLinks = [
   .logo {
     display: inline-flex;
     align-items: center;
-    color: var(--color-ivory);
     flex: none;
-    transition: color 0.3s ease;
+    /* logo oficial de duas cores: o hover é de brilho, não de cor */
+    transition: opacity 0.3s ease;
   }
   .logo:hover {
-    color: var(--color-gold-light);
+    opacity: 0.82;
   }
   .logo :global(svg) {
     height: 40px;

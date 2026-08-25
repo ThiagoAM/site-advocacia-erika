@@ -1,21 +1,57 @@
 # Marca — Saquetti Martins Advocacia
 
-SVGs vetoriais extraídos da Proposta de identidade visual da agência Spasso
-(ago/2026, págs. 11–16). Paths puros (sem texto/fontes), sem fundo, sem
-`width`/`height` fixos; viewBox justo ao conteúdo com margem de 2%.
+Arte **definitiva**, extraída do *press kit* entregue pela agência Spasso
+(`Brand Kit/Arquivos editáveis/Saquetti Martins - Logo.pdf`, ago/2026). São
+vetores de verdade (nada de traçado sobre bitmap), sem fundo, com `viewBox`
+justo ao conteúdo e 3 % de folga.
 
-| Arquivo | Conteúdo | Origem |
+Substituem os SVGs anteriores, que tinham sido extraídos da *proposta* — a arte
+final mudou de proporção e de recorte em várias peças.
+
+## Lockups
+
+Cada lockup vem em três versões, que correspondem exatamente às aplicações
+oficiais das págs. 4–7 do press kit:
+
+| Sufixo | Aplicação oficial | Cores |
 |---|---|---|
-| `logo-horizontal.svg` | Monograma + "Saquetti Martins" + ADVOCACIA, lado a lado | pág. 11 |
-| `logo-vertical.svg` | Monograma acima, nome abaixo | pág. 12 |
-| `logo-circular.svg` | Selo circular com texto em arco e anéis navy | pág. 13 |
-| `simbolo.svg` | Monograma SM isolado | pág. 14 (conferido com pág. 16) |
-| `logo-horizontal-mono.svg` | Horizontal, todos os paths em `currentColor` | pág. 11 |
-| `simbolo-mono.svg` | Símbolo em `currentColor` | pág. 14 |
-| `pattern.svg` | Painel inteiro do padrão geométrico (88 módulos, `currentColor`, sem fundo nem selo); viewBox `0 0 584.9 1036.4` — recorte do painel original, módulos das bordas cortados pelo viewBox | pág. 18 |
-| `pattern-tile.svg` | Célula mínima do padrão (4 módulos distintos, clip no retângulo), viewBox `0 0 156.83 229.12`; repete sem emenda: `background: url(pattern-tile.svg) repeat; background-size: 160px auto;` (proporção ≈ 1 : 1,46) | pág. 18 |
+| *(nenhum)* | "Cor — fundos claros" | navy `#041E42` + ouro `#866D4B` |
+| `-light` | "Cor — fundos escuros" | marfim `#FBFBF8` + ouro `#866D4B` |
+| `-mono` | "Positivo / negativo" | tudo em `currentColor` |
 
-Cores: ouro `#866D4B`, navy `#041E42`. As versões `-mono` herdam a cor via
-CSS (`color: #FBFBF8` para marfim sobre navy, `color: #041E42` para navy
-sobre marfim).
-| `logo-vertical-mono.svg` / `logo-circular-mono.svg` | versões `currentColor` geradas por substituição de cor (22/08/2026) |
+| Arquivo | Conteúdo | Proporção |
+|---|---|---|
+| `logo-horizontal*.svg` | monograma à esquerda, nome à direita | 385 × 78 |
+| `logo-vertical*.svg` | monograma acima, nome abaixo | 313 × 133 |
+| `logo-circular*.svg` | selo com o nome em arco e anéis | 122 × 122 |
+| `simbolo.svg` / `simbolo-mono.svg` | monograma SM isolado (sempre ouro) | 92 × 115 |
+
+O site usa `-light` no cabeçalho, no rodapé e no selo da home; `-mono` sobra
+para casos em que a cor precisa vir do CSS.
+
+## Padrão
+
+`pattern-01.svg` e `pattern-02.svg` são **ladrilhos sem emenda** de um período
+exato do padrão oficial (`Brand Kit/Pattern/*.png`, 2900 × 1500). O período foi
+medido por autocorrelação (≈ 394 × 395 px no 01, ≈ 363 × 459 px no 02), o
+recorte foi convertido em máscara de cobertura e vetorizado em polígonos.
+
+Ambos usam `fill="currentColor"`, então servem tanto inline quanto como
+**máscara** — é assim que o site os aplica (ver `.pattern-veil` em
+`src/styles/global.css`): a cor vem do gradiente dourado, o SVG só recorta.
+
+`pattern-01` é o entrelaçado do próprio monograma e é o que está no ar.
+
+## Fonte
+
+`fonts/SELINA.otf` é a display da marca, como entregue. Ela **não tem nenhum
+glifo acentuado** (á, ç, ã… constam do cmap mas apontam para a letra sem
+acento) e o `i`/`j` saíram sem pingo. `scripts/build-selina.py` repara isso e
+gera `public/fonts/selina-sm.woff2`, que é o arquivo servido.
+
+## Outros
+
+`world-dots.svg` — mapa-múndi pontilhado da seção "Alcance"; não faz parte do
+Brand Kit (gerado por `scripts/gen-world-dots.mjs`).
+
+Cores: navy `#041E42` · ouro `#866D4B` · marfim `#FBFBF8`.

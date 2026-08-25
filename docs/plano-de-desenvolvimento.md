@@ -41,7 +41,7 @@ Status em **22/08/2026**.
 - Pendência externa: SVGs finais do logo e licenças de fonte (designer / agência Spasso).
 
 ### Fase 1 — Design system
-- Tokens: paleta Azul Legado / Ouro Patrimônio / Marfim; tipografia Cormorant Garamond + Montserrat.
+- Tokens: paleta Azul Legado / Ouro Patrimônio / Marfim; tipografia Selina SM (display da marca, auto-hospedada) + Montserrat.
 - Componentes v2 (`src/components/ui/`): Eyebrow, SectionHead, GoldRule, Button, GlassCard, IconSquare, Stat, Reveal, Marquee, Accordion, Chip.
 
 ### Fase 2 — Páginas
