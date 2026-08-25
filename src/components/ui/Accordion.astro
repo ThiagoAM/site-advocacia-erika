@@ -2,6 +2,10 @@
 /**
  * FAQ em <details>. Summary em card de vidro, ícone +/−, abertura suave
  * via grid-template-rows (funciona sem JS; o JS só anima o fechamento).
+ *
+ * A resposta é injetada como HTML: pode ser texto solto ou vários `<p>` —
+ * por isso o corpo é um `<div>`, e não um `<p>` (que não aceitaria parágrafos
+ * aninhados).
  */
 interface Props {
   items: { q: string; a: string }[];
@@ -24,7 +28,7 @@ const uid = Math.random().toString(36).slice(2, 7);
         </summary>
         <div class="acc-body">
           <div class="acc-inner">
-            <p set:html={item.a} />
+            <div class="acc-a" set:html={item.a} />
           </div>
         </div>
       </details>
@@ -148,13 +152,16 @@ const uid = Math.random().toString(36).slice(2, 7);
     min-height: 0;
     overflow: hidden;
   }
-  .acc-inner p {
+  .acc-a {
     padding: 0 1.5rem 1.5rem calc(1.5rem + 1.6rem + 1.1rem);
     color: var(--ink-soft);
     font-size: 1rem;
   }
+  .acc-a :global(p + p) {
+    margin-top: 0.85em;
+  }
   @media (max-width: 600px) {
-    .acc-inner p {
+    .acc-a {
       padding-left: 1.5rem;
     }
   }

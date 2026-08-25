@@ -9,7 +9,9 @@ import {
   INSTAGRAM_URL,
   SLOGAN,
   WHATSAPP_DISPLAY,
+  WHATSAPP_DISPLAY_RJ,
   WHATSAPP_URL,
+  WHATSAPP_URL_RJ,
 } from '../data/site';
 
 const navLinks = [
@@ -58,6 +60,12 @@ const navLinks = [
             </a>
           </li>
           <li>
+            <a href={WHATSAPP_URL_RJ} target="_blank" rel="noopener">
+              <span class="ic" aria-hidden="true"><IconWhatsApp /></span>
+              <span><span class="lbl">WhatsApp · RJ</span>{WHATSAPP_DISPLAY_RJ}</span>
+            </a>
+          </li>
+          <li>
             <a href={`mailto:${EMAIL}`}>
               <span class="ic" aria-hidden="true">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"
@@ -83,7 +91,7 @@ const navLinks = [
               <span><span class="lbl">Instagram</span>{INSTAGRAM_HANDLE}</span>
             </a>
           </li>
-          <li class="place">Curitiba — PR · Atendimento no Brasil e no exterior</li>
+          <li class="place">Curitiba — PR · Atendimento presencial e online em todo o Brasil</li>
         </ul>
       </div>
     </div>
@@ -92,10 +100,15 @@ const navLinks = [
   <div class="footer-bottom">
     <div class="container footer-bottom-in">
       <p>Conteúdo informativo, em conformidade com o Provimento 205/2021 da OAB.</p>
-      <p>
-        © 2026 Saquetti Martins Advocacia ·
-        <a href="/politica-de-privacidade">Política de Privacidade</a>
-      </p>
+      <div class="footer-bottom-right">
+        <p>
+          © 2026 Saquetti Martins Advocacia ·
+          <a href="/politica-de-privacidade">Política de Privacidade</a>
+        </p>
+        <p class="credit">
+          Criado por <a href="https://owarilabs.com/pt-br/" target="_blank" rel="noopener">Owari Labs</a>
+        </p>
+      </div>
     </div>
   </div>
 </footer>
@@ -263,6 +276,18 @@ const navLinks = [
   }
   .footer-bottom a:hover {
     color: var(--color-gold-light);
+  }
+  /* copyright e crédito do estúdio andam juntos: agrupados, quando não cabem na
+     mesma linha do aviso de conformidade eles descem como um bloco só, em vez
+     de o crédito ficar órfão numa terceira linha */
+  .footer-bottom-right {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.4rem 1.6rem;
+  }
+  .footer-bottom .credit {
+    color: var(--ink-faint);
   }
 
   @media (max-width: 900px) {

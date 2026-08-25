@@ -15,12 +15,14 @@ import {
   INSTAGRAM_URL,
   SITE_NAME,
   WHATSAPP_DISPLAY,
+  WHATSAPP_DISPLAY_RJ,
   WHATSAPP_URL,
+  WHATSAPP_URL_RJ,
 } from '../data/site';
 
 const title = `Contato — ${SITE_NAME}`;
 const description =
-  'Fale com a Dra. Érika Saquetti Martins por WhatsApp, e-mail ou Instagram. Atendimento em Curitiba e online para todo o Brasil, EUA, Canadá, Portugal e Itália.';
+  'Fale com a Dra. Érika Saquetti Martins por WhatsApp, e-mail ou Instagram. Atendimento presencial em Curitiba e online para todo o Brasil, inclusive para brasileiros que moram fora.';
 
 const atendimento = [
   {
@@ -34,9 +36,9 @@ const atendimento = [
       'Base em Curitiba — PR, com atendimento online para todo o país. Consultas presenciais mediante agendamento.',
   },
   {
-    titulo: 'No exterior',
+    titulo: 'Quem mora fora',
     texto:
-      'Atendimento por videoconferência para clientes nos Estados Unidos, no Canadá, em Portugal e na Itália, com horários compatíveis com cada fuso.',
+      'Brasileiros que moram em outro país são atendidos por videoconferência, em horário compatível com o fuso — sempre sobre patrimônio, herança ou negócios no Brasil.',
   },
 ];
 ---
@@ -47,7 +49,7 @@ const atendimento = [
       tag="Contato"
       title="Vamos conversar?"
       titleHtml='Vamos <em class="em-gold">conversar</em>?'
-      lead="Atendimento consultivo, humano e direto — presencial em Curitiba e online para todo o Brasil e para o exterior."
+      lead="Atendimento consultivo, humano e direto — presencial em Curitiba e online para todo o Brasil, inclusive para quem mora fora."
       crumbs={[{ label: 'Início', href: '/' }, { label: 'Contato' }]}
       image={heroImg}
     />
@@ -65,6 +67,9 @@ const atendimento = [
               <IconSquare tone="gold" size={72}><IconWhatsApp /></IconSquare>
               <h3>WhatsApp</h3>
               <p class="canal-valor">{WHATSAPP_DISPLAY}</p>
+              <p class="canal-alt">
+                Também atendo em <a href={WHATSAPP_URL_RJ} target="_blank" rel="noopener">{WHATSAPP_DISPLAY_RJ}</a>
+              </p>
               <p class="canal-desc">O canal mais rápido para primeiras conversas e agendamento de consultas.</p>
               <div class="canal-action">
                 <Button href={WHATSAPP_URL} variant="gold" external icon="whatsapp">Iniciar conversa</Button>
@@ -176,6 +181,18 @@ const atendimento = [
     letter-spacing: 0.04em;
     color: var(--color-gold-light);
     overflow-wrap: anywhere;
+  }
+  .canal-alt {
+    margin-top: 0.35rem;
+    font-size: 0.8125rem;
+    color: var(--ink-faint);
+  }
+  .canal-alt a {
+    color: var(--ink-soft);
+    transition: color 0.3s ease;
+  }
+  .canal-alt a:hover {
+    color: var(--color-gold-light);
   }
   .canal-desc {
     margin-top: 0.9rem;

@@ -46,16 +46,16 @@ import { OAB, WHATSAPP_URL } from '../../data/site';
   <div class="container hero-container">
     <div class="hero-copy">
       <Reveal>
-        <Eyebrow>Advocacia consultiva · Imobiliário &amp; Patrimonial</Eyebrow>
+        <Eyebrow>Advocacia extrajudicial · Consultiva, imobiliária, patrimonial, registral e notarial</Eyebrow>
       </Reveal>
       <Reveal delay={110}>
         <h1 id="hero-title">Protegendo patrimônios.<br /><em class="em-gold">Construindo legados.</em></h1>
       </Reveal>
       <Reveal delay={220}>
         <p class="lead">
-          Advocacia consultiva em Direito Imobiliário, Notarial e Registral e Planejamento
-          Patrimonial e Sucessório — estruturas jurídicas sólidas para famílias e investidores, no
-          Brasil e no exterior.
+          Advocacia extrajudicial e consultiva em Direito Imobiliário, Notarial, Registral e
+          Planejamento Patrimonial e Sucessório — para famílias, investidores e profissionais do
+          mercado imobiliário, no Brasil e no exterior.
         </p>
       </Reveal>
       <Reveal delay={330}>
@@ -87,12 +87,6 @@ import { OAB, WHATSAPP_URL } from '../../data/site';
         loading="eager"
       />
       <Chip class="hero-tag hero-tag-nome">Dra. Érika Saquetti Martins</Chip>
-      <Chip class="hero-tag hero-tag-paises">
-        <svg slot="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"
-          ><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"></path></svg
-        >
-        Brasil · EUA · Canadá · Portugal · Itália
-      </Chip>
     </Reveal>
   </div>
 
@@ -167,6 +161,11 @@ import { OAB, WHATSAPP_URL } from '../../data/site';
     padding-block: clamp(0.5rem, 2vw, 1.5rem);
   }
   .hero-copy h1 {
+    text-wrap: balance;
+  }
+  /* a lista completa das frentes de atuação não cabe numa linha só nesta
+     coluna: equilibra as duas em vez de deixar a segunda órfã */
+  .hero-copy :global(.eyebrow) {
     text-wrap: balance;
   }
   .hero-copy .lead {
@@ -266,25 +265,21 @@ import { OAB, WHATSAPP_URL } from '../../data/site';
     z-index: 3;
     max-width: calc(100% - 1rem);
   }
-  /* abaixo do queixo e do peito: as tags encostam nela sem cobrir o rosto */
+  /* Única tag do hero, e por isso maior que um chip comum. Fica à DIREITA e
+     bem abaixo do ombro: à esquerda, ou mais acima, ela caía sobre o cabelo
+     dela — que desce até cerca de 60 % da altura da figura dos dois lados. */
   .hero-container :global(.hero-tag-nome) {
-    top: 52%;
-    left: -16%;
+    top: 66%;
+    right: -24%;
+    font-size: 1rem;
   }
-  .hero-container :global(.hero-tag-paises) {
-    top: 68%;
-    left: -26%;
-  }
-  /* entre 901 e 1150 px a coluna de texto encosta na figura: as tags recolhem
-     para cima dela em vez de invadirem o parágrafo */
+  /* entre 901 e 1150 px a figura encolhe (`--fig-max` vira 33vw) mas a tag não:
+     em % ela avançaria sobre o cabelo de novo. Desce mais um pouco e o recuo à
+     direita cresce, já que sobra espaço na coluna. */
   @media (max-width: 1150px) {
     .hero-container :global(.hero-tag-nome) {
-      top: 51%;
-      left: -3%;
-    }
-    .hero-container :global(.hero-tag-paises) {
-      top: 67%;
-      left: -9%;
+      top: 70%;
+      right: -22%;
     }
   }
   /* a linha de credenciais tem de caber numa linha só */
@@ -401,13 +396,13 @@ import { OAB, WHATSAPP_URL } from '../../data/site';
       font-size: 0.8125rem;
       max-width: calc(100% - 2 * var(--container-pad));
     }
+    /* empilhado a figura é centralizada e sangra de borda a borda: a tag se
+       ancora na margem DIREITA (o cabelo dela cai do lado esquerdo) e volta ao
+       corpo dos demais chips */
     .hero-container :global(.hero-tag-nome) {
-      top: 60%;
-      left: var(--container-pad);
-    }
-    .hero-container :global(.hero-tag-paises) {
-      top: 76%;
-      left: var(--container-pad);
+      top: 72%;
+      right: var(--container-pad);
+      font-size: 0.8125rem;
     }
     .hero-copy {
       align-items: center;
@@ -433,11 +428,6 @@ import { OAB, WHATSAPP_URL } from '../../data/site';
     }
     .hero-scroll {
       display: none;
-    }
-  }
-  @media (max-width: 480px) {
-    .hero-container :global(.hero-tag-paises) {
-      white-space: normal;
     }
   }
 </style>

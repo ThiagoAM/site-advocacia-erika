@@ -1,8 +1,13 @@
 ---
 /**
- * Seção — Alcance internacional.
+ * Seção — Países onde clientes já foram atendidos.
+ *
+ * O mapa é histórico, NÃO oferta de atendimento no exterior (decisão da cliente
+ * em 25/08/2026): a atuação é sempre sobre patrimônio brasileiro, para quem mora
+ * fora. Ver `docs/revisao-cliente-24-08.md`.
+ *
  * Mapa-múndi pontilhado (SVG gerado a partir do Natural Earth 50m, ver
- * `src/assets/brand/world-dots.svg`) com marcadores nos quatro países.
+ * `src/assets/brand/world-dots.svg`) com marcadores nos cinco países.
  * As coordenadas dos marcadores vêm da MESMA projeção equiretangular usada
  * para gerar os pontos — por isso são percentuais fixos e alinham no ponto.
  *
@@ -32,14 +37,18 @@ const notas = [
 ];
 ---
 
-<section class="section alcance section-alt section-hairline" id="alcance" aria-label="Alcance internacional">
+<section
+  class="section alcance section-alt section-hairline"
+  id="alcance"
+  aria-label="Países onde clientes já foram atendidos"
+>
   <span class="alcance-halo halo" aria-hidden="true"></span>
 
   <div class="container">
     <Reveal>
       <SectionHead
-        eyebrow="Alcance"
-        lead="Brasileiros que moram fora seguem com imóveis, heranças e famílias no Brasil. O atendimento acompanha a distância — por videochamada, com procuração e documentos tratados a partir daqui."
+        eyebrow="Clientes já atendidos"
+        lead="Brasileiros que moram fora seguem com imóveis, heranças e famílias no Brasil. O trabalho é sempre sobre esse patrimônio brasileiro — e a distância se resolve por videochamada, procuração e documentos tratados a partir daqui."
       >
         Patrimônio no Brasil, <em class="em-gold">vida em outro país</em>.
       </SectionHead>
@@ -50,7 +59,7 @@ const notas = [
         <div
           class="mapa"
           role="img"
-          aria-label="Mapa-múndi destacando atendimento no Brasil, Estados Unidos, Canadá, Portugal e Itália"
+          aria-label="Mapa-múndi com os países onde clientes já foram atendidos: Brasil, Estados Unidos, Canadá, Portugal e Itália"
         >
           <div class="mapa-inner">
             <span class="mapa-dots" style={`--dots:url(${worldDots})`} aria-hidden="true"></span>
@@ -78,10 +87,17 @@ const notas = [
           </span>
           <span class="mapa-badge-txt">
             <strong>5 países</strong>
-            <span>Brasil · EUA · Canadá · Portugal · Itália</span>
+            <span>com clientes já atendidos</span>
           </span>
         </GlassCard>
       </div>
+    </Reveal>
+
+    <Reveal delay={200}>
+      <p class="mapa-nota">
+        Os marcadores indicam os países onde clientes já foram atendidos — todos em questões de
+        patrimônio, herança ou negócios no Brasil, regidas pelo direito brasileiro.
+      </p>
     </Reveal>
 
     <ul class="alcance-notas">
@@ -259,6 +275,17 @@ const notas = [
     letter-spacing: 0.05em;
     color: var(--ink-soft);
     margin-top: 0.2rem;
+  }
+
+  /* nota de rodapé do mapa: os marcadores são histórico de clientes, não uma
+     oferta de atendimento nesses países */
+  .mapa-nota {
+    max-width: 46rem;
+    margin: clamp(1.5rem, 3vw, 2.25rem) auto 0;
+    text-align: center;
+    font-size: 0.875rem;
+    line-height: 1.6;
+    color: var(--ink-faint);
   }
 
   /* ---------- notas ---------- */

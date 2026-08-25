@@ -29,11 +29,11 @@ export const areas: Area[] = [
     slug: 'direito-imobiliario',
     titulo: 'Direito Imobiliário',
     descricao:
-      'Contratos, negociações e demandas envolvendo bens imóveis, com rigor técnico da tratativa inicial ao registro em cartório.',
+      'Contratos, negociações e operações envolvendo bens imóveis, com rigor técnico da tratativa inicial ao registro em cartório.',
     introTitulo: 'Segurança jurídica em cada etapa do negócio imobiliário.',
     intro: [
-      'Um imóvel costuma ser o ativo mais relevante do patrimônio de uma família ou de um investidor. Por isso, cada negócio imobiliário — compra, venda, permuta, locação ou incorporação — merece análise técnica desde a tratativa inicial até o registro na matrícula, momento em que, no direito brasileiro, a propriedade efetivamente se transfere.',
-      'A atuação do escritório é essencialmente preventiva e consultiva: examinar a documentação, desenhar contratos claros e antecipar riscos, para que o negócio seja concluído com previsibilidade. Quando o conflito já existe, a condução técnica busca a via mais adequada ao caso — negociada, extrajudicial ou judicial.',
+      'Um imóvel costuma ser o ativo mais relevante do patrimônio de uma pessoa, de uma família ou de um investidor. Por isso, cada negócio imobiliário — compra, venda, permuta, locação ou incorporação — merece análise técnica desde a tratativa inicial até o registro na matrícula, momento em que, no direito brasileiro, a propriedade efetivamente se transfere.',
+      'A atuação do escritório é preventiva, consultiva e extrajudicial: examinar a documentação, desenhar contratos claros e antecipar riscos, para que o negócio seja concluído com previsibilidade. Quando surge divergência, o caminho é a composição entre as partes e a solução em cartório — evitando o litígio, e não o alimentando.',
     ],
     topicos: [
       {
@@ -62,9 +62,9 @@ export const areas: Area[] = [
           'Análise de matrículas, acompanhamento de escrituras e registros e tratamento de exigências junto aos cartórios.',
       },
       {
-        titulo: 'Conflitos imobiliários',
+        titulo: 'Solução extrajudicial de divergências',
         texto:
-          'Condução de demandas envolvendo posse, propriedade, vícios do negócio e inadimplemento contratual, priorizando a solução mais adequada ao caso.',
+          'Impasses sobre posse, propriedade, vícios do negócio e inadimplemento tratados pela via negociada e extrajudicial, com notificações, acordos e distratos formalizados em cartório.',
       },
     ],
     paraQuem: {
@@ -81,9 +81,9 @@ export const areas: Area[] = [
   },
   {
     slug: 'regularizacao-reurb',
-    titulo: 'Regularização de Imóveis & REURB',
+    titulo: 'Regularização de Imóveis',
     descricao:
-      'Usucapião, REURB e destravamento de matrículas: orientação jurídica no caminho da posse consolidada à propriedade plena e registrada.',
+      'Usucapião, adjudicação compulsória, REURB e destravamento de matrículas: orientação jurídica no caminho da posse consolidada à propriedade plena e registrada.',
     introTitulo: 'Do imóvel de fato ao imóvel de direito.',
     intro: [
       'Grande parte dos imóveis brasileiros apresenta alguma distância entre a realidade e o que consta no registro: posse sem matrícula, construção não averbada, área divergente, loteamento informal. Enquanto essa distância existe, o imóvel não pode ser financiado, vale menos e não circula com segurança.',
@@ -91,9 +91,9 @@ export const areas: Area[] = [
     ],
     topicos: [
       {
-        titulo: 'Usucapião judicial e extrajudicial',
+        titulo: 'Usucapião extrajudicial',
         texto:
-          'Reconhecimento da propriedade pela posse prolongada, inclusive pela via do cartório de registro de imóveis, quando preenchidos os requisitos legais.',
+          'Reconhecimento da propriedade pela posse prolongada diretamente no cartório de registro de imóveis, com a ata notarial e a instrução exigidas pela lei.',
       },
       {
         titulo: 'REURB-S e REURB-E',
@@ -101,9 +101,14 @@ export const areas: Area[] = [
           'Regularização fundiária urbana de núcleos informais consolidados, nas modalidades social e específica, com atuação junto ao município e ao registro de imóveis.',
       },
       {
-        titulo: 'Adjudicação compulsória',
+        titulo: 'Adjudicação compulsória extrajudicial',
         texto:
-          'Obtenção do título de propriedade quando o vendedor não outorga a escritura devida, pela via judicial ou extrajudicial.',
+          'Obtenção do título de propriedade, no próprio registro de imóveis, quando o vendedor não outorga a escritura devida — sem passar pelo Judiciário.',
+      },
+      {
+        titulo: 'Estremação',
+        texto:
+          'Individualização da parte que cada titular ocupa de fato em imóvel mantido em condomínio, com a abertura de matrícula própria para a área estremada.',
       },
       {
         titulo: 'Retificação de área e de registro',
@@ -186,6 +191,7 @@ export const areas: Area[] = [
       perfis: [
         'Famílias com imóveis, empresas ou investimentos relevantes',
         'Empresários que pensam na continuidade do negócio',
+        'Casais prestes a se casar ou a formalizar união estável',
         'Casais definindo regime de bens e proteção recíproca',
         'Pessoas com filhos de diferentes uniões',
         'Brasileiros com bens ou herdeiros no exterior',
@@ -199,8 +205,10 @@ export const areas: Area[] = [
       'Estruturação societária do patrimônio familiar com governança, eficiência tributária e proteção de longo prazo.',
     introTitulo: 'Estrutura societária a serviço da família.',
     intro: [
-      'A holding familiar é uma sociedade constituída para concentrar e administrar o patrimônio da família — em geral, imóveis e participações societárias. Bem desenhada, organiza a gestão dos bens, disciplina a convivência entre herdeiros e estrutura a sucessão por meio de quotas, com regras claras de governança.',
-      'Holding não é fórmula pronta, nem convém a todos os casos. Antes de constituir a sociedade, é preciso analisar o patrimônio, a família, os objetivos e os efeitos tributários envolvidos — e, muitas vezes, a resposta tecnicamente honesta é combinar a holding com outros instrumentos, ou simplesmente não constituí-la.',
+      'Antes de mais nada, é preciso deixar claro que holding não é uma empresa. A holding familiar é um sistema que tem por objetivo oferecer um planejamento patrimonial, tributário e sucessório, e que pode ser estruturado com quantas empresas (células) forem necessárias para atender à complexidade patrimonial de determinada família.',
+      'Bem desenhado, esse sistema organiza a gestão dos bens, disciplina a convivência entre herdeiros e estrutura a sucessão por meio de quotas, com regras claras de governança.',
+      'Para chegar até ele, é necessário ter em mente três conceitos — holding pura, holding patrimonial e holding mista. Qual deles se aplica, e em que combinação, depende do que a família tem, do que ela produz e do que pretende organizar.',
+      'Holding não é fórmula pronta, nem convém a todos os casos. Antes de constituir a sociedade, é preciso analisar a situação específica: o patrimônio, a família, os objetivos e os efeitos tributários envolvidos — e, muitas vezes, a resposta tecnicamente honesta é combinar a holding com outros instrumentos, ou simplesmente não constituí-la.',
     ],
     topicos: [
       {
@@ -236,7 +244,7 @@ export const areas: Area[] = [
     ],
     paraQuem: {
       texto:
-        'Para famílias com patrimônio imobiliário ou empresarial que buscam gestão organizada e sucessão planejada — a partir de uma análise honesta de custos e benefícios.',
+        'Para pessoas e famílias com patrimônio imobiliário ou empresarial que buscam gestão organizada e sucessão planejada — a partir de uma análise honesta de custos e benefícios.',
       perfis: [
         'Famílias com múltiplos imóveis de renda',
         'Empresários com participações em sociedades',
@@ -250,11 +258,11 @@ export const areas: Area[] = [
     slug: 'inventario-sucessoes',
     titulo: 'Inventário e Sucessões',
     descricao:
-      'Condução de inventários judiciais e extrajudiciais com técnica, agilidade e a sensibilidade que o momento exige.',
+      'Condução de inventários extrajudiciais com técnica, agilidade e a sensibilidade que o momento exige.',
     introTitulo: 'Um processo técnico para um momento delicado.',
     intro: [
       'O inventário é o procedimento que apura os bens, as dívidas e os herdeiros de quem faleceu e formaliza a partilha. Deve ser aberto no prazo legal — em regra, dois meses contados do falecimento — e sua condução técnica evita multas, desgastes e a paralisação do patrimônio da família.',
-      'Sempre que os requisitos legais estão presentes, a via extrajudicial — realizada por escritura pública em cartório de notas — tende a ser mais célere e menos onerosa que o processo judicial. A escolha da via, a organização dos documentos e o desenho da partilha são o coração do trabalho, campo em que a especialização notarial e registral da Dra. Érika é diretamente aplicada.',
+      'O escritório conduz o inventário pela via extrajudicial — por escritura pública em cartório de notas —, o caminho mais célere e menos oneroso sempre que os requisitos legais estão presentes. Verificar esses requisitos, organizar os documentos e desenhar a partilha é o coração do trabalho, campo em que a especialização notarial e registral da Dra. Érika é diretamente aplicada.',
     ],
     topicos: [
       {
@@ -263,19 +271,19 @@ export const areas: Area[] = [
           'Partilha por escritura pública em cartório de notas — a via mais célere quando presentes os requisitos legais.',
       },
       {
-        titulo: 'Inventário judicial',
+        titulo: 'Análise da via e dos requisitos',
         texto:
-          'Condução do processo judicial quando a via extrajudicial não é cabível ou quando há conflito entre os herdeiros.',
+          'Verificação, antes de qualquer ato, de que o caso pode ser concluído em cartório: capacidade dos herdeiros, consenso, existência de testamento e demais exigências legais.',
       },
       {
-        titulo: 'Sobrepartilha e alvarás',
+        titulo: 'Sobrepartilha',
         texto:
-          'Partilha de bens descobertos posteriormente e alvarás judiciais para levantamento de valores e prática de atos específicos.',
+          'Partilha de bens descobertos depois de encerrado o inventário, formalizada por escritura pública complementar.',
       },
       {
-        titulo: 'Cumprimento de testamentos',
+        titulo: 'Testamentos na partilha',
         texto:
-          'Abertura, registro e cumprimento de testamentos, pela via judicial ou extrajudicial, conforme o caso.',
+          'Cumprimento das disposições do testador na escritura de partilha, observados os requisitos exigidos para o inventário extrajudicial quando há testamento.',
       },
       {
         titulo: 'Regularização de bens herdados',
@@ -290,10 +298,10 @@ export const areas: Area[] = [
     ],
     paraQuem: {
       texto:
-        'Para famílias que precisam conduzir um inventário — recente ou pendente há anos — com técnica, previsibilidade e a sensibilidade que o momento pede.',
+        'Para todos que precisam conduzir um inventário — recente ou pendente há anos — com técnica, previsibilidade e a sensibilidade que o momento pede.',
       perfis: [
         'Herdeiros iniciando o inventário no prazo legal',
-        'Famílias com inventários parados ou litigiosos',
+        'Famílias com inventários parados ou nunca abertos',
         'Herdeiros residentes no exterior',
         'Cônjuges organizando meação e partilha',
         'Famílias com imóveis herdados sem registro',
@@ -348,6 +356,7 @@ export const areas: Area[] = [
       perfis: [
         'Compradores de imóveis de alto valor',
         'Investidores e gestores de patrimônio imobiliário',
+        'Profissionais do mercado imobiliário',
         'Arrematantes em leilões judiciais e extrajudiciais',
         'Incorporadoras avaliando terrenos',
         'Brasileiros no exterior e estrangeiros comprando no Brasil',
