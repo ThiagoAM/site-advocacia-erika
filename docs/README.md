@@ -26,7 +26,7 @@ Site institucional da Dra. Érika Silvana Saquetti Martins (Saquetti Martins Adv
 | Marca | Saquetti Martins Advocacia |
 | WhatsApp (principal) | +55 41 99724-8234 ([wa.me/5541997248234](https://wa.me/5541997248234)) — número da inscrição na OAB/PR, usado em todos os botões |
 | WhatsApp (segundo) | +55 22 99265-2515 ([wa.me/5522992652515](https://wa.me/5522992652515)) — Rio de Janeiro; listado no rodapé e em `/contato`, sem botão próprio |
-| E-mail | erikasaquetti@gmail.com (o profissional no domínio depende do Google Workspace, ainda não contratado) |
+| E-mail | erika@saquettimartins.adv.br (Google Workspace, ativo desde 27/08/2026) |
 | Instagram | [@erikasaquetti](https://instagram.com/erikasaquetti) |
 | OAB | OAB/PR (advogada desde 2009) |
 | Formação | Doutora em Direito pela ITE (pesquisa em REURB); Mestre em Políticas Públicas (UFPR); Mestre em Direito (UNINTER) |

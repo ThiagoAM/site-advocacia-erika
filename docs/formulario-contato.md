@@ -30,7 +30,7 @@ Envio: JavaScript intercepta o `submit`, valida com a API nativa do navegador, f
 ## Como gerar a access key
 
 1. Acesse <https://web3forms.com>.
-2. No campo "Create your Access Key", informe o e-mail que deve **receber** as mensagens: `erikasaquetti@gmail.com`.
+2. No campo "Create your Access Key", informe o e-mail que deve **receber** as mensagens: `erika@saquettimartins.adv.br` (chave atual, criada em 27/08/2026, já aponta para ele).
 3. A chave (formato UUID) é enviada para esse e-mail. Guarde-a.
 
 ## Onde colocar a chave
