@@ -1,29 +1,49 @@
 # Pipeline de Notícias Diárias por IA
 
-## Decisão de arquitetura
+## Arquitetura
 
-**Mono-repo**: as notícias vivem no **mesmo repositório do site**, em `data/` (JSONs) + `scripts/` (validação/arquivamento). Padrão replicado do repo `noticias-cartorio-rio-das-ostras`.
+As notícias **não vivem neste repositório**. Elas são mantidas por agente de IA no repositório
+central multi-cliente [**agentic-news**](https://github.com/ThiagoAM/agentic-news), na pasta
+`clients/advocacia-erika/`, e são publicadas via GitHub Pages daquele repo:
 
-Vantagens:
-- O commit diário do agente dispara o rebuild do GitHub Pages → notícias renderizadas **estaticamente no build** (melhor SEO, zero JS no cliente).
-- Benefício extra: marketing de conteúdo com atualização diária.
+```text
+https://thiagoam.github.io/agentic-news/clients/advocacia-erika/noticias.json
+```
 
-## Fluxo do agente (OpenClaw, execução diária)
+```text
+agentic-news (repo central)                 site-advocacia-erika (este repo)
+  clients/advocacia-erika/
+    config.json        regras de busca  ──► agente de IA (~10:00 BRT)
+    noticias.json      resultado do dia ──► GitHub Pages ──► fetch no build ──► HTML estático
+    noticias-anteriores/  histórico
+```
 
-1. `git pull`
-2. `node scripts/get-current-date.js` — obtém a data corrente
-3. Busca notícias com o prompt temático fixo (abaixo)
-4. Escreve `noticias-temp.json`
-5. `node scripts/validate-news.js` — valida o temp contra o contrato
-6. `node scripts/archive-news.js` — arquiva o JSON anterior em `noticias-anteriores/` e promove o temp a atual
-7. Commit na `main` com mensagem padronizada `chore(noticias): ...`
-8. O push dispara o workflow do GitHub Pages → site rebuilda com as notícias novas
+Por que assim: um único agente atende vários clientes com o mesmo fluxo e os mesmos scripts de
+validação, e cada site consome apenas o JSON pronto. O site continua **100 % estático** — o fetch
+acontece no build, não no navegador, o que preserva o SEO e não adiciona JavaScript ao cliente.
+
+> Histórico: a decisão anterior era mono-repo (notícias em `data/` neste próprio repositório,
+> padrão herdado de `noticias-cartorio-rio-das-ostras`). Foi substituída pela arquitetura acima
+> quando o pipeline passou a atender mais de um cliente.
+
+## Fluxo do agente (OpenClaw no Raspberry Pi, diário ~10:00)
+
+Executado no repositório `agentic-news` — ver o `AGENTS.md` de lá. Em resumo, para cada cliente
+pendente: busca conforme `clients/advocacia-erika/config.json` → `noticias-temp.json` →
+`validate-news.js --temp` → `archive-news.js` (arquiva a versão anterior e promove a nova) →
+commit/push na `main`. O push republica o GitHub Pages do `agentic-news` com o JSON novo.
+
+O que o `config.json` do cliente define: prompt temático (direito imobiliário, REURB, notarial e
+registral, sucessões e planejamento patrimonial, mercado imobiliário), fontes sugeridas (Conjur,
+Migalhas, CNB), exclusões (violência, política partidária, temas sensacionalistas), idioma,
+fuso e os limites de validação (11 a 17 itens, no máximo 30 dias de idade). O tom é estritamente
+informativo, compatível com o Provimento 205/2021 da OAB.
 
 ## Contrato do JSON
 
 ```json
 {
-  "data-busca": "2026-08-19T07:00:00-03:00",
+  "data-busca": "2026-08-29T14:00:00-03:00",
   "noticias": [
     {
       "titulo": "…",
@@ -41,37 +61,58 @@ Vantagens:
 | `data-busca` | ISO 8601 **com offset** de fuso |
 | Quantidade de itens | Entre **11 e 17** |
 | Campos obrigatórios por item | `titulo`, `descricao`, `data_publicacao`, `url`, `fonte` |
+| `url` | Absoluta (`http`/`https`), apontando direto para a matéria original |
 | Recência | `data_publicacao` no máximo **30 dias** antes de `data-busca` |
 
-`scripts/validate-news.js` rejeita o arquivo que violar qualquer regra (o agente deve refazer a busca em vez de commitar).
+A validação é responsabilidade do `agentic-news` (`scripts/validate-news.js` + CI `validate.yml`).
+Este repositório trata o feed como entrada externa e revalida o essencial antes de renderizar.
 
-## Prompt temático sugerido (completo)
+## Consumo no site
 
-> Busque notícias jurídicas recentes publicadas no Brasil sobre os seguintes temas:
->
-> - Direito imobiliário (compra e venda, incorporação, locação, financiamento, distratos);
-> - Regularização fundiária e REURB;
-> - Direito notarial e registral (atos de cartório, provimentos do CNJ, Colégio Notarial do Brasil, registros de imóveis);
-> - Sucessões e planejamento patrimonial (inventário, testamento, holdings familiares, doação);
-> - Mercado imobiliário (dados, tendências e regulação com impacto jurídico).
->
-> Fontes sugeridas: Conjur, Colégio Notarial do Brasil (CNB), Migalhas e portais jurídicos equivalentes.
->
-> Regras:
-> - Retorne entre 11 e 17 notícias, todas publicadas nos últimos 30 dias;
-> - Cada item deve ter: titulo, descricao (2–3 frases, tom informativo e neutro), data_publicacao, url (link direto para a matéria original) e fonte;
-> - **Exclua** notícias sobre violência, política partidária e temas polêmicos ou sensacionalistas;
-> - Mantenha tom estritamente informativo, compatível com o Provimento 205/2021 da OAB (sem promessa de resultado, sem mercantilização);
-> - Saída: apenas o JSON no contrato definido, sem texto adicional.
+`src/data/noticias.ts` é a única porta de entrada:
 
-## Regras de validação (`scripts/validate-news.js`)
+- `getNoticias()` — faz um `fetch` da URL acima **em tempo de build**, com timeout de 10 s
+  (`AbortSignal.timeout`). A promise é memoizada em variável de módulo, então a home
+  (`src/components/home/HomeNoticias.astro`) e a página `/noticias` (`src/pages/noticias.astro`)
+  compartilham **um único fetch por build**.
+- Itens malformados (campo faltando ou vazio, data inválida, `url` que não seja `http(s)`) são
+  descartados; o restante é ordenado por `data_publicacao` decrescente.
+- `formatarDataNoticia(iso)` — formata em pt-BR curto (`29 ago 2026`), fuso `America/Sao_Paulo`.
 
-- JSON parseável, com chaves exatas `data-busca` e `noticias`.
-- `data-busca` em ISO 8601 com offset.
-- `noticias.length` entre 11 e 17.
-- Cada item com os 5 campos não vazios; `url` iniciando com `http(s)://`.
-- `data_publicacao` ≤ 30 dias antes de `data-busca` (e nunca futura).
+Os links dos cards apontam para a matéria original, em nova aba
+(`target="_blank" rel="noopener noreferrer"`).
 
-## Renderização no site
+### Fallback quando o feed está indisponível
 
-O build do Astro lê o JSON atual de `data/` e gera a página de notícias como HTML estático. Histórico permanece disponível em `noticias-anteriores/` para eventual página de arquivo.
+`getNoticias()` **nunca lança**: em qualquer falha (rede, timeout, HTTP diferente de 200, JSON
+inválido, formato inesperado, nenhum item válido) ela loga um `console.warn` no build e devolve
+`{ dataBusca: null, noticias: [] }`. Com isso:
+
+- **o build nunca quebra** por causa do feed;
+- `/noticias` mostra um cartão "A curadoria de hoje está em atualização. Volte em instantes.";
+- a home mantém a seção de notícias com o cabeçalho, uma linha discreta no lugar do grid e o link
+  "Ver todas as notícias";
+- o deploy anterior continua no ar até o próximo build bem-sucedido.
+
+Esse é o comportamento esperado enquanto o Pages do `agentic-news` ainda não estiver publicado (a
+URL responde 404) — o site sobe normalmente, sem notícias.
+
+## Rebuild do site
+
+O JSON é lido no build, então uma atualização das notícias só aparece no ar depois de um novo
+build. `.github/workflows/deploy.yml` é disparado por:
+
+| Gatilho | Quando |
+|---|---|
+| `push` na `main` | Qualquer alteração no próprio site |
+| `workflow_dispatch` | Rebuild manual pela aba Actions |
+| `schedule` (`0 14 * * *`) | Diário, 11:00 America/Sao_Paulo — depois da atualização das notícias (~10:00) |
+| `repository_dispatch` (`news-updated`) | Disparado pelo `agentic-news` quando o `noticias.json` do cliente muda |
+
+O `repository_dispatch` vem do workflow `notify-consumers.yml` do `agentic-news` e depende do
+secret `CONSUMER_DISPATCH_TOKEN` configurado **naquele** repositório (fine-grained PAT com
+permissão de Contents neste repo). Sem o secret, o passo é pulado lá e o site se atualiza pelo
+cron diário — o rebuild agendado é a rede de segurança, o dispatch é só o caminho rápido.
+
+Observação sobre o `schedule` do GitHub Actions: o horário é em UTC e pode atrasar alguns minutos
+em janelas de pico; o cron das 14:00 UTC dá folga suficiente sobre a coleta das ~10:00 BRT.

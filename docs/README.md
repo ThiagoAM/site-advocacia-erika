@@ -11,7 +11,7 @@ Site institucional da Dra. Érika Silvana Saquetti Martins (Saquetti Martins Adv
 | [plano-de-desenvolvimento.md](./plano-de-desenvolvimento.md) | Visão geral do projeto, stack técnica e plano por fases com status |
 | [identidade-visual.md](./identidade-visual.md) | Paleta, tipografia, logo, tom de voz, tema visual escolhido e pendências |
 | [dominios.md](./dominios.md) | Domínios, status de registro, onde comprar e configuração DNS/Pages |
-| [noticias-pipeline.md](./noticias-pipeline.md) | Pipeline de notícias diárias por IA: contrato JSON, fluxo do agente, prompt e validação |
+| [noticias-pipeline.md](./noticias-pipeline.md) | Notícias diárias por IA: repositório central `agentic-news`, contrato JSON, consumo no build e gatilhos de rebuild |
 | [formulario-contato.md](./formulario-contato.md) | Formulário de contato com Web3Forms: geração da chave, secrets, limites e troca de destinatário |
 | [redesign-v2.md](./redesign-v2.md) | Plano e decisões do redesign v2 ("Autoridade em Navy") |
 | [redesign-v3.md](./redesign-v3.md) | Redesign v3 ("Navy Profundo"): base escura, fim do mosaico, mapa-múndi pontilhado e leiautes corrigidos |
