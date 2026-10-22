@@ -1,0 +1,163 @@
+---
+/**
+ * Seção — Livro: coletânea "Direito Imobiliário", lançada no SEBRAMI 2026.
+ * Card largo (capa + texto), no molde da seção de Educação. Até o fim do evento
+ * mostra data, local, cupom e agenda; depois (rebuild diário) fica só o livro.
+ */
+import { Image } from 'astro:assets';
+import capa from '../../assets/img/livro/livro-produto.png';
+import Eyebrow from '../ui/Eyebrow.astro';
+import Button from '../ui/Button.astro';
+import GlassCard from '../ui/GlassCard.astro';
+import Reveal from '../ui/Reveal.astro';
+import EventoInfo from '../livro/EventoInfo.astro';
+import Cupom from '../livro/Cupom.astro';
+import AgendaMenu from '../livro/AgendaMenu.astro';
+import { EVENTO, LIVRO, eventoEncerrado } from '../../data/lancamento';
+
+const encerrado = eventoEncerrado();
+---
+
+<section class="section livro section-hairline" id="livro" aria-labelledby="livro-title">
+  <div class="container">
+    <Reveal>
+      <GlassCard radius="lg" padding="none" class="livro-card">
+        <div class="livro-fig">
+          <span class="livro-halo" aria-hidden="true"></span>
+          <Image
+            src={capa}
+            alt={`Capa do livro ${LIVRO.titulo} — ${LIVRO.colecao}`}
+            widths={[480, 720, 1024]}
+            sizes="(max-width: 900px) 92vw, 40vw"
+            format="webp"
+            quality={78}
+          />
+        </div>
+
+        <div class="livro-copy">
+          <Eyebrow>{encerrado ? 'Publicação' : `Lançamento · ${EVENTO.sigla}`}</Eyebrow>
+          <h2 id="livro-title">Novo livro: <em class="em-gold">{LIVRO.titulo}</em>.</h2>
+          <p>
+            Na <em>{LIVRO.colecao}</em>, {encerrado ? 'lançada' : 'que será lançada'} no{' '}
+            {`${EVENTO.sigla} — ${EVENTO.nome}`}, a Dra. Érika assina o capítulo:
+          </p>
+          <p class="livro-cap">
+            “{LIVRO.capitulo}: <span>{LIVRO.capituloSubtitulo}</span>”
+          </p>
+
+          {
+            !encerrado && (
+              <>
+                <EventoInfo />
+                <Cupom />
+              </>
+            )
+          }
+
+          <div class="livro-acoes">
+            <Button href="/livro">Conhecer o livro</Button>
+            {!encerrado && <AgendaMenu />}
+          </div>
+        </div>
+      </GlassCard>
+    </Reveal>
+  </div>
+</section>
+
+<style>
+  .livro-card {
+    display: grid;
+    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+    overflow: hidden;
+  }
+  /* os menus abertos (agenda) precisam vazar o cartão */
+  .livro-card:has(details[open]) {
+    overflow: visible;
+  }
+
+  .livro-fig {
+    position: relative;
+    min-height: 420px;
+    overflow: hidden;
+    border-radius: var(--radius-lg) 0 0 var(--radius-lg);
+    background: #030a19;
+  }
+  .livro-halo {
+    position: absolute;
+    inset: 25% 15% 30%;
+    border-radius: 50%;
+    background: var(--halo-gold);
+    filter: blur(24px);
+    opacity: 0.55;
+  }
+  .livro-fig :global(img) {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 56%;
+  }
+
+  .livro-copy {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.3rem;
+    padding: clamp(2.2rem, 4.5vw, 3.5rem) clamp(1.6rem, 3.2vw, 2.8rem);
+  }
+  .livro-copy h2 {
+    font-size: clamp(1.9rem, 3vw, 2.6rem);
+    text-wrap: balance;
+  }
+  .livro-copy > p {
+    color: var(--ink-soft);
+    max-width: 36rem;
+  }
+  .livro-cap {
+    position: relative;
+    padding-left: 1.2rem;
+    border-left: 2px solid var(--color-gold-mid);
+    font-family: var(--font-display);
+    font-size: clamp(1.2rem, 1.6vw, 1.4rem);
+    line-height: 1.4;
+    color: var(--color-ivory) !important;
+  }
+  .livro-cap span {
+    color: var(--ink-soft);
+  }
+  .livro-copy :global(.cupom) {
+    align-self: stretch;
+    max-width: 30rem;
+  }
+  .livro-acoes {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.8rem;
+  }
+
+  @media (max-width: 900px) {
+    .livro-card {
+      grid-template-columns: 1fr;
+    }
+    .livro-fig {
+      min-height: 0;
+      aspect-ratio: 4 / 3;
+      border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    }
+  }
+  @media (max-width: 600px) {
+    .livro-fig {
+      aspect-ratio: 5 / 4;
+    }
+    .livro-acoes,
+    .livro-acoes > :global(*),
+    .livro-acoes :global(.btn) {
+      width: 100%;
+    }
+    .livro-acoes :global(.btn) {
+      justify-content: space-between;
+    }
+  }
+</style>

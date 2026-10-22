@@ -1,0 +1,117 @@
+---
+/**
+ * Data e local do lançamento (SEBRAMI 2026), com ícones e link para o mapa.
+ * `compacto` = versão do aviso de abertura (corpo menor, sem CEP).
+ */
+import { EVENTO, MAPA_URL } from '../../data/lancamento';
+
+interface Props {
+  compacto?: boolean;
+  class?: string;
+}
+const { compacto = false, class: className } = Astro.props;
+---
+
+<dl class:list={['evento-info', { 'is-compacto': compacto }, className]}>
+  <div class="ei-item">
+    <dt class="ei-ic">
+      <span class="sr-only">Data</span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <rect x="3.5" y="5" width="17" height="15.5" rx="2.5" />
+        <path d="M3.5 10h17M8 3v4M16 3v4" />
+      </svg>
+    </dt>
+    <dd>
+      <strong>{EVENTO.datas}</strong>
+      <span>{EVENTO.diasSemana}, {EVENTO.horario}</span>
+    </dd>
+  </div>
+  <div class="ei-item">
+    <dt class="ei-ic">
+      <span class="sr-only">Local</span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11z" />
+        <circle cx="12" cy="10" r="2.4" />
+      </svg>
+    </dt>
+    <dd>
+      <strong>{EVENTO.local} · {EVENTO.cidade}</strong>
+      <span>
+        {EVENTO.endereco}{!compacto && `, CEP ${EVENTO.cep}`}{' · '}
+        <a href={MAPA_URL} target="_blank" rel="noopener">Ver no mapa</a>
+      </span>
+    </dd>
+  </div>
+</dl>
+
+<style>
+  .evento-info {
+    display: grid;
+    gap: 1rem;
+    margin: 0;
+  }
+  .ei-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.9rem;
+  }
+  .ei-ic {
+    flex: none;
+    display: inline-grid;
+    place-items: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: rgba(10, 43, 87, 0.28);
+    border: var(--card-border);
+    color: var(--color-gold-light);
+  }
+  .ei-ic svg {
+    width: 20px;
+    height: 20px;
+  }
+  dd {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    margin: 0;
+    line-height: 1.45;
+  }
+  dd strong {
+    color: var(--color-ivory);
+    font-weight: 600;
+  }
+  dd span {
+    font-size: 0.9375rem;
+    color: var(--ink-soft);
+  }
+  dd a {
+    color: var(--color-gold-light);
+    text-decoration: underline;
+    text-decoration-color: var(--color-gold);
+    text-underline-offset: 3px;
+    white-space: nowrap;
+  }
+  dd a:hover {
+    color: var(--color-ivory);
+  }
+
+  .is-compacto {
+    gap: 0.75rem;
+  }
+  .is-compacto .ei-ic {
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+  }
+  .is-compacto .ei-ic svg {
+    width: 18px;
+    height: 18px;
+  }
+  .is-compacto dd strong {
+    font-size: 0.9375rem;
+  }
+  .is-compacto dd span {
+    font-size: 0.8125rem;
+  }
+</style>

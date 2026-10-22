@@ -1,0 +1,125 @@
+---
+/**
+ * "Adicionar à agenda": Google Agenda (link de modelo) ou arquivo .ics
+ * (Apple Calendário, Outlook e afins). <details> nativo, sem dependências;
+ * o script fecha o menu ao clicar fora. `acima` abre o menu para cima — no aviso,
+ * cujo conteúdo rola e cortaria um menu que descesse além da borda.
+ */
+import { ICS_PATH, googleAgendaUrl } from '../../data/lancamento';
+
+interface Props {
+  acima?: boolean;
+  class?: string;
+}
+const { acima = false, class: className } = Astro.props;
+---
+
+<details class:list={['agenda', { 'is-acima': acima }, className]}>
+  <summary class="btn btn-ghost">
+    <span class="btn-label">Adicionar à agenda</span>
+    <span class="btn-icon" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="3.5" y="5" width="17" height="15.5" rx="2.5" />
+        <path d="M3.5 10h17M8 3v4M16 3v4M12 13.2v4.6M9.7 15.5h4.6" />
+      </svg>
+    </span>
+  </summary>
+  <ul class="agenda-opcoes">
+    <li>
+      <a href={googleAgendaUrl()} target="_blank" rel="noopener">
+        <strong>Google Agenda</strong>
+        <span>abre o evento já preenchido</span>
+      </a>
+    </li>
+    <li>
+      <a href={ICS_PATH}>
+        <strong>Apple, Outlook e outros</strong>
+        <span>arquivo de agenda (.ics)</span>
+      </a>
+    </li>
+  </ul>
+</details>
+
+<script>
+  document.addEventListener('click', (event) => {
+    const alvo = event.target as Node | null;
+    document.querySelectorAll<HTMLDetailsElement>('details.agenda[open]').forEach((menu) => {
+      if (alvo && !menu.contains(alvo)) menu.open = false;
+    });
+  });
+</script>
+
+<style>
+  .agenda {
+    position: relative;
+  }
+  .agenda > summary {
+    list-style: none;
+  }
+  .agenda > summary::-webkit-details-marker {
+    display: none;
+  }
+  .agenda[open] > summary {
+    border-color: var(--color-gold-light);
+    color: var(--color-gold-light);
+  }
+  .agenda[open] > summary .btn-icon {
+    background: var(--color-gold-light);
+    color: var(--color-navy);
+  }
+
+  .agenda-opcoes {
+    position: absolute;
+    z-index: 5;
+    top: calc(100% + 0.5rem);
+    left: 0;
+    min-width: max(100%, 260px);
+    list-style: none;
+    margin: 0;
+    padding: 0.4rem;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--gold-line);
+    background: rgba(2, 11, 24, 0.97);
+    box-shadow: 0 18px 40px -18px rgba(0, 0, 0, 0.8);
+  }
+  .is-acima .agenda-opcoes {
+    top: auto;
+    bottom: calc(100% + 0.5rem);
+  }
+  .agenda-opcoes a {
+    display: flex;
+    flex-direction: column;
+    gap: 0.05rem;
+    padding: 0.65rem 0.85rem;
+    border-radius: 9px;
+    line-height: 1.35;
+    transition: background-color 0.25s ease;
+  }
+  .agenda-opcoes a:hover,
+  .agenda-opcoes a:focus-visible {
+    background: rgba(184, 153, 107, 0.14);
+  }
+  .agenda-opcoes strong {
+    font-size: 0.9375rem;
+    color: var(--color-ivory);
+  }
+  .agenda-opcoes span {
+    font-size: 0.8125rem;
+    color: var(--ink-faint);
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .agenda[open] .agenda-opcoes {
+      animation: agenda-in 0.25s var(--ease-out);
+    }
+    @keyframes agenda-in {
+      from {
+        opacity: 0;
+        transform: translateY(-4px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  }
+</style>

@@ -1,0 +1,326 @@
+---
+/**
+ * Página do livro: coletânea "Direito Imobiliário — Coletânea Imobiliária 2026",
+ * com capítulo da Dra. Érika, lançada no SEBRAMI 2026 (ver docs/lancamento-livro-sebrami.md).
+ * Textos do capítulo a partir da divulgação da própria Dra. Érika (Instagram, out/2026).
+ */
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PageHero from '../components/PageHero.astro';
+import PageCta from '../components/PageCta.astro';
+import SectionHead from '../components/ui/SectionHead.astro';
+import GlassCard from '../components/ui/GlassCard.astro';
+import Chip from '../components/ui/Chip.astro';
+import Button from '../components/ui/Button.astro';
+import Reveal from '../components/ui/Reveal.astro';
+import EventoInfo from '../components/livro/EventoInfo.astro';
+import Cupom from '../components/livro/Cupom.astro';
+import AgendaMenu from '../components/livro/AgendaMenu.astro';
+import { Image } from 'astro:assets';
+import heroImg from '../assets/img/livro/teatro-ambiente.png';
+import capa from '../assets/img/livro/livro-produto.png';
+import divulgacao from '../assets/img/livro/sebrami-divulgacao.jpg';
+import { SITE_NAME } from '../data/site';
+import { EVENTO, LIVRO, eventoEncerrado } from '../data/lancamento';
+
+const encerrado = eventoEncerrado();
+
+const title = `Livro ${LIVRO.titulo} — ${LIVRO.colecao} · ${SITE_NAME}`;
+const description = encerrado
+  ? `A Dra. Érika Saquetti Martins é coautora da coletânea ${LIVRO.titulo} — ${LIVRO.colecao}, lançada no ${EVENTO.sigla}, com o capítulo “${LIVRO.capitulo}”.`
+  : `A Dra. Érika Saquetti Martins é coautora da coletânea ${LIVRO.titulo} — ${LIVRO.colecao}, com lançamento no ${EVENTO.sigla}, em ${EVENTO.datasCurtas}, no ${EVENTO.local}, em São Paulo.`;
+
+const temas = ['Direito Imobiliário', 'Direito Notarial', 'Direito Registral', 'Direito das Famílias'];
+---
+
+<BaseLayout title={title} description={description}>
+  <main>
+    <PageHero
+      tag={encerrado ? 'Publicação' : `Lançamento · ${EVENTO.sigla}`}
+      title={`Coletânea ${LIVRO.titulo}`}
+      titleHtml={`Coletânea <em class="em-gold">${LIVRO.titulo}</em>`}
+      lead={encerrado
+        ? `A Dra. Érika Silvana Saquetti Martins é coautora da ${LIVRO.colecao}, lançada no ${EVENTO.sigla} — ${EVENTO.nome}, em São Paulo.`
+        : `A Dra. Érika Silvana Saquetti Martins é coautora da ${LIVRO.colecao}, que será lançada no ${EVENTO.sigla} — ${EVENTO.nome}, em ${EVENTO.datasCurtas}, em São Paulo.`}
+      crumbs={[{ label: 'Início', href: '/' }, { label: 'Livro' }]}
+      image={heroImg}
+    />
+
+    <!-- O capítulo -->
+    <section class="section capitulo">
+      <div class="container cap-grid">
+        <Reveal class="cap-fig-col">
+          <GlassCard radius="lg" padding="none" class="cap-fig">
+            <span class="cap-halo" aria-hidden="true"></span>
+            <Image
+              src={capa}
+              alt={`Capa do livro ${LIVRO.titulo} — ${LIVRO.colecao}, Editora Meta`}
+              widths={[520, 800, 1024]}
+              sizes="(max-width: 900px) 92vw, 40vw"
+              format="webp"
+              quality={80}
+              loading="eager"
+            />
+          </GlassCard>
+        </Reveal>
+
+        <div class="cap-copy">
+          <SectionHead eyebrow="O capítulo" align="left" lead={`${LIVRO.capituloSubtitulo.charAt(0).toUpperCase()}${LIVRO.capituloSubtitulo.slice(1)}.`}>
+            Reflexos dos regimes de bens nos <em class="em-gold">negócios imobiliários</em>
+          </SectionHead>
+
+          <p>
+            O capítulo da Dra. Érika conecta o Direito das Famílias ao Direito Imobiliário e mostra como
+            uma escolha feita na vida pessoal — o regime de bens — pode repercutir na segurança e na
+            circulação dos bens, com reflexos nas escrituras e nos registros de imóveis.
+          </p>
+          <p>
+            Levar esse conhecimento ao {EVENTO.sigla}, um dos grandes encontros sobre negócios imobiliários
+            do país, é para ela a oportunidade de contribuir para conversas que fazem diferença na prática
+            jurídica e no mercado imobiliário.
+          </p>
+
+          <ul class="cap-temas" aria-label="Áreas do capítulo">
+            {temas.map((tema) => <li><Chip>{tema}</Chip></li>)}
+          </ul>
+
+          <figure class="cap-citacao">
+            <blockquote>
+              <p>
+                Tem conquista que nasce da experiência, amadurece com muito estudo e ganha sentido quando
+                pode ser compartilhada.
+              </p>
+            </blockquote>
+            <figcaption>Dra. Érika Saquetti Martins</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- O lançamento -->
+    <section class="section section-alt section-hairline lancamento" id="lancamento">
+      <div class="container lanc-grid">
+        <div class="lanc-copy">
+          <SectionHead
+            eyebrow="O lançamento"
+            align="left"
+            lead={encerrado
+              ? `A coletânea foi lançada no ${EVENTO.sigla}, que reuniu profissionais e especialistas do setor em dois dias de conteúdo, atualização, negócios e networking.`
+              : `A coletânea será lançada no ${EVENTO.sigla}, que reúne profissionais e especialistas do setor em dois dias de conteúdo, atualização, negócios e networking.`}
+          >
+            {EVENTO.sigla} — <em class="em-gold">{EVENTO.nome}</em>
+          </SectionHead>
+
+          <GlassCard radius="md" class="lanc-card">
+            <EventoInfo />
+            {
+              !encerrado && (
+                <>
+                  <Cupom />
+                  <p class="lanc-nota">
+                    Informe o cupom ao se inscrever em{' '}
+                    <a href={EVENTO.url} target="_blank" rel="noopener">sebrami.com</a>. Inscrições, valores e
+                    condições são definidos pela organização do evento.
+                  </p>
+                  <div class="lanc-acoes">
+                    <Button href={EVENTO.url} external>Garantir minha vaga</Button>
+                    <AgendaMenu />
+                  </div>
+                </>
+              )
+            }
+          </GlassCard>
+        </div>
+
+        <Reveal delay={120} class="lanc-fig-col">
+          <figure class="lanc-fig">
+            <a href={divulgacao.src} target="_blank" rel="noopener" class="lanc-fig-link">
+              <Image
+                src={divulgacao}
+                alt="Arte de divulgação do SEBRAMI 2026: “Eu vou lançar um livro no SEBRAMI!”, com a Dra. Érika Saquetti, coautora confirmada do livro Direito Imobiliário — 11 e 12 de novembro, Teatro APCD, São Paulo"
+                widths={[480, 720, 1100]}
+                sizes="(max-width: 900px) 92vw, 38vw"
+                format="webp"
+                quality={80}
+              />
+            </a>
+            <figcaption>Arte oficial de divulgação do {EVENTO.sigla}.</figcaption>
+          </figure>
+        </Reveal>
+      </div>
+    </section>
+
+    <PageCta
+      title="Regime de bens e patrimônio imobiliário"
+      titleHtml='Regime de bens e <em class="em-gold">patrimônio imobiliário</em>'
+      text="Casamento, união estável, compra, venda e sucessão de imóveis pedem planejamento. Para orientação sobre o seu caso, fale com a Dra. Érika."
+    />
+  </main>
+</BaseLayout>
+
+<style>
+  /* ---------- capítulo ---------- */
+  .cap-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+    gap: clamp(2rem, 5vw, 4.5rem);
+    align-items: start;
+  }
+  .cap-fig-col {
+    position: sticky;
+    top: calc(var(--header-h) + 1.5rem);
+  }
+  .cap-fig {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 4 / 5;
+    background: #030a19;
+  }
+  .cap-halo {
+    position: absolute;
+    inset: 25% 15% 30%;
+    border-radius: 50%;
+    background: var(--halo-gold);
+    filter: blur(24px);
+    opacity: 0.55;
+  }
+  .cap-fig :global(img) {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 56%;
+  }
+  .cap-copy :global(.sec-head-v2) {
+    margin-bottom: 1.8rem;
+  }
+  .cap-copy > p {
+    color: var(--ink-soft);
+    max-width: 40rem;
+  }
+  .cap-copy > p + p {
+    margin-top: 1rem;
+  }
+  .cap-temas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    list-style: none;
+    padding: 0;
+    margin: 1.8rem 0 0;
+  }
+  .cap-citacao {
+    margin: 2.4rem 0 0;
+    padding: 1.6rem 0 0 1.6rem;
+    border-top: 1px solid var(--ivory-line);
+    position: relative;
+  }
+  .cap-citacao::before {
+    content: "“";
+    position: absolute;
+    left: -0.2rem;
+    top: 0.9rem;
+    font-family: Georgia, serif;
+    font-size: 3.4rem;
+    line-height: 1;
+    color: var(--color-gold-mid);
+  }
+  .cap-citacao blockquote {
+    margin: 0;
+  }
+  .cap-citacao blockquote p {
+    font-family: var(--font-display);
+    font-size: clamp(1.35rem, 2vw, 1.7rem);
+    line-height: 1.4;
+    color: var(--color-ivory);
+    text-wrap: pretty;
+  }
+  .cap-citacao figcaption {
+    margin-top: 0.8rem;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+
+  /* ---------- lançamento ---------- */
+  .lanc-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+    gap: clamp(2rem, 5vw, 4.5rem);
+    align-items: center;
+  }
+  .lanc-copy :global(.sec-head-v2) {
+    margin-bottom: 2rem;
+  }
+  .lanc-card {
+    display: flex;
+    flex-direction: column;
+    gap: 1.4rem;
+  }
+  .lanc-nota {
+    font-size: 0.875rem;
+    color: var(--ink-faint);
+    line-height: 1.6;
+  }
+  .lanc-nota a {
+    color: var(--color-gold-light);
+    text-decoration: underline;
+    text-decoration-color: var(--color-gold);
+    text-underline-offset: 3px;
+  }
+  .lanc-acoes {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.8rem;
+  }
+  .lanc-fig {
+    margin: 0;
+  }
+  .lanc-fig-link {
+    display: block;
+    overflow: hidden;
+    border-radius: var(--radius-md);
+    border: var(--card-border);
+    transition: border-color 0.3s ease;
+  }
+  .lanc-fig-link:hover {
+    border-color: var(--card-border-hover);
+  }
+  .lanc-fig :global(img) {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .lanc-fig figcaption {
+    margin-top: 0.8rem;
+    font-size: 0.8125rem;
+    color: var(--ink-faint);
+  }
+
+  @media (max-width: 900px) {
+    .cap-grid,
+    .lanc-grid {
+      grid-template-columns: 1fr;
+    }
+    .cap-fig-col {
+      position: static;
+      max-width: 28rem;
+    }
+    .lanc-fig-col {
+      max-width: 28rem;
+    }
+  }
+  @media (max-width: 600px) {
+    .lanc-acoes,
+    .lanc-acoes > :global(*),
+    .lanc-acoes :global(.btn) {
+      width: 100%;
+    }
+    .lanc-acoes :global(.btn) {
+      justify-content: space-between;
+    }
+  }
+</style>

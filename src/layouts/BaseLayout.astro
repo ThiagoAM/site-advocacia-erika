@@ -2,6 +2,7 @@
 import '../styles/global.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import LancamentoAviso from '../components/LancamentoAviso.astro';
 import { SITE_NAME, SLOGAN } from '../data/site';
 
 interface Props {
@@ -10,6 +11,8 @@ interface Props {
 }
 const { title, description } = Astro.props;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+// a própria página do livro dispensa o aviso de lançamento
+const mostrarAviso = Astro.url.pathname.replace(/\/$/, '') !== '/livro';
 ---
 
 <!doctype html>
@@ -64,6 +67,7 @@ const canonicalURL = new URL(Astro.url.pathname, Astro.site);
     <Header />
     <slot />
     <Footer />
+    {mostrarAviso && <LancamentoAviso />}
 
     <script>
       // Revelação ao rolar: fade + blur + deslocamento (ver [data-reveal] em global.css)

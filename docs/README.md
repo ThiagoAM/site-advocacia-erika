@@ -17,6 +17,7 @@ Site institucional da Dra. Érika Silvana Saquetti Martins (Saquetti Martins Adv
 | [redesign-v3.md](./redesign-v3.md) | Redesign v3 ("Navy Profundo"): base escura, fim do mosaico, mapa-múndi pontilhado e leiautes corrigidos |
 | [redesign-v4.md](./redesign-v4.md) | Redesign v4: retrato recortado integrado ao fundo do hero, botão principal ampliado e limpeza de marca-d'água/filtros |
 | [revisao-cliente-24-08.md](./revisao-cliente-24-08.md) | Primeira revisão da cliente sobre o site no ar: posicionamento extrajudicial, textos por área e contatos |
+| [lancamento-livro-sebrami.md](./lancamento-livro-sebrami.md) | Lançamento da coletânea *Direito Imobiliário* no SEBRAMI 2026: aviso de abertura, seção da home, página `/livro`, agenda (.ics/Google) e cupom |
 
 ## Dados da cliente
 

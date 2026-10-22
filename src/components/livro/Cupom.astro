@@ -1,0 +1,146 @@
+---
+/**
+ * Cupom de desconto do SEBRAMI, estilo "ingresso", com botão Copiar.
+ * O script usa delegação em [data-copiar] e o Astro o inclui uma vez por página,
+ * mesmo com vários cupons (aviso + seção).
+ */
+import { EVENTO } from '../../data/lancamento';
+
+interface Props {
+  compacto?: boolean;
+  class?: string;
+}
+const { compacto = false, class: className } = Astro.props;
+---
+
+<div class:list={['cupom', { 'is-compacto': compacto }, className]}>
+  <span class="cupom-txt">
+    <span class="cupom-rotulo">{compacto ? 'Cupom de desconto' : 'Cupom de desconto na inscrição'}</span>
+    <span class="cupom-codigo">{EVENTO.cupom}</span>
+  </span>
+  <button type="button" class="cupom-copiar" data-copiar={EVENTO.cupom}>
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <rect x="8.5" y="8.5" width="12" height="12" rx="2.2" />
+      <path d="M15.5 8.5V5.7a2.2 2.2 0 0 0-2.2-2.2H5.7a2.2 2.2 0 0 0-2.2 2.2v7.6a2.2 2.2 0 0 0 2.2 2.2h2.8" />
+    </svg>
+    <span data-copiar-rotulo>Copiar</span>
+  </button>
+</div>
+
+<script>
+  document.addEventListener('click', async (event) => {
+    const botao = (event.target as Element | null)?.closest<HTMLButtonElement>('[data-copiar]');
+    if (!botao) return;
+
+    const codigo = botao.dataset.copiar ?? '';
+    const rotulo = botao.querySelector<HTMLElement>('[data-copiar-rotulo]');
+    let copiado = false;
+    try {
+      await navigator.clipboard.writeText(codigo);
+      copiado = true;
+    } catch {
+      // sem a API (ou sem permissão): seleciona o código e tenta o comando antigo;
+      // se nem ele funcionar, a seleção fica pronta para Cmd/Ctrl+C
+      const alvo = botao.closest('.cupom')?.querySelector('.cupom-codigo');
+      const selecao = window.getSelection();
+      if (alvo && selecao) {
+        const faixa = document.createRange();
+        faixa.selectNodeContents(alvo);
+        selecao.removeAllRanges();
+        selecao.addRange(faixa);
+        copiado = document.execCommand('copy');
+        if (copiado) selecao.removeAllRanges();
+      }
+    }
+
+    if (rotulo) {
+      rotulo.textContent = copiado ? 'Copiado!' : 'Selecionado';
+      botao.classList.toggle('is-ok', copiado);
+      window.setTimeout(() => {
+        rotulo.textContent = 'Copiar';
+        botao.classList.remove('is-ok');
+      }, 2400);
+    }
+  });
+</script>
+
+<style>
+  .cupom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.8rem 0.8rem 0.8rem 1.2rem;
+    border-radius: var(--radius-sm);
+    border: 1px dashed var(--gold-line);
+    background:
+      radial-gradient(120% 140% at 0% 0%, rgba(184, 153, 107, 0.14) 0%, rgba(184, 153, 107, 0) 60%),
+      rgba(2, 11, 24, 0.6);
+  }
+  .cupom-txt {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+    min-width: 0;
+  }
+  .cupom-rotulo {
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    line-height: 1.4;
+  }
+  .cupom-codigo {
+    font-family: var(--font-sans);
+    font-size: 1.35rem;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    line-height: 1.3;
+    color: var(--color-gold-light);
+    user-select: all;
+  }
+  .cupom-copiar {
+    flex: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 1rem;
+    border-radius: 10px;
+    border: 1px solid rgba(251, 251, 248, 0.24);
+    background: rgba(251, 251, 248, 0.04);
+    color: var(--color-ivory);
+    font-family: var(--font-sans);
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition:
+      border-color 0.3s ease,
+      color 0.3s ease,
+      background-color 0.3s ease;
+  }
+  .cupom-copiar svg {
+    width: 16px;
+    height: 16px;
+  }
+  .cupom-copiar:hover {
+    border-color: var(--color-gold-light);
+    color: var(--color-gold-light);
+  }
+  .cupom-copiar.is-ok {
+    border-color: var(--color-gold-mid);
+    background: rgba(184, 153, 107, 0.16);
+    color: var(--color-gold-light);
+  }
+
+  .is-compacto {
+    padding: 0.6rem 0.6rem 0.6rem 1rem;
+  }
+  .is-compacto .cupom-rotulo {
+    font-size: 0.6875rem;
+    letter-spacing: 0.1em;
+  }
+  .is-compacto .cupom-codigo {
+    font-size: 1.15rem;
+  }
+</style>

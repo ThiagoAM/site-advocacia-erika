@@ -1,0 +1,315 @@
+---
+/**
+ * Aviso de abertura: lançamento da coletânea "Direito Imobiliário" no SEBRAMI 2026.
+ *
+ * <dialog> nativo (foco, Esc e camada superior de graça). Abre uma vez por sessão
+ * do navegador, ~0,8 s depois do carregamento, e deixa de existir depois do
+ * evento: no build (não renderiza) e no cliente (`data-fim`), para o caso de o
+ * rebuild diário atrasar. A página /livro não o exibe.
+ */
+import { Image } from 'astro:assets';
+import capa from '../assets/img/livro/livro-produto.png';
+import Eyebrow from './ui/Eyebrow.astro';
+import Button from './ui/Button.astro';
+import EventoInfo from './livro/EventoInfo.astro';
+import Cupom from './livro/Cupom.astro';
+import AgendaMenu from './livro/AgendaMenu.astro';
+import { EVENTO, FIM_DO_EVENTO, LIVRO, eventoEncerrado } from '../data/lancamento';
+
+const ativo = !eventoEncerrado();
+---
+
+{
+  ativo && (
+    <dialog id="aviso-lancamento" class="aviso" aria-labelledby="aviso-titulo" data-fim={FIM_DO_EVENTO}>
+      <div class="aviso-in">
+        <button type="button" class="aviso-fechar" aria-label="Fechar aviso" data-fechar autofocus>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+            <path d="M6 6l12 12M18 6 6 18" />
+          </svg>
+        </button>
+
+        <div class="aviso-fig" aria-hidden="true">
+          <span class="aviso-halo" />
+          <Image src={capa} alt="" widths={[320, 480, 720]} sizes="(max-width: 720px) 220px, 340px" format="webp" quality={80} loading="eager" />
+        </div>
+
+        <div class="aviso-copy">
+          <Eyebrow>Lançamento · {EVENTO.sigla}</Eyebrow>
+          <h2 id="aviso-titulo">
+            Novo livro: <em class="em-gold">{LIVRO.titulo}</em>
+          </h2>
+          <p>
+            A Dra. Érika é coautora da <em>{LIVRO.colecao}</em>, com o capítulo “{LIVRO.capitulo}”.
+            <span class="aviso-extra">O lançamento acontece no {EVENTO.sigla} — {EVENTO.nome}.</span>
+          </p>
+
+          <EventoInfo compacto />
+          <Cupom compacto />
+
+          <div class="aviso-acoes">
+            <Button href={EVENTO.url} external>Garantir minha vaga</Button>
+            <AgendaMenu acima />
+          </div>
+
+          <a class="aviso-mais" href="/livro">
+            Conhecer o livro e o evento <span aria-hidden="true">→</span>
+          </a>
+        </div>
+      </div>
+    </dialog>
+  )
+}
+
+<script>
+  const aviso = document.getElementById('aviso-lancamento') as HTMLDialogElement | null;
+  const CHAVE = 'aviso-lancamento-sebrami-2026';
+
+  if (aviso && typeof aviso.showModal === 'function') {
+    const fim = Date.parse(aviso.dataset.fim ?? '');
+    let visto = false;
+    try {
+      visto = sessionStorage.getItem(CHAVE) === '1';
+    } catch {
+      // armazenamento bloqueado: mostra, sem memória entre páginas
+    }
+
+    if (!visto && Date.now() < fim) {
+      window.setTimeout(() => {
+        // não disputa a tela com o menu móvel aberto
+        if (document.getElementById('site-header')?.classList.contains('is-open')) return;
+        aviso.showModal();
+        try {
+          sessionStorage.setItem(CHAVE, '1');
+        } catch {
+          // idem
+        }
+      }, 800);
+    }
+
+    // clique no fundo escurecido fecha (o alvo é o próprio <dialog>, não o conteúdo)
+    aviso.addEventListener('click', (event) => {
+      if (event.target === aviso) aviso.close();
+    });
+    aviso.querySelectorAll('[data-fechar]').forEach((botao) => botao.addEventListener('click', () => aviso.close()));
+  }
+</script>
+
+<style>
+  .aviso {
+    width: min(940px, 100% - 2rem);
+    max-width: none;
+    max-height: min(100dvh - 2rem, 720px);
+    margin: auto;
+    padding: 0;
+    overflow: hidden;
+    border: 1px solid var(--gold-line);
+    border-radius: var(--radius-lg);
+    background:
+      radial-gradient(90% 70% at 100% 0%, rgba(10, 43, 87, 0.45) 0%, rgba(10, 43, 87, 0) 60%),
+      var(--color-ink-900);
+    color: var(--color-ivory);
+    box-shadow: 0 40px 120px -30px rgba(0, 0, 0, 0.9);
+  }
+  .aviso::backdrop {
+    background: rgba(1, 6, 15, 0.74);
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
+  }
+  :global(html:has(#aviso-lancamento[open])) {
+    overflow: hidden;
+  }
+
+  .aviso-in {
+    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.18fr);
+    max-height: inherit;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+
+  .aviso-fechar {
+    position: absolute;
+    z-index: 3;
+    top: 0.9rem;
+    right: 0.9rem;
+    display: inline-grid;
+    place-items: center;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    border: 1px solid rgba(251, 251, 248, 0.2);
+    background: rgba(1, 6, 15, 0.6);
+    color: var(--color-ivory);
+    cursor: pointer;
+    transition:
+      border-color 0.3s ease,
+      color 0.3s ease;
+  }
+  .aviso-fechar svg {
+    width: 18px;
+    height: 18px;
+  }
+  .aviso-fechar:hover {
+    border-color: var(--color-gold-light);
+    color: var(--color-gold-light);
+  }
+
+  /* a capa nasce do fundo: imagem em navy escuro + halo, sem moldura */
+  .aviso-fig {
+    position: relative;
+    overflow: hidden;
+    background: #030a19;
+  }
+  .aviso-halo {
+    position: absolute;
+    inset: 20% 10% 25%;
+    border-radius: 50%;
+    background: var(--halo-gold);
+    filter: blur(20px);
+    opacity: 0.6;
+  }
+  .aviso-fig :global(img) {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 50% 58%;
+  }
+
+  .aviso-copy {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.05rem;
+    padding: clamp(2rem, 4vw, 2.75rem) clamp(1.5rem, 3.5vw, 2.5rem) clamp(1.8rem, 3.5vw, 2.4rem);
+  }
+  .aviso-copy :global(.eyebrow) {
+    font-size: 0.75rem;
+    padding-block: 0.45rem;
+    margin-right: 3rem; /* não passa por baixo do botão de fechar */
+  }
+  .aviso-copy h2 {
+    font-size: clamp(1.9rem, 3.4vw, 2.5rem);
+    line-height: 1.12;
+    text-wrap: balance;
+  }
+  .aviso-copy > p {
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    color: var(--ink-soft);
+  }
+  .aviso-copy :global(.cupom) {
+    align-self: stretch;
+  }
+  .aviso-acoes {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  /* botões na escala do cabeçalho, para os dois caberem lado a lado */
+  .aviso-acoes :global(.btn) {
+    font-size: 0.875rem;
+    gap: 0.7rem;
+    padding: 0.5rem 0.5rem 0.5rem 1.25rem;
+  }
+  .aviso-acoes :global(.btn-icon) {
+    width: 34px;
+    height: 34px;
+  }
+  .aviso-acoes :global(.btn-icon svg) {
+    width: 16px;
+    height: 16px;
+  }
+  .aviso-mais {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--color-gold-light);
+    text-decoration: underline;
+    text-decoration-color: var(--color-gold);
+    text-underline-offset: 4px;
+    transition: color 0.3s ease;
+  }
+  .aviso-mais:hover {
+    color: var(--color-ivory);
+  }
+
+  @media (max-width: 720px) {
+    .aviso {
+      width: calc(100% - 2rem);
+      max-height: calc(100dvh - 2rem);
+    }
+    .aviso-in {
+      grid-template-columns: 1fr;
+    }
+    /* no empilhado a capa vira faixa: o livro inteiro centrado, com as bordas
+       da imagem dissolvidas no fundo do cartão (laterais na imagem, base na faixa) */
+    .aviso-fig {
+      height: 180px;
+      background: none;
+      -webkit-mask-image: linear-gradient(180deg, #000 72%, transparent 100%);
+      mask-image: linear-gradient(180deg, #000 72%, transparent 100%);
+    }
+    .aviso-fig :global(img) {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: auto;
+      height: 160%;
+      transform: translate(-50%, -51%);
+      object-fit: contain;
+      -webkit-mask-image: linear-gradient(90deg, transparent 0%, #000 24%, #000 76%, transparent 100%);
+      mask-image: linear-gradient(90deg, transparent 0%, #000 24%, #000 76%, transparent 100%);
+    }
+    /* no celular o essencial (data, local, cupom e botões) cabe com pouca rolagem */
+    .aviso-copy {
+      gap: 0.9rem;
+      padding-top: 0.4rem;
+    }
+    .aviso-copy :global(.eyebrow) {
+      margin-right: 0;
+      letter-spacing: 0.12em;
+    }
+    .aviso-copy h2 {
+      font-size: 1.75rem;
+    }
+    .aviso-extra {
+      display: none;
+    }
+    .aviso-acoes,
+    .aviso-acoes > :global(*) {
+      width: 100%;
+    }
+    .aviso-acoes :global(.btn) {
+      width: 100%;
+      justify-content: space-between;
+    }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .aviso[open] {
+      animation: aviso-in 0.55s var(--ease-out);
+    }
+    .aviso[open]::backdrop {
+      animation: aviso-fundo 0.4s ease-out;
+    }
+    @keyframes aviso-in {
+      from {
+        opacity: 0;
+        transform: translateY(18px) scale(0.98);
+      }
+      to {
+        opacity: 1;
+        transform: none;
+      }
+    }
+    @keyframes aviso-fundo {
+      from {
+        opacity: 0;
+      }
+    }
+  }
+</style>
